@@ -3,6 +3,9 @@
 /nori
 /warptest
 /ext_build
+/cmake-build-debug
+/cmake-build-release
+/scenes
 CMakeCache.txt
 CMakeSettings.json
 CMakeFiles
@@ -14,6 +17,7 @@ build.ninja
 rules.ninja
 .vs
 .vscode
+.idea/
 /out
 *.sublime-workspace
 *.sublime-project

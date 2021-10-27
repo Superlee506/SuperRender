@@ -9,7 +9,14 @@
 #include <nori/mesh.h>
 
 NORI_NAMESPACE_BEGIN
-
+constexpr uint32_t MAX_PRIMITIVE_NUM = 16;//the max num of primitives in the leaf node
+constexpr uint32_t MAX_TREE_DEPTH = 8;//the max depth of tree
+constexpr uint32_t MAX_CHILD_NUM = 8; // the num of child nodes.
+struct OctNode {
+    size_t child = 0;//The start index of child node, other index are child + 1, child + 2...
+    BoundingBox3f bbox;// Bounding box of this node
+    std::vector<uint32_t> indice;//the indices of triangles in this node
+};
 /**
  * \brief Acceleration data structure for ray intersection queries
  *
@@ -54,8 +61,19 @@ public:
     bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const;
 
 private:
+    /***
+     * Add primitive(e.g. Triangle) to Acceleration Structure
+     * @param idx: the index of primitive
+     */
+    void Accel::addPrimitive(uint32_t idx);
+    bool traverse(size_t nodeIndex, bool shadow, Ray3f& ray, Intersection& its, uint32_t& hitIdx) const;
+private:
     Mesh         *m_mesh = nullptr; ///< Mesh (only a single one for now)
     BoundingBox3f m_bbox;           ///< Bounding box of the entire scene
+    std::vector<OctNode> m_tree;
+    size_t m_maxDepth = 0;//max depths of the Oct Tree
+    size_t m_leafNum = 0;//number of leaf nodes
+    size_t m_nodeNum = 0;//total number of nodes
 };
 
 NORI_NAMESPACE_END
