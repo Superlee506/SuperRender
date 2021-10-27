@@ -67,6 +67,7 @@ private:
      */
     void Accel::addPrimitive(uint32_t idx);
     bool traverse(size_t nodeIndex, bool shadow, Ray3f& ray, Intersection& its, uint32_t& hitIdx) const;
+    bool traverseBruteForce(bool shadow, Ray3f& ray_, Intersection& its, uint32_t& hitIdx) const;
 private:
     Mesh         *m_mesh = nullptr; ///< Mesh (only a single one for now)
     BoundingBox3f m_bbox;           ///< Bounding box of the entire scene
