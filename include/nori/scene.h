@@ -7,7 +7,8 @@
 #pragma once
 
 #include <nori/accel.h>
-
+#include <nori/octree.h>
+#include <nori/bvh.h>
 NORI_NAMESPACE_BEGIN
 
 /**

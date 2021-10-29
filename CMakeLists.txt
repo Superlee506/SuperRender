@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 3.2)
 project(nori)
 
 add_subdirectory(ext ext_build)
-
+OPTION(ENABLE_OCTREE "Option description" OFF) # disabled by default
+OPTION(ENABLE_BVH "Option description" OFF) # disabled by default
 include_directories(
   # Nori include files
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -64,6 +65,8 @@ add_executable(nori
   include/nori/transform.h
   include/nori/vector.h
   include/nori/warp.h
+  include/nori/bvh.h
+  include/nori/octree.h
 
   # Source code files
   src/bitmap.cpp
@@ -89,7 +92,8 @@ add_executable(nori
   src/mirror.cpp
   src/dielectric.cpp
   src/normals.cpp
-)
+  src/bvh.cpp
+  src/octree.cpp)
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
 
