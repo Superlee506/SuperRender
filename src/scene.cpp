@@ -14,9 +14,16 @@
 NORI_NAMESPACE_BEGIN
 
 Scene::Scene(const PropertyList &) {
-  /*  m_accel = new Accel();*/
-    /*m_accel = new OctreeAccel();*/
-   m_accel = new BvhAccel();
+
+#ifdef USE_BVH
+    m_accel = new BvhAccel();
+#elif USE_OCTREE
+    m_accel = new OctreeAccel();
+#else // default brust force search
+    m_accel = new Accel();
+#endif
+
+
 }
 
 Scene::~Scene() {

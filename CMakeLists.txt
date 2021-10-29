@@ -2,8 +2,18 @@ cmake_minimum_required (VERSION 3.2)
 project(nori)
 
 add_subdirectory(ext ext_build)
-OPTION(ENABLE_OCTREE "Option description" OFF) # disabled by default
-OPTION(ENABLE_BVH "Option description" OFF) # disabled by default
+option(ENABLE_OCTREE "Enable Octree" OFF) # disabled by default
+option(ENABLE_BVH "Enable BVH" ON) # disenable by default
+if (ENABLE_BVH)
+  message("-- Using BVH for raytracing")
+  add_definitions("-DUSE_BVH")
+elseif(ENABLE_OCTREE)
+  message("-- Using Octree for raytracing")
+  add_definitions("-DUSE_OCTREE")
+else()
+  message("-- Using brust force search for raytracing")
+endif()
+
 include_directories(
   # Nori include files
   ${CMAKE_CURRENT_SOURCE_DIR}/include
