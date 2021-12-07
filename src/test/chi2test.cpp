@@ -5,7 +5,7 @@
 */
 
 #include <nori/bsdf/bsdf.h>
-#include <nori/core/warp.h>
+#include <nori/sampler/warp.h>
 #include <pcg32.h>
 #include <hypothesis.h>
 #include <fstream>

@@ -6,7 +6,7 @@
 
 #include <nori/bsdf/bsdf.h>
 #include <nori/core/frame.h>
-#include <nori/core/warp.h>
+#include <nori/sampler/warp.h>
 
 NORI_NAMESPACE_BEGIN
 

@@ -5,7 +5,7 @@
 */
 
 #include <nori/sampler/sampler.h>
-#include <nori/core/block.h>
+#include <nori/parallel/block.h>
 #include <pcg32.h>
 
 NORI_NAMESPACE_BEGIN

@@ -6,7 +6,7 @@
 
 #pragma once
 #include <nori/acceleration/accel.h>
-#include <nori/core/mesh.h>
+#include <nori/mesh/mesh.h>
 
 NORI_NAMESPACE_BEGIN
 constexpr uint32_t MAX_PRIMITIVE_NUM = 16;//the max num of primitives in the leaf node

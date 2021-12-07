@@ -6,7 +6,7 @@
 
 #include <nori/camera/camera.h>
 #include <nori/filter/rfilter.h>
-#include <nori/core/warp.h>
+#include <nori/sampler/warp.h>
 #include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN

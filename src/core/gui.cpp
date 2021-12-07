@@ -5,7 +5,7 @@
 */
 
 #include <nori/core/gui.h>
-#include <nori/core/block.h>
+#include <nori/parallel/block.h>
 #include <nanogui/shader.h>
 #include <nanogui/label.h>
 #include <nanogui/slider.h>

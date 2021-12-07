@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/core/scene.h>
+#include <nori/scene/scene.h>
 #include <nori/bsdf/bsdf.h>
 #include <nori/camera/camera.h>
 #include <nori/integrator/integrator.h>
