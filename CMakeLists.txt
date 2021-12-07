@@ -51,71 +51,73 @@ include_directories(
 add_executable(nori
 
   # Header files
-  include/nori/bbox.h
-  include/nori/bitmap.h
-  include/nori/block.h
-  include/nori/bsdf.h
-  include/nori/accel.h
-  include/nori/camera.h
-  include/nori/color.h
-  include/nori/common.h
-  include/nori/dpdf.h
-  include/nori/frame.h
-  include/nori/integrator.h
-  include/nori/emitter.h
-  include/nori/mesh.h
-  include/nori/object.h
-  include/nori/parser.h
-  include/nori/proplist.h
-  include/nori/ray.h
-  include/nori/rfilter.h
-  include/nori/sampler.h
-  include/nori/scene.h
-  include/nori/timer.h
-  include/nori/transform.h
-  include/nori/vector.h
-  include/nori/warp.h
-  include/nori/bvh.h
-  include/nori/octree.h
+        include/nori/core/bbox.h
+        include/nori/texture/bitmap.h
+        include/nori/core/block.h
+        include/nori/bsdf/bsdf.h
+        include/nori/acceleration/accel.h
+        include/nori/camera/camera.h
+        include/nori/core/color.h
+        include/nori/core/common.h
+        include/nori/core/dpdf.h
+        include/nori/core/frame.h
+        include/nori/integrator/integrator.h
+        include/nori/emitter/emitter.h
+        include/nori/core/mesh.h
+        include/nori/core/object.h
+        include/nori/core/parser.h
+        include/nori/core/proplist.h
+        include/nori/core/ray.h
+        include/nori/filter/rfilter.h
+        include/nori/sampler/sampler.h
+        include/nori/core/scene.h
+        include/nori/core/timer.h
+        include/nori/core/transform.h
+        include/nori/core/vector.h
+        include/nori/core/warp.h
+        include/nori/acceleration/bvh.h
+        include/nori/acceleration/octree.h
 
   # Source code files
-  src/bitmap.cpp
-  src/block.cpp
-  src/accel.cpp
-  src/chi2test.cpp
-  src/common.cpp
-  src/diffuse.cpp
-  src/gui.cpp
-  src/independent.cpp
+        src/texture/bitmap.cpp
+        src/core/block.cpp
+        src/core/chi2test.cpp
+        src/core/common.cpp
+        src/bsdf/diffuse.cpp
+        src/core/gui.cpp
   src/main.cpp
-  src/mesh.cpp
-  src/obj.cpp
-  src/object.cpp
-  src/parser.cpp
-  src/perspective.cpp
-  src/proplist.cpp
-  src/rfilter.cpp
-  src/scene.cpp
-  src/ttest.cpp
-  src/warp.cpp
-  src/microfacet.cpp
-  src/mirror.cpp
-  src/dielectric.cpp
-  src/normals.cpp
-  src/bvh.cpp
-  src/octree.cpp)
+        src/core/mesh.cpp
+        src/mesh/obj.cpp
+        src/core/object.cpp
+        src/core/parser.cpp
+        src/camera/perspective.cpp
+        src/core/proplist.cpp
+        src/filter/rfilter.cpp
+        src/core/scene.cpp
+        src/core/ttest.cpp
+        src/core/warp.cpp
+        src/bsdf/microfacet.cpp
+        src/bsdf/mirror.cpp
+        src/bsdf/dielectric.cpp
+        src/sampler/independent.cpp
+  src/integrator/normals.cpp
+  src/integrator/simple.cpp
+  src/acceleration/bvh.cpp
+  src/acceleration/octree.cpp
+  src/acceleration/accel.cpp
+  )
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
 
 # The following lines build the warping test application
 add_executable(warptest
-  include/nori/warp.h
-  src/warp.cpp
-  src/warptest.cpp
-  src/microfacet.cpp
-  src/object.cpp
-  src/proplist.cpp
-  src/common.cpp
+        include/nori/core/warp.h
+        src/core/warp.cpp
+        src/core/warptest.cpp
+        src/bsdf/microfacet.cpp
+        src/core/object.cpp
+        src/core/proplist.cpp
+        src/core/common.cpp
 )
 
 if (WIN32)
