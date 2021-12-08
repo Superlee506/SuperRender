@@ -49,12 +49,15 @@ NoriObject *loadFromXML(const std::string &filename) {
         EBSDF                 = NoriObject::EBSDF,
         EPhaseFunction        = NoriObject::EPhaseFunction,
         EEmitter            = NoriObject::EEmitter,
+        ETexture               = NoriObject::ETexture,
         EMedium               = NoriObject::EMedium,
         ECamera               = NoriObject::ECamera,
         EIntegrator           = NoriObject::EIntegrator,
         ESampler              = NoriObject::ESampler,
         ETest                 = NoriObject::ETest,
         EReconstructionFilter = NoriObject::EReconstructionFilter,
+        EAcceleration         = NoriObject::EClassType::EAcceleration,
+        EShape         = NoriObject::EClassType::EShape,
 
         /* Properties */
         EBoolean = NoriObject::EClassTypeCount,
@@ -86,6 +89,7 @@ NoriObject *loadFromXML(const std::string &filename) {
     tags["integrator"] = EIntegrator;
     tags["sampler"]    = ESampler;
     tags["rfilter"]    = EReconstructionFilter;
+    tags["acceleration"] = EAcceleration;
     tags["test"]       = ETest;
     tags["boolean"]    = EBoolean;
     tags["integer"]    = EInteger;

@@ -17,6 +17,27 @@ void NoriObject::addChild(NoriObject *) {
 void NoriObject::activate() { /* Do nothing */ }
 void NoriObject::setParent(NoriObject *) { /* Do nothing */ }
 
+std::string NoriObject::classTypeName(EClassType type) {
+    switch (type)
+    {
+        case EScene:                return "scene";
+        case EMesh:                 return "mesh";
+        case EBSDF:                 return "bsdf";
+        case EPhaseFunction:        return "phaseFunction";
+        case EEmitter:              return "emitter";
+        case ETexture:              return "texture";
+        case EMedium:               return "medium";
+        case ECamera:               return "camera";
+        case EIntegrator:           return "integrator";
+        case ESampler:              return "sampler";
+        case ETest:                 return "test";
+        case EReconstructionFilter: return "reconstructionFilter";
+        case EAcceleration:         return "acceleration";
+        case EShape:                return "shape";
+        default:                    return "<unknown>";
+    }
+}
+
 std::map<std::string, NoriObjectFactory::Constructor> *NoriObjectFactory::m_constructors = nullptr;
 
 void NoriObjectFactory::registerClass(const std::string &name, const Constructor &constr) {
