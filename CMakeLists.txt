@@ -50,7 +50,7 @@ add_subdirectory(src/core)
 # The following lines build the main executable. If you add a source
 # code file to Nori, be sure to include it in this list.
 add_executable(nori
-        ${CORE_HEADERS}
+        #${CORE_HEADERS}
   # Header files
         include/nori/mesh/mesh.h
         include/nori/scene/scene.h
@@ -91,20 +91,18 @@ add_executable(nori
 add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
-        ${CORE_HEADERS}
-        src/bsdf/microfacet.cpp
-)
+        include/nori/sampler/warp.h
+        src/sampler/warp.cpp
+        src/test/warptest.cpp
+        src/bsdf/microfacet.cpp)
 
 if (WIN32)
-  # target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)
-  target_link_libraries(nori core)
+  target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)
 else()
-  # target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
-  target_link_libraries(nori core)
+  target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
 endif()
 
-target_link_libraries(warptest core)
-# target_link_libraries(warptest core tbb_static nanogui ${NANOGUI_EXTRA_LIBS})
+target_link_libraries(warptest core tbb_static nanogui ${NANOGUI_EXTRA_LIBS})
 # Force colored output for the ninja generator
 if (CMAKE_GENERATOR STREQUAL "Ninja")
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
