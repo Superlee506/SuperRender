@@ -44,6 +44,7 @@ endforeach(EXAMPLE)
 add_executable(nori
         ${CORE_HEADERS}
   # Header files
+        include/nori/mesh/wavefrontOBJMesh.h
         include/nori/filter/gaussianFilter.h
         include/nori/acceleration/bvh.h
         include/nori/acceleration/octree.h
@@ -56,7 +57,7 @@ add_executable(nori
         src/filter/gaussianFilter.cpp
         src/bsdf/diffuse.cpp
         src/main.cpp
-        src/mesh/obj.cpp
+        src/mesh/wavefrontOBJMesh.cpp
         src/camera/perspective.cpp
         src/bsdf/microfacet.cpp
         src/bsdf/mirror.cpp
