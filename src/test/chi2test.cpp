@@ -4,8 +4,8 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/bsdf/bsdf.h>
-#include <nori/sampler/warp.h>
+#include <nori/core/bsdf.h>
+#include <nori/core/warp.h>
 #include <pcg32.h>
 #include <hypothesis.h>
 #include <fstream>

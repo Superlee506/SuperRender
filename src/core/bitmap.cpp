@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/texture/bitmap.h>
+#include <nori/core/bitmap.h>
 #include <ImfInputFile.h>
 #include <ImfOutputFile.h>
 #include <ImfChannelList.h>

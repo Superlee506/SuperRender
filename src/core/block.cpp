@@ -4,9 +4,9 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/parallel/block.h>
-#include <nori/texture/bitmap.h>
-#include <nori/filter/rfilter.h>
+#include <nori/core/block.h>
+#include <nori/core/bitmap.h>
+#include <nori/core/rfilter.h>
 #include <nori/core/bbox.h>
 #include <tbb/tbb.h>
 

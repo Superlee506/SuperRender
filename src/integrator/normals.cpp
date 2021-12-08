@@ -1,7 +1,7 @@
 //
 // Created by superqqli on 2021/10/26.
 //
-#include <nori/integrator/integrator.h>
+#include <nori/core/integrator.h>
 #include <nori/scene/scene.h>
 
 NORI_NAMESPACE_BEGIN

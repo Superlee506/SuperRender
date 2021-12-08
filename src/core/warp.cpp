@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/sampler/warp.h>
+#include <nori/core/warp.h>
 #include <nori/core/vector.h>
 #include <nori/core/frame.h>
 

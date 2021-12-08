@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/mesh/mesh.h>
+#include <nori/core/mesh.h>
 #include <nori/core/timer.h>
 #include <filesystem/resolver.h>
 #include <unordered_map>

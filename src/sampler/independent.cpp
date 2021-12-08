@@ -4,8 +4,8 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/sampler/sampler.h>
-#include <nori/parallel/block.h>
+#include <nori/core/sampler.h>
+#include <nori/core/block.h>
 #include <pcg32.h>
 
 NORI_NAMESPACE_BEGIN

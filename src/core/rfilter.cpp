@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/filter/rfilter.h>
+#include <nori/core/rfilter.h>
 
 NORI_NAMESPACE_BEGIN
 

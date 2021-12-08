@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <nori/acceleration/accel.h>
+#include <nori/core/accel.h>
 #include <nori/acceleration/octree.h>
 #include <nori/acceleration/bvh.h>
 NORI_NAMESPACE_BEGIN

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <nori/core/common.h>
-#include <nori/sampler/sampler.h>
 
 NORI_NAMESPACE_BEGIN
 

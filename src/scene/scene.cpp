@@ -5,11 +5,11 @@
 */
 
 #include <nori/scene/scene.h>
-#include <nori/texture/bitmap.h>
-#include <nori/integrator/integrator.h>
-#include <nori/sampler/sampler.h>
-#include <nori/camera/camera.h>
-#include <nori/emitter/emitter.h>
+#include <nori/core/bitmap.h>
+#include <nori/core/integrator.h>
+#include <nori/core/sampler.h>
+#include <nori/core/camera.h>
+#include <nori/core/emitter.h>
 
 NORI_NAMESPACE_BEGIN
 

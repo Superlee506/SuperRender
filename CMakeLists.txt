@@ -46,37 +46,21 @@ include_directories(
   SYSTEM ${STB_IMAGE_WRITE_INCLUDE_DIR}
 )
 
-add_subdirectory(src/core)
+add_subdirectory(src)
 # The following lines build the main executable. If you add a source
 # code file to Nori, be sure to include it in this list.
 add_executable(nori
         #${CORE_HEADERS}
   # Header files
-        include/nori/mesh/mesh.h
         include/nori/scene/scene.h
-        include/nori/sampler/warp.h
-        include/nori/parallel/block.h
-        include/nori/texture/bitmap.h
-        include/nori/bsdf/bsdf.h
-        include/nori/acceleration/accel.h
-        include/nori/camera/camera.h
-        include/nori/integrator/integrator.h
-        include/nori/emitter/emitter.h
-        include/nori/filter/rfilter.h
-        include/nori/sampler/sampler.h
         include/nori/acceleration/bvh.h
         include/nori/acceleration/octree.h
   # Source code files
-        src/mesh/mesh.cpp
         src/scene/scene.cpp
-        src/sampler/warp.cpp
-        src/parallel/block.cpp
-        src/texture/bitmap.cpp
         src/bsdf/diffuse.cpp
         src/main.cpp
         src/mesh/obj.cpp
         src/camera/perspective.cpp
-        src/filter/rfilter.cpp
         src/bsdf/microfacet.cpp
         src/bsdf/mirror.cpp
         src/bsdf/dielectric.cpp
@@ -85,14 +69,12 @@ add_executable(nori
   src/integrator/simple.cpp
   src/acceleration/bvh.cpp
   src/acceleration/octree.cpp
-  src/acceleration/accel.cpp
   )
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
-        include/nori/sampler/warp.h
-        src/sampler/warp.cpp
+        include/nori/core/warp.h
         src/test/warptest.cpp
         src/bsdf/microfacet.cpp)
 

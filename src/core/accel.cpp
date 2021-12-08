@@ -3,7 +3,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/acceleration/accel.h>
+#include <nori/core/accel.h>
 #include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN

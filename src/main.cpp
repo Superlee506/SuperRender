@@ -6,12 +6,12 @@
 
 #include <nori/core/parser.h>
 #include <nori/scene/scene.h>
-#include <nori/camera/camera.h>
-#include <nori/parallel/block.h>
+#include <nori/core/camera.h>
+#include <nori/core/block.h>
 #include <nori/core/timer.h>
-#include <nori/texture/bitmap.h>
-#include <nori/sampler/sampler.h>
-#include <nori/integrator/integrator.h>
+#include <nori/core/bitmap.h>
+#include <nori/core/sampler.h>
+#include <nori/core/integrator.h>
 #include <nori/core/gui.h>
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>

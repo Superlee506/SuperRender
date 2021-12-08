@@ -5,10 +5,10 @@
 */
 
 #include <nori/scene/scene.h>
-#include <nori/bsdf/bsdf.h>
-#include <nori/camera/camera.h>
-#include <nori/integrator/integrator.h>
-#include <nori/sampler/sampler.h>
+#include <nori/core/bsdf.h>
+#include <nori/core/camera.h>
+#include <nori/core/integrator.h>
+#include <nori/core/sampler.h>
 #include <hypothesis.h>
 #include <pcg32.h>
 
