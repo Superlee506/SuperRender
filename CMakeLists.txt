@@ -2,17 +2,6 @@ cmake_minimum_required (VERSION 3.2)
 project(nori)
 
 add_subdirectory(ext ext_build)
-option(ENABLE_OCTREE "Enable Octree" OFF) # disabled by default
-option(ENABLE_BVH "Enable BVH" ON) # disenable by default
-if (ENABLE_BVH)
-  message("-- Using BVH for raytracing")
-  add_definitions("-DUSE_BVH")
-elseif(ENABLE_OCTREE)
-  message("-- Using Octree for raytracing")
-  add_definitions("-DUSE_OCTREE")
-else()
-  message("-- Using brust force search for raytracing")
-endif()
 
 include_directories(
   # Nori include files
@@ -59,6 +48,11 @@ add_executable(nori
         include/nori/scene/scene.h
         include/nori/acceleration/bvh.h
         include/nori/acceleration/octree.h
+        include/nori/filter/boxFilter.h
+        include/nori/filter/gaussianFilter.h
+        include/nori/filter/mitchellNetravaliFilter.h
+        include/nori/filter/tentFilter.h
+
   # Source code files
         src/filter/gaussianFilter.cpp
         src/scene/scene.cpp
@@ -74,6 +68,10 @@ add_executable(nori
   src/integrator/simple.cpp
   src/acceleration/bvh.cpp
   src/acceleration/octree.cpp
+        src/filter/boxFilter.cpp
+        src/filter/gaussianFilter.cpp
+        src/filter/mitchellNetravaliFilter.cpp
+        src/filter/tentFilter.cpp
   )
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
