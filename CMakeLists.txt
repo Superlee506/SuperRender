@@ -44,6 +44,7 @@ endforeach(EXAMPLE)
 add_executable(nori
         ${CORE_HEADERS}
   # Header files
+        include/nori/sampler/independentSampler.h
         include/nori/mesh/wavefrontOBJMesh.h
         include/nori/filter/gaussianFilter.h
         include/nori/acceleration/bvh.h
@@ -62,7 +63,7 @@ add_executable(nori
         src/bsdf/microfacet.cpp
         src/bsdf/mirror.cpp
         src/bsdf/dielectric.cpp
-        src/sampler/independent.cpp
+        src/sampler/independentSampler.cpp
         src/integrator/normal.cpp
   src/integrator/simple.cpp
   src/acceleration/bvh.cpp
