@@ -48,7 +48,10 @@
 
 NORI_NAMESPACE_BEGIN
 
-BvhAccel::BvhAccel() {}
+BvhAccel::BvhAccel(const PropertyList& list) : Accel(list)
+{
+
+}
 
 BvhAccel::~BvhAccel() { }
 
@@ -464,5 +467,16 @@ bool BvhAccel::rayIntersect(const Ray3f &ray_, Intersection &its, bool shadowRay
     return foundIntersection;
 }
 
+std::string BvhAccel::toString() const
+{
+    return tfm::format(
+            "BVHAcceleration[\n"
+            "  node = %s,\n"
+            "]",
+           m_nodes.size()
+    );
+}
+
+NORI_REGISTER_CLASS(BvhAccel, XML_ACCELERATION_BVH);
 NORI_NAMESPACE_END
 

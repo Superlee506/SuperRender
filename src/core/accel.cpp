@@ -7,8 +7,19 @@
 #include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN
-Accel::Accel() { m_meshOffset.push_back(0u); }
+Accel::Accel(const PropertyList & PropList) { m_meshOffset.push_back(0u); }
+
 Accel::~Accel() { }
+
+NoriObject::EClassType Accel::getClassType() const
+{
+    return EClassType::EAcceleration;
+}
+
+std::string Accel::toString() const
+{
+    return "BrutoLoop[]";
+}
 
 uint32_t Accel::BaseInternals::findMesh(Accel const &accel, uint32_t &idx) {
     auto it = std::lower_bound(accel.m_meshOffset.begin(), accel.m_meshOffset.end(), idx + 1) - 1;
@@ -114,4 +125,5 @@ bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool shadowRay) c
     return foundIntersection;
 }
 
+NORI_REGISTER_CLASS(Accel, XML_ACCELERATION_BRUTO_LOOP);
 NORI_NAMESPACE_END

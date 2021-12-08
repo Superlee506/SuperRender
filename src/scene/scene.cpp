@@ -15,13 +15,13 @@ NORI_NAMESPACE_BEGIN
 
 Scene::Scene(const PropertyList &) {
 
-#ifdef USE_BVH
-    m_accel = new BvhAccel();
+/*#ifdef USE_BVH
+    m_accel = new BvhAccel(PropertyList());
 #elif USE_OCTREE
     m_accel = new OctreeAccel();
 #else // default brust force search
     m_accel = new Accel();
-#endif
+#endif*/
 
 
 }
@@ -34,6 +34,17 @@ Scene::~Scene() {
 }
 
 void Scene::activate() {
+    if (m_accel == nullptr)
+    {
+        /* Create a default acceleration */
+        m_accel = (Accel*)(NoriObjectFactory::createInstance(DEFAULT_SCENE_ACCELERATION, PropertyList()));
+    }
+
+    for (auto& pMesh : m_meshes)
+    {
+        m_accel->addMesh(pMesh);
+    }
+
     m_accel->build();
 
     if (!m_integrator)
@@ -54,9 +65,16 @@ void Scene::activate() {
 
 void Scene::addChild(NoriObject *obj) {
     switch (obj->getClassType()) {
+        case EAcceleration:
+            if (m_accel != nullptr)
+            {
+                throw NoriException("There can only be one acceleration per scene!");
+            }
+            m_accel =  static_cast<Accel *>(obj);
+            break;
         case EMesh: {
                 Mesh *mesh = static_cast<Mesh *>(obj);
-                m_accel->addMesh(mesh);
+
                 m_meshes.push_back(mesh);
             }
             break;

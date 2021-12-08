@@ -4,7 +4,7 @@
 */
 
 #pragma once
-
+#include <nori/core/object.h>
 #include <nori/core/mesh.h>
 
 NORI_NAMESPACE_BEGIN
@@ -15,9 +15,9 @@ NORI_NAMESPACE_BEGIN
  * The current implementation falls back to a brute force loop
  * through the geometry.
  */
-class Accel {
+class Accel : public NoriObject {
 public:
-    Accel::Accel();
+    Accel::Accel(const PropertyList & PropList);
     virtual Accel::~Accel();
     /**
      * \brief Register a triangle mesh for inclusion in the acceleration
@@ -53,6 +53,15 @@ public:
      * \return \c true if an intersection was found
      */
     virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const;
+
+    /**
+     * \brief Return the type of object (i.e. Mesh/BSDF/etc.)
+     * provided by this instance
+     * */
+    virtual EClassType getClassType() const override;
+
+    /// Return a brief string summary of the instance (for debugging purposes)
+    virtual std::string toString() const override;
 
 protected:
     struct BaseInternals {

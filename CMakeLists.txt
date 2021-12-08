@@ -49,13 +49,18 @@ include_directories(
 add_subdirectory(src)
 # The following lines build the main executable. If you add a source
 # code file to Nori, be sure to include it in this list.
+foreach(EXAMPLE ${CORE_HEADERS})
+  message(${EXAMPLE})
+endforeach(EXAMPLE)
 add_executable(nori
-        #${CORE_HEADERS}
+        ${CORE_HEADERS}
   # Header files
+        include/nori/filter/gaussianFilter.h
         include/nori/scene/scene.h
         include/nori/acceleration/bvh.h
         include/nori/acceleration/octree.h
   # Source code files
+        src/filter/gaussianFilter.cpp
         src/scene/scene.cpp
         src/bsdf/diffuse.cpp
         src/main.cpp
@@ -74,7 +79,6 @@ add_executable(nori
 add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
-        include/nori/core/warp.h
         src/test/warptest.cpp
         src/bsdf/microfacet.cpp)
 

@@ -10,6 +10,9 @@
         <color name="energy" value="3.76e4, 3.76e4, 3.76e4"/>
     </integrator>
 
+	<acceleration type="bvh">
+	</acceleration>
+
 	<!-- Load the Ajax bust (a freely available scan from the Jotero forum) -->
 	<mesh type="obj">
 		<string name="filename" value="ajax.obj"/>

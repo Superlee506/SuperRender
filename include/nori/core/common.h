@@ -47,6 +47,17 @@
 #define SQRT_TWO     1.41421356237309504880f
 #define INV_SQRT_TWO 0.70710678118654752440f
 
+/* XML fields name */
+#define XML_TYPE(Field)     Field##_XmlType
+#define XML_VALUE(Field)    Field##_XmlValue
+
+#define XML_ACCELERATION_BRUTO_LOOP              "bruto"
+#define XML_ACCELERATION_BVH                     "bvh"
+#define XML_ACCELERATION_OCTREE                  "octree"
+
+/* Default setting */
+#define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
+
 /* Forward declarations */
 namespace filesystem {
     class path;

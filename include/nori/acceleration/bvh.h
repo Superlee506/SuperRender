@@ -33,7 +33,7 @@ NORI_NAMESPACE_BEGIN
  */
 class BvhAccel: public Accel{
 public:
-    BvhAccel();
+    BvhAccel(const PropertyList& list);
 	virtual ~BvhAccel();
 
     /// Build the acceleration data structure (currently a no-op)
@@ -59,6 +59,8 @@ public:
      * \return \c true if an intersection was found
      */
     virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const;
+
+    virtual std::string toString() const override;
 
 private:
     /* Accel node in 32 bytes */

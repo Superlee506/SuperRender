@@ -10,6 +10,11 @@
 #include <queue>
 NORI_NAMESPACE_BEGIN
 
+OctreeAccel::OctreeAccel(const PropertyList& list) : Accel(list)
+{
+
+}
+
 
 bool OctreeAccel::traverse(size_t nodeIndex, bool shadow, Ray3f& ray, Intersection& its, uint32_t& hitIdx) const {
     const OctNode& node = m_tree[nodeIndex];
@@ -143,5 +148,20 @@ bool OctreeAccel::rayIntersect(const Ray3f &ray_, Intersection &its, bool shadow
     return foundIntersection;
 }
 
+std::string OctreeAccel::toString() const
+{
+    return tfm::format(
+            "OctreeAcceleration[\n"
+            "  depth = %s,\n"
+            "  node = %s,\n"
+            "  leafNode = %f\n"
+            "]",
+            m_maxDepth,
+            m_nodeNum,
+            m_leafNum
+    );
+}
+
+NORI_REGISTER_CLASS(OctreeAccel, XML_ACCELERATION_OCTREE);
 NORI_NAMESPACE_END
 
