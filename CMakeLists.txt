@@ -59,7 +59,7 @@ add_executable(nori
         src/bsdf/diffuse.cpp
         src/main.cpp
         src/mesh/wavefrontOBJMesh.cpp
-        src/camera/perspective.cpp
+        src/camera/perspectiveCamera.cpp
         src/bsdf/microfacet.cpp
         src/bsdf/mirror.cpp
         src/bsdf/dielectric.cpp

@@ -6,7 +6,6 @@
 
 #include <nori/sampler/independentSampler.h>
 #include <nori/core/block.h>
-#include <pcg32.h>
 
 NORI_NAMESPACE_BEGIN
 
