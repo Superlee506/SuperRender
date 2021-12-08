@@ -9,6 +9,7 @@
 #include <nori/core/sampler.h>
 #include <nori/core/camera.h>
 #include <nori/core/emitter.h>
+#include <nori//core/accel.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -21,6 +22,57 @@ Scene::~Scene() {
     delete m_sampler;
     delete m_camera;
     delete m_integrator;
+}
+
+const Accel* Scene::getAccel() const
+{
+    return m_accel;
+}
+
+const Integrator* Scene::getIntegrator() const
+{
+    return m_integrator;
+}
+
+Integrator* Scene::getIntegrator()
+{
+    return m_integrator;
+}
+
+const Camera* Scene::getCamera() const
+{
+    return m_camera;
+}
+
+const Sampler* Scene::getSampler() const
+{
+    return m_sampler;
+}
+
+Sampler* Scene::getSampler()
+{
+    return m_sampler;
+}
+
+const std::vector<Mesh *> & Scene::getMeshes() const
+{
+    return m_meshes;
+}
+
+bool Scene::rayIntersect(const Ray3f &ray, Intersection &its) const
+{
+    return m_accel->rayIntersect(ray, its, false);
+}
+
+bool Scene::rayIntersect(const Ray3f &ray) const
+{
+    Intersection its; /* Unused */
+    return m_accel->rayIntersect(ray, its, true);
+}
+
+const BoundingBox3f& Scene::getBoundingBox() const
+{
+    return m_accel->getBoundingBox();
 }
 
 void Scene::activate() {
@@ -122,6 +174,11 @@ std::string Scene::toString() const {
         indent(m_camera->toString()),
         indent(meshes, 2)
     );
+}
+
+NoriObject::EClassType Scene::getClassType() const
+{
+    return EScene;
 }
 
 NORI_REGISTER_CLASS(Scene, "scene");

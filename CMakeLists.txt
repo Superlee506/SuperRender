@@ -42,6 +42,7 @@ foreach(EXAMPLE ${CORE_HEADERS})
   message(${EXAMPLE})
 endforeach(EXAMPLE)
 add_executable(nori
+        ${CORE_HEADERS}
   # Header files
         include/nori/filter/gaussianFilter.h
         include/nori/acceleration/bvh.h
@@ -61,7 +62,7 @@ add_executable(nori
         src/bsdf/mirror.cpp
         src/bsdf/dielectric.cpp
         src/sampler/independent.cpp
-  src/integrator/normals.cpp
+        src/integrator/normal.cpp
   src/integrator/simple.cpp
   src/acceleration/bvh.cpp
   src/acceleration/octree.cpp

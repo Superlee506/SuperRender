@@ -116,6 +116,7 @@ typedef TRay<Point2f, Vector2f> Ray2f;
 typedef TRay<Point3f, Vector3f> Ray3f;
 
 /// Some more forward declarations
+class Accel;
 class BSDF;
 class Bitmap;
 class BlockGenerator;
@@ -126,6 +127,7 @@ class KDTree;
 class Emitter;
 struct EmitterQueryRecord;
 class Mesh;
+struct Intersection;
 class NoriObject;
 class NoriObjectFactory;
 class NoriScreen;
