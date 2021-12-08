@@ -5,7 +5,7 @@
 */
 
 #include <nori/core/parser.h>
-#include <nori/scene/scene.h>
+#include <nori/core/scene.h>
 #include <nori/core/camera.h>
 #include <nori/core/block.h>
 #include <nori/core/timer.h>

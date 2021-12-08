@@ -4,8 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/scene/scene.h>
-#include <nori/core/bitmap.h>
+#include <nori/core/scene.h>
 #include <nori/core/integrator.h>
 #include <nori/core/sampler.h>
 #include <nori/core/camera.h>

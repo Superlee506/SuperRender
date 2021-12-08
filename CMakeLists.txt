@@ -42,10 +42,8 @@ foreach(EXAMPLE ${CORE_HEADERS})
   message(${EXAMPLE})
 endforeach(EXAMPLE)
 add_executable(nori
-        ${CORE_HEADERS}
   # Header files
         include/nori/filter/gaussianFilter.h
-        include/nori/scene/scene.h
         include/nori/acceleration/bvh.h
         include/nori/acceleration/octree.h
         include/nori/filter/boxFilter.h
@@ -55,7 +53,6 @@ add_executable(nori
 
   # Source code files
         src/filter/gaussianFilter.cpp
-        src/scene/scene.cpp
         src/bsdf/diffuse.cpp
         src/main.cpp
         src/mesh/obj.cpp

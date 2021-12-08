@@ -3,7 +3,7 @@
 // Simple sample on point light
 //
 #include <nori/core/integrator.h>
-#include <nori/scene/scene.h>
+#include <nori/core/scene.h>
 
 NORI_NAMESPACE_BEGIN
 
