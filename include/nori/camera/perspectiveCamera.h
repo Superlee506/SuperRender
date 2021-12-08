@@ -4,6 +4,8 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
+#pragma once
+#include <nori/core/common.h>
 #include <nori/core/camera.h>
 
 NORI_NAMESPACE_BEGIN

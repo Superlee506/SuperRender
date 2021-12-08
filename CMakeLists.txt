@@ -44,6 +44,11 @@ endforeach(EXAMPLE)
 add_executable(nori
         ${CORE_HEADERS}
   # Header files
+        include/nori/camera/perspectiveCamera.h
+        include/nori/bsdf/microfacetBSDF.h
+        include/nori/bsdf/mirrorBSDF.h
+        include/nori/bsdf/diffuseBSDF.h
+        include/nori/bsdf/dielectricBSDF.h
         include/nori/sampler/independentSampler.h
         include/nori/mesh/wavefrontOBJMesh.h
         include/nori/filter/gaussianFilter.h
@@ -56,13 +61,13 @@ add_executable(nori
 
   # Source code files
         src/filter/gaussianFilter.cpp
-        src/bsdf/diffuse.cpp
+        src/bsdf/diffuseBSDF.cpp
         src/main.cpp
         src/mesh/wavefrontOBJMesh.cpp
         src/camera/perspectiveCamera.cpp
-        src/bsdf/microfacet.cpp
-        src/bsdf/mirror.cpp
-        src/bsdf/dielectric.cpp
+        src/bsdf/microfacetBSDF.cpp
+        src/bsdf/mirrorBSDF.cpp
+        src/bsdf/dielectricBSDF.cpp
         src/sampler/independentSampler.cpp
         src/integrator/normal.cpp
   src/integrator/simple.cpp
@@ -78,7 +83,7 @@ add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
         src/test/warptest.cpp
-        src/bsdf/microfacet.cpp)
+        src/bsdf/microfacetBSDF.cpp)
 
 if (WIN32)
   target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)

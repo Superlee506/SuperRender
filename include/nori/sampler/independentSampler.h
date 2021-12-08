@@ -4,6 +4,8 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
+#pragma once
+#include <nori/core/common.h>
 #include <nori/core/sampler.h>
 #include <pcg32.h>
 
