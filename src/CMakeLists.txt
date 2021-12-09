@@ -1,16 +1,34 @@
-set(CORE_INCLUDE_PATH ../include/nori/core)
-set(CORE_SRC_PATH core)
+file(GLOB CORE_SRC "${ROOT_NORI_SRC}/core/*.hpp" "${ROOT_NORI_SRC}/core/*.cpp")
 
-#[[set(CORE_INCLUDE_PATH ../include/nori/core)
-set(CORE_SRC_PATH core)]]
-file(GLOB CORE_SRC "${CORE_INCLUDE_PATH}/*.h" "${CORE_INCLUDE_PATH}/*.hpp" "${CORE_SRC_PATH}/*.cpp" "${CORE_SRC_PATH}/*.hpp")
+file(GLOB CORE_HEADERS "${ROOT_NORI_INCLUDE}/core/*.hpp" "${ROOT_NORI_INCLUDE}/core/*.h")
 
-file(GLOB CORE_HEADERS "${CORE_INCLUDE_PATH}/*.hpp" "${CORE_INCLUDE_PATH}/*.h")
 
+file(GLOB ACCEL_SRC "${ROOT_NORI_SRC}/acceleration/*.hpp" "${ROOT_NORI_SRC}/acceleration/*.cpp")
+
+file(GLOB BSDF_SRC "${ROOT_NORI_SRC}/bsdf/*.hpp" "${ROOT_NORI_SRC}/bsdf/*.cpp")
+
+file(GLOB CAMERA_SRC "${ROOT_NORI_SRC}/camera/*.hpp" "${ROOT_NORI_SRC}/camera/*.cpp")
+
+file(GLOB EMITTER_SRC "${ROOT_NORI_SRC}/emitter/*.hpp" "${ROOT_NORI_SRC}/emitter/*.cpp")
+
+file(GLOB FILTER_SRC "${ROOT_NORI_SRC}/filter/*.hpp" "${ROOT_NORI_SRC}/filter/*.cpp")
+
+file(GLOB INTEGRATION_SRC "${ROOT_NORI_SRC}/integrator/*.hpp" "${ROOT_NORI_SRC}/integrator/*.cpp")
+
+file(GLOB MESH_SRC "${ROOT_NORI_SRC}/mesh/*.hpp" "${ROOT_NORI_SRC}/mesh/*.cpp")
+
+file(GLOB SAMPLER_SRC "${ROOT_NORI_SRC}/sampler/*.hpp" "${ROOT_NORI_SRC}/sampler/*.cpp")
+
+file(GLOB TEST_SRC "${ROOT_NORI_SRC}/test/*.hpp" "${ROOT_NORI_SRC}/test/*.cpp")
+
+file(GLOB TEXTURE_SRC "${ROOT_NORI_SRC}/texture/*.hpp" "${ROOT_NORI_SRC}/texture/*.cpp")
 
 add_library(core STATIC ${CORE_SRC})
 
-set(CompilerFlags CORE_INCLUDE_PATH CORE_HEADERS CORE_SRC )
+set(CompilerFlags CORE_HEADERS CORE_SRC ACCEL_SRC
+        BSDF_SRC CAMERA_SRC EMITTER_SRC FILTER_SRC
+        INTEGRATION_SRC MESH_SRC SAMPLER_SRC TEST_SRC
+        TEXTURE_SRC)
 foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} "${${CompilerFlag}}" PARENT_SCOPE)
 endforeach()

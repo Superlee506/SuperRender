@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 3.2)
 project(nori)
 
 add_subdirectory(ext ext_build)
-
+set(ROOT_NORI_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include/nori)
+set(ROOT_NORI_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(
   # Nori include files
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -38,55 +39,24 @@ include_directories(
 add_subdirectory(src)
 # The following lines build the main executable. If you add a source
 # code file to Nori, be sure to include it in this list.
-foreach(EXAMPLE ${CORE_HEADERS})
-  message(${EXAMPLE})
-endforeach(EXAMPLE)
 add_executable(nori
-        ${CORE_HEADERS}
-  # Header files
-        include/nori/test/warptest.h
-        include/nori/test/ttest.h
-        include/nori/test/chi2test.h
-        include/nori/camera/perspectiveCamera.h
-        include/nori/bsdf/microfacetBSDF.h
-        include/nori/bsdf/mirrorBSDF.h
-        include/nori/bsdf/diffuseBSDF.h
-        include/nori/bsdf/dielectricBSDF.h
-        include/nori/sampler/independentSampler.h
-        include/nori/mesh/wavefrontOBJMesh.h
-        include/nori/filter/gaussianFilter.h
-        include/nori/acceleration/bvh.h
-        include/nori/acceleration/octree.h
-        include/nori/filter/boxFilter.h
-        include/nori/filter/gaussianFilter.h
-        include/nori/filter/mitchellNetravaliFilter.h
-        include/nori/filter/tentFilter.h
-
   # Source code files
-        src/filter/gaussianFilter.cpp
-        src/bsdf/diffuseBSDF.cpp
+        ${ACCEL_SRC}
+        ${BSDF_SRC}
+        ${CAMERA_SRC}
+        ${EMITTER_SRC}
+        ${FILTER_SRC}
+        ${INTEGRATION_SRC}
+        ${MESH_SRC}
+        ${SAMPLER_SRC}
+        ${TEXTURE_SRC}
         src/main.cpp
-        src/mesh/wavefrontOBJMesh.cpp
-        src/camera/perspectiveCamera.cpp
-        src/bsdf/microfacetBSDF.cpp
-        src/bsdf/mirrorBSDF.cpp
-        src/bsdf/dielectricBSDF.cpp
-        src/sampler/independentSampler.cpp
-        src/integrator/normalIntegrator.cpp
-        src/integrator/simpleIntegrator.cpp
-  src/acceleration/bvh.cpp
-  src/acceleration/octree.cpp
-        src/filter/boxFilter.cpp
-        src/filter/gaussianFilter.cpp
-        src/filter/mitchellNetravaliFilter.cpp
-        src/filter/tentFilter.cpp
   )
 
 add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
-        src/test/warptest.cpp
-        src/bsdf/microfacetBSDF.cpp)
+        ${TEST_SRC})
 
 if (WIN32)
   target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)

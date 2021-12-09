@@ -6,6 +6,7 @@
 
 #include <nori/test/chi2test.h>
 #include <nori/core/warp.h>
+#include <nori/core/bsdf.h>
 #include <pcg32.h>
 #include <hypothesis.h>
 #include <fstream>
@@ -59,7 +60,7 @@ ChiSquareTest::ChiSquareTest(const PropertyList &propList)
         m_sampleCount = m_cosThetaResolution * m_phiResolution * 5000;
 }
 
-virtual ChiSquareTest::~ChiSquareTest()
+ChiSquareTest::~ChiSquareTest()
 {
     for (auto bsdf : m_bsdfs)
         delete bsdf;

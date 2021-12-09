@@ -268,6 +268,6 @@ extern float fresnel(float cosThetaI, float extIOR, float intIOR);
  */
 extern filesystem::resolver *getFileResolver();
 
-const float MAX_NORMAL_BIAS = 0.001;
+const float MAX_NORMAL_BIAS = 0.001f;
 
 NORI_NAMESPACE_END
