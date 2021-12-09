@@ -166,12 +166,14 @@ std::string Scene::toString() const {
         "  integrator = %s,\n"
         "  sampler = %s\n"
         "  camera = %s,\n"
+        "  acceleration = %s,\n"
         "  meshes = {\n"
         "  %s  }\n"
         "]",
         indent(m_integrator->toString()),
         indent(m_sampler->toString()),
         indent(m_camera->toString()),
+        indent(m_accel->toString()),
         indent(meshes, 2)
     );
 }
