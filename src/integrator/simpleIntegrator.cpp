@@ -2,7 +2,7 @@
 // Created by superqqli on 2021/10/26.
 // Simple sample on point light
 //
-#include <nori/integrator/simple.h>
+#include <nori/integrator/simpleIntegrator.h>
 #include <nori/core/scene.h>
 #include <nori/core/mesh.h>
 

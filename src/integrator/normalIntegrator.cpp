@@ -1,7 +1,7 @@
 //
 // Created by superqqli on 2021/10/26.
 //
-#include <nori/integrator/normal.h>
+#include <nori/integrator/normalIntegrator.h>
 #include <nori/core/mesh.h>
 #include <nori/core/scene.h>
 

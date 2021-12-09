@@ -44,6 +44,9 @@ endforeach(EXAMPLE)
 add_executable(nori
         ${CORE_HEADERS}
   # Header files
+        include/nori/test/warptest.h
+        include/nori/test/ttest.h
+        include/nori/test/chi2test.h
         include/nori/camera/perspectiveCamera.h
         include/nori/bsdf/microfacetBSDF.h
         include/nori/bsdf/mirrorBSDF.h
@@ -69,8 +72,8 @@ add_executable(nori
         src/bsdf/mirrorBSDF.cpp
         src/bsdf/dielectricBSDF.cpp
         src/sampler/independentSampler.cpp
-        src/integrator/normal.cpp
-  src/integrator/simple.cpp
+        src/integrator/normalIntegrator.cpp
+        src/integrator/simpleIntegrator.cpp
   src/acceleration/bvh.cpp
   src/acceleration/octree.cpp
         src/filter/boxFilter.cpp
