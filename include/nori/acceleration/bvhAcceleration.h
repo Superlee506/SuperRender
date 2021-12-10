@@ -28,8 +28,7 @@ NORI_NAMESPACE_BEGIN
 /**
  * \brief Acceleration data structure for ray intersection queries
  *
- * The current implementation falls back to a brute force loop
- * through the geometry.
+ * The current implementation is a default BVH implementation
  */
 class BvhAccel: public Accel{
 public:
@@ -37,7 +36,7 @@ public:
 	virtual ~BvhAccel();
 
     /// Build the acceleration data structure (currently a no-op)
-    virtual void build();
+    virtual void build() override;
 
     /**
      * \brief Intersect a ray against all triangles stored in the scene and
@@ -58,7 +57,7 @@ public:
      *
      * \return \c true if an intersection was found
      */
-    virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const;
+    virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const override;
 
     virtual std::string toString() const override;
 

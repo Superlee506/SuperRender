@@ -1,11 +1,8 @@
-/*
-    This file is part of Nori, a simple educational ray tracer
+//
+// Created by superqqli on 2021/12/10.
+//
 
-    Copyright (c) 2015 by Wenzel Jakob
-*/
-
-#include <nori/acceleration/octree.h>
-#include <Eigen/Geometry>
+#include <nori/acceleration/octreeAcceleration.h>
 #include<chrono>
 #include <queue>
 NORI_NAMESPACE_BEGIN

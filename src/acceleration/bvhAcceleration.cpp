@@ -16,7 +16,7 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <nori/acceleration/bvh.h>
+#include <nori/acceleration/bvhAcceleration.h>
 #include <nori/core/timer.h>
 #include <Eigen/Geometry>
 #include <tbb/tbb.h>

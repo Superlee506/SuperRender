@@ -30,7 +30,7 @@ public:
     OctreeAccel(const PropertyList& list);
     virtual ~OctreeAccel() = default;
     /// Build the acceleration data structure (currently a no-op)
-    virtual void build();
+    virtual void build() override;
 
     /**
      * \brief Intersect a ray against all triangles stored in the scene and
@@ -51,7 +51,7 @@ public:
      *
      * \return \c true if an intersection was found
      */
-    virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const;
+    virtual bool rayIntersect(const Ray3f &ray, Intersection &its, bool shadowRay) const override;
 
     virtual std::string toString() const override;
 
