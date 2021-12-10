@@ -22,6 +22,11 @@ Scene::~Scene() {
     delete m_sampler;
     delete m_camera;
     delete m_integrator;
+    for(auto& pMesh: m_meshes)
+    {
+        delete pMesh;
+    }
+    m_meshes.clear();
 }
 
 const Accel* Scene::getAccel() const
