@@ -29,5 +29,5 @@
 	path = ext/eigen
 	url = https://gitlab.com/libeigen/eigen.git
 [submodule "ext/glog"]
-    path = ext/glog
-    url = https://github.com/google/glog.git
+	path = ext/glog
+	url = https://github.com/google/glog.git
