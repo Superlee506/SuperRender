@@ -5,7 +5,6 @@
 */
 
 #include <nori/test/chi2test.h>
-#include <nori/core/warp.h>
 #include <nori/core/bsdf.h>
 #include <pcg32.h>
 #include <hypothesis.h>

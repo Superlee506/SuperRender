@@ -14,14 +14,29 @@
 #endif
 
 /* Include the basics needed by any Nori file */
+// System include
+#include <string>
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <Eigen/Core>
-#include <stdint.h>
-#include <ImathPlatform.h>
+#include <memory>
+#include <map>
+#include <cstdint>
+#include <thread>
+#include <stdexcept>
+#include <limits>
+#include <iomanip>
+#include <time.h>
+
+// ext include
+#include <Eigen\Core>
+#include <Eigen\Geometry>
+#include <Eigen\Lu>
+#include <glog\logging.h>
 #include <tinyformat.h>
-#include <glog/logging.h>
+#include <ImathPlatform.h>
+#include <filesystem\resolver.h>
+
 
 /* Convenience definitions */
 #define NORI_NAMESPACE_BEGIN namespace nori {

@@ -5,11 +5,8 @@
 */
 
 #include <nori/core/mesh.h>
-#include <nori/core/bbox.h>
 #include <nori/core/bsdf.h>
 #include <nori/core/emitter.h>
-#include <nori/core/warp.h>
-#include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN
 

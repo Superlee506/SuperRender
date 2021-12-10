@@ -6,8 +6,6 @@
 
 #include <nori/camera/perspectiveCamera.h>
 #include <nori/core/rfilter.h>
-#include <nori/core/warp.h>
-#include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN
 

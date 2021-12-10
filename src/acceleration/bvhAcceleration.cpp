@@ -18,7 +18,6 @@
 
 #include <nori/acceleration/bvhAcceleration.h>
 #include <nori/core/timer.h>
-#include <Eigen/Geometry>
 #include <tbb/tbb.h>
 #include <atomic>
 

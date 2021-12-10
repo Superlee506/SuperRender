@@ -6,7 +6,6 @@
 
 #include <nori/core/warp.h>
 #include <nori/core/vector.h>
-#include <nori/core/frame.h>
 
 NORI_NAMESPACE_BEGIN
 

@@ -4,9 +4,6 @@
 
 #include <nori/core/common.h>
 #include <nori/core/mesh.h>
-#include <filesystem/resolver.h>
-#include <unordered_map>
-#include <fstream>
 
 NORI_NAMESPACE_BEGIN
 

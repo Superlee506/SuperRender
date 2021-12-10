@@ -14,9 +14,7 @@
 #include <nori/core/integrator.h>
 #include <nori/core/gui.h>
 #include <tbb/parallel_for.h>
-#include <tbb/blocked_range.h>
 #include <tbb/task_scheduler_init.h>
-#include <filesystem/resolver.h>
 #include <thread>
 
 using namespace nori;

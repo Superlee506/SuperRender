@@ -8,8 +8,6 @@
 
 #include <nori/core/common.h>
 #include <nori/core/object.h>
-#include <hypothesis.h>
-#include <pcg32.h>
 
 /*
  * =======================================================================

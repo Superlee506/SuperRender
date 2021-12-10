@@ -4,7 +4,6 @@
 */
 
 #include <nori/core/accel.h>
-#include <Eigen/Geometry>
 
 NORI_NAMESPACE_BEGIN
 Accel::Accel(const PropertyList & PropList) { m_meshOffset.push_back(0u); }

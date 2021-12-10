@@ -5,8 +5,6 @@
 */
 
 #include <nori/core/parser.h>
-#include <nori/core/proplist.h>
-#include <Eigen/Geometry>
 #include <pugixml.hpp>
 #include <fstream>
 #include <set>

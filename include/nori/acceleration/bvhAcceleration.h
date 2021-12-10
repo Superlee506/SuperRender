@@ -19,7 +19,6 @@
 #pragma once
 #include <nori/core/accel.h>
 #include <nori/core/mesh.h>
-#include <vector>
 
 NORI_NAMESPACE_BEGIN
 

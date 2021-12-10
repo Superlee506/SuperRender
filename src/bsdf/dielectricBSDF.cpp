@@ -5,7 +5,6 @@
 */
 
 #include <nori/bsdf/dielectricBSDF.h>
-#include <nori/core/frame.h>
 
 NORI_NAMESPACE_BEGIN
 

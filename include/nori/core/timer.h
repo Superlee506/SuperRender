@@ -7,7 +7,6 @@
 #pragma once
 
 #include <nori/core/common.h>
-#include <chrono>
 
 NORI_NAMESPACE_BEGIN
 

@@ -11,7 +11,6 @@
 #include <nanogui/slider.h>
 #include <nanogui/layout.h>
 #include <nanogui/renderpass.h>
-#include <nanogui/texture.h>
 
 NORI_NAMESPACE_BEGIN
 

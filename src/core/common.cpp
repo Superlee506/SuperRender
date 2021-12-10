@@ -5,9 +5,6 @@
 */
 
 #include <nori/core/object.h>
-#include <Eigen/Geometry>
-#include <Eigen/LU>
-#include <filesystem/resolver.h>
 #include <iomanip>
 
 #if defined(PLATFORM_LINUX)

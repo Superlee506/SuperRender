@@ -3,8 +3,8 @@
 //
 
 #include <nori/acceleration/octreeAcceleration.h>
-#include<chrono>
 #include <queue>
+
 NORI_NAMESPACE_BEGIN
 
 OctreeAccel::OctreeAccel(const PropertyList& list) : Accel(list)

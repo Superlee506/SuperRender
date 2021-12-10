@@ -6,7 +6,6 @@
 
 #include <nori/mesh/wavefrontOBJMesh.h>
 #include <nori/core/timer.h>
-#include <filesystem/resolver.h>
 #include <unordered_map>
 #include <fstream>
 
