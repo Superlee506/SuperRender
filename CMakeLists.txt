@@ -4,7 +4,7 @@ project(nori)
 # static link glog library
 add_definitions(-DGOOGLE_GLOG_DLL_DECL=)
 if(MSVC)
-  add_definitions(-DGLOG_NO_ABBREVIATED_SEVERITIES)
+  add_definitions(-DGLOG_NO_ABBREVIATED_SEVERITIES -D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
 endif()
 
 add_subdirectory(ext ${PROJECT_BINARY_DIR}/ext_build)
