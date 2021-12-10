@@ -1,12 +1,17 @@
 cmake_minimum_required (VERSION 3.2)
 project(nori)
 
-add_subdirectory(ext ext_build)
+# static link glog library
+add_definitions(-DGOOGLE_GLOG_DLL_DECL=)
+if(MSVC)
+  add_definitions(-DGLOG_NO_ABBREVIATED_SEVERITIES)
+endif()
+
+add_subdirectory(ext ${PROJECT_BINARY_DIR}/ext_build)
 set(ROOT_NORI_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include/nori)
 set(ROOT_NORI_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 include_directories(
-  # Nori include files
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
   # tinyformat string formatting library
   ${TFM_INCLUDE_DIR}
   # Eigen linear algebra library
@@ -19,6 +24,7 @@ include_directories(
   ${PCG32_INCLUDE_DIR}
   # PugiXML parser
   ${PUGIXML_INCLUDE_DIR}
+  ${GLOG_INCLUDE_DIR}
   # Helper functions for statistical hypothesis tests
   ${HYPOTHESIS_INCLUDE_DIR}
   # GLFW library for OpenGL context creation
@@ -34,6 +40,8 @@ include_directories(
   SYSTEM ${FILESYSTEM_INCLUDE_DIR}
   # STB Image Write
   SYSTEM ${STB_IMAGE_WRITE_INCLUDE_DIR}
+  # Nori include files
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 add_subdirectory(src)
@@ -59,9 +67,9 @@ add_executable(warptest
         ${TEST_SRC})
 
 if (WIN32)
-  target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)
+  target_link_libraries(nori core tbb_static pugixml glog::glog IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)
 else()
-  target_link_libraries(nori core tbb_static pugixml IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
+  target_link_libraries(nori core tbb_static pugixml glog IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
 endif()
 
 target_link_libraries(warptest core tbb_static nanogui ${NANOGUI_EXTRA_LIBS})

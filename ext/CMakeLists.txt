@@ -9,7 +9,7 @@
 # setting up suitable compiler flags for various platforms. You do not
 # need to read or change anything in this file; see CMakeLists.txt in
 # the main Nori folder instead.
-
+cmake_minimum_required(VERSION 3.16)
 include(CheckCXXCompilerFlag)
 
 if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXR")
@@ -156,6 +156,13 @@ set_property(TARGET pugixml PROPERTY
    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/pugixml")
 set_property(TARGET pugixml PROPERTY FOLDER "dependencies")
 
+# Build glog
+set(WITH_GFLAGS       OFF  CACHE BOOL " " FORCE)
+set(BUILD_TESTING     OFF  CACHE BOOL " " FORCE)
+set(BUILD_SHARED_LIBS OFF  CACHE BOOL " " FORCE)
+add_subdirectory(glog)
+set_property(TARGET glog PROPERTY FOLDER "dependencies")
+
 set(OPENEXR_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Imath
   ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Iex
@@ -188,6 +195,10 @@ set(FILESYSTEM_INCLUDE_DIR
 set(PUGIXML_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/pugixml/src)
 
+set(GLOG_INCLUDE_DIR
+  ${CMAKE_CURRENT_SOURCE_DIR}/glog/src
+  ${PROJECT_BINARY_DIR}/ext_build/glog
+)
 # Compile remainder of the codebase with compiler warnings turned on
 if(MSVC)
   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -216,7 +227,8 @@ set(CompilerFlags
       OPENEXR_INCLUDE_DIRS PCG32_INCLUDE_DIR TFM_INCLUDE_DIR
       HYPOTHESIS_INCLUDE_DIR GLFW_INCLUDE_DIR GLEW_INCLUDE_DIR
       NANOVG_INCLUDE_DIR NANOGUI_EXTRA_INCS NANOGUI_EXTRA_DEFS
-	    NANOGUI_EXTRA_LIBS NANOGUI_INCLUDE_DIR EIGEN_INCLUDE_DIR
+      NANOGUI_EXTRA_LIBS NANOGUI_INCLUDE_DIR EIGEN_INCLUDE_DIR
+      GLOG_INCLUDE_DIR
       STB_IMAGE_WRITE_INCLUDE_DIR TBB_INCLUDE_DIR
       FILESYSTEM_INCLUDE_DIR PUGIXML_INCLUDE_DIR
 )

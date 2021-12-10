@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <ImathPlatform.h>
 #include <tinyformat.h>
+#include <glog/logging.h>
 
 /* Convenience definitions */
 #define NORI_NAMESPACE_BEGIN namespace nori {
