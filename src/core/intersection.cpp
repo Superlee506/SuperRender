@@ -2,7 +2,7 @@
 // Created by superqqli on 2021/12/12.
 //
 #include <nori/core/intersection.h>
-#include <nori/core/shape.h>
+#include <nori/core/primitiveShape.h>
 
 NORI_NAMESPACE_BEGIN
 
