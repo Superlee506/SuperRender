@@ -4,6 +4,9 @@
 */
 
 #include <nori/core/accel.h>
+#include <nori/core/intersection.h>
+#include <nori/core/mesh.h>
+
 
 NORI_NAMESPACE_BEGIN
 Accel::Accel(const PropertyList & PropList) { m_meshOffset.push_back(0u); }
@@ -87,6 +90,8 @@ void Accel::addMesh(Mesh *mesh) {
 void Accel::build() {
     /* Nothing to do here for now */
 }
+
+const BoundingBox3f &Accel::getBoundingBox() const { return m_bbox; }
 
 bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool shadowRay) const {
     bool foundIntersection = false;  // Was an intersection found so far?

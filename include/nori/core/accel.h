@@ -4,8 +4,9 @@
 */
 
 #pragma once
+#include <nori/core/common.h>
 #include <nori/core/object.h>
-#include <nori/core/mesh.h>
+#include <nori/core/bbox.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -31,7 +32,7 @@ public:
     virtual void build();
 
     /// Return an axis-aligned box that bounds the scene
-    virtual const BoundingBox3f &getBoundingBox() const { return m_bbox; }
+    virtual const BoundingBox3f &getBoundingBox() const;
 
     /**
      * \brief Intersect a ray against all triangles stored in the scene and
