@@ -143,7 +143,7 @@ class KDTree;
 class Emitter;
 struct EmitterQueryRecord;
 class Mesh;
-class Shape;
+class PrimitiveShape;
 struct Intersection;
 class NoriObject;
 class NoriObjectFactory;

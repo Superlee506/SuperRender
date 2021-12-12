@@ -51,7 +51,7 @@ struct Intersection {
     /// Pointer to the associated mesh
     const Mesh *mesh;
     /// Pointer to the associated mesh
-    const Shape * pShape = nullptr;
+    const PrimitiveShape * pShape = nullptr;
 
     /// Pointer to the associated Emitter (nullptr if not a emitter)
     const Emitter * pEmitter = nullptr;

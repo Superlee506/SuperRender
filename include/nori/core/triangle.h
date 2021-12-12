@@ -2,14 +2,14 @@
 // Created by superqqli on 2021/12/10.
 //
 #pragma once
-#include <nori/core/shape.h>
+#include <nori/core/primitiveShape.h>
 
 NORI_NAMESPACE_BEGIN
 
 /**
 * \brief Triangle shape used ONLY in mesh
 */
-class Triangle : public Shape
+class Triangle : public PrimitiveShape
 {
 public:
     Triangle();
@@ -81,9 +81,11 @@ public:
     virtual const BSDF * getBSDF() const override;
 
     virtual std::string toString() const override;
-
+    /// the pointer to the mesh
     Mesh * m_pMesh = nullptr;
+    /// the triangle's pointer of vertex indices
     uint32_t * m_pFacet = nullptr;
+    /// the index of triangle
     uint32_t m_iFacet = 0;
 };
 
