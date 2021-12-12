@@ -13,7 +13,7 @@ NORI_NAMESPACE_BEGIN
  * \brief Base class for diffrent primitives, e.g. triangle
  * Shape is the basic primitive of a mesh
  */
-class Shape : public NoriObject
+class PrimitiveShape : public NoriObject
 {
 public:
     /**

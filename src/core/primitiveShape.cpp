@@ -1,37 +1,37 @@
 //
 // Created by superqqli on 2021/12/10.
 //
-#include <nori/core/shape.h>
+#include <nori/core/primitiveShape.h>
 #include <nori/core/intersection.h>
 
 NORI_NAMESPACE_BEGIN
 
-Mesh * Shape::getMesh() const
+Mesh * PrimitiveShape::getMesh() const
 {
     return nullptr;
 }
 
-uint32_t Shape::getFacetIndex() const
+uint32_t PrimitiveShape::getFacetIndex() const
 {
     return uint32_t(-1);
 }
 
-bool Shape::isEmitter() const
+bool PrimitiveShape::isEmitter() const
 {
     return false;
 }
 
-Emitter * Shape::getEmitter()
+Emitter * PrimitiveShape::getEmitter()
 {
     return nullptr;
 }
 
-const Emitter * Shape::getEmitter() const
+const Emitter * PrimitiveShape::getEmitter() const
 {
     return nullptr;
 }
 
-void Shape::computeCurvature(const Intersection & isect, float & H, float & K) const
+void PrimitiveShape::computeCurvature(const Intersection & isect, float & H, float & K) const
 {
     if (!isect.bHasUVPartial)
     {
@@ -53,7 +53,7 @@ void Shape::computeCurvature(const Intersection & isect, float & H, float & K) c
     H = 0.5f * (L * G - 2.0f * M * F + N * E) * InvDenom;
 }
 
-NoriObject::EClassType Shape::getClassType() const
+NoriObject::EClassType PrimitiveShape::getClassType() const
 {
     return EClassType::EShape;
 }
