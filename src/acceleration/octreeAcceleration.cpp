@@ -3,6 +3,8 @@
 //
 
 #include <nori/acceleration/octreeAcceleration.h>
+#include <nori/core/intersection.h>
+#include <nori/core/mesh.h>
 #include <queue>
 
 NORI_NAMESPACE_BEGIN

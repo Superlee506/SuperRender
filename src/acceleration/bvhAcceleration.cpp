@@ -17,6 +17,7 @@
 */
 
 #include <nori/acceleration/bvhAcceleration.h>
+#include <nori/core/intersection.h>
 #include <nori/core/timer.h>
 #include <tbb/tbb.h>
 #include <atomic>

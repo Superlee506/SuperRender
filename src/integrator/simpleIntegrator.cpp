@@ -3,7 +3,7 @@
 // Simple sample on point light
 //
 #include <nori/integrator/simpleIntegrator.h>
-#include <nori/core/mesh.h>
+#include <nori/core/intersection.h>
 
 NORI_NAMESPACE_BEGIN
 
