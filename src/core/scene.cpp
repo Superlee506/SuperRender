@@ -9,7 +9,9 @@
 #include <nori/core/sampler.h>
 #include <nori/core/camera.h>
 #include <nori/core/emitter.h>
-#include <nori//core/accel.h>
+#include <nori/core/accel.h>
+#include <nori/core/intersection.h>
+#include <nori/core/mesh.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -121,7 +123,6 @@ void Scene::addChild(NoriObject *obj) {
             break;
         case EMesh: {
                 Mesh *mesh = static_cast<Mesh *>(obj);
-
                 m_meshes.push_back(mesh);
             }
             break;
