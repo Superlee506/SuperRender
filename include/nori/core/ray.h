@@ -33,10 +33,15 @@ template <typename PointType, typename _VectorType> struct TRay {
     Scalar mint;     ///< Minimum position on the ray segment
     Scalar maxt;     ///< Maximum position on the ray segment
 
+    /* Differential info of the ray */
+    PointType rxOrigin, ryOrigin;
+    VectorType rxDirection, ryDirection;
+    bool bHasDifferentials = false;
+
     /// Construct a new ray
     TRay() : mint(Epsilon), 
         maxt(std::numeric_limits<Scalar>::infinity()) { }
-    
+
     /// Construct a new ray
     TRay(const PointType &o, const VectorType &d) : o(o), d(d), 
             mint(Epsilon), maxt(std::numeric_limits<Scalar>::infinity()) {
@@ -52,11 +57,18 @@ template <typename PointType, typename _VectorType> struct TRay {
     /// Copy constructor
     TRay(const TRay &ray) 
      : o(ray.o), d(ray.d), dRcp(ray.dRcp),
-       mint(ray.mint), maxt(ray.maxt) { }
+       mint(ray.mint), maxt(ray.maxt),
+       rxOrigin(ray.rxOrigin),ryOrigin(ray.ryOrigin),
+       rxDirection(ray.rxDirection), ryDirection(ray.ryDirection),
+       bHasDifferentials(ray.bHasDifferentials)
+       { }
 
     /// Copy a ray, but change the covered segment of the copy
     TRay(const TRay &ray, Scalar mint, Scalar maxt) 
-     : o(ray.o), d(ray.d), dRcp(ray.dRcp), mint(mint), maxt(maxt) { }
+     : o(ray.o), d(ray.d), dRcp(ray.dRcp), mint(mint), maxt(maxt),
+       rxOrigin(ray.rxOrigin),ryOrigin(ray.ryOrigin),
+       rxDirection(ray.rxDirection), ryDirection(ray.ryDirection),
+       bHasDifferentials(ray.bHasDifferentials){ }
 
     /// Update the reciprocal ray directions after changing 'd'
     void update() {
@@ -70,6 +82,10 @@ template <typename PointType, typename _VectorType> struct TRay {
     TRay reverse() const {
         TRay result;
         result.o = o; result.d = -d; result.dRcp = -dRcp;
+        result.rxOrigin = rxOrigin;
+        result.ryOrigin = ryOrigin;
+        result.rxDirection = -rxDirection;
+        result.ryDirection = -ryDirection;
         result.mint = mint; result.maxt = maxt;
         return result;
     }
@@ -95,7 +111,15 @@ template <typename PointType, typename _VectorType> struct TRay {
                 "  d = %s,\n"
                 "  mint = %f,\n"
                 "  maxt = %f\n"
-                "]", o.toString(), d.toString(), mint, maxt);
+                "  rxOrigin = %s, \n"
+                "  ryOrigin = %s, \n"
+                "  rxDirection = %s, \n"
+                "  ryDirection = %s, \n"
+                "]", o.toString(), d.toString(), mint, maxt,
+                rxOrigin.toString(),
+                ryOrigin.toString(),
+                rxDirection.toString(),
+                ryDirection.toString());
     }
 };
 
