@@ -22,114 +22,65 @@ struct Frame {
     Normal3f n;
 
     /// Default constructor -- performs no initialization!
-    Frame() { }
+    Frame();
+
+    Frame(const Normal3f & n, const Vector3f & dpdu);
 
     /// Given a normal and tangent vectors, construct a new coordinate frame
-    Frame(const Vector3f &s, const Vector3f &t, const Normal3f &n)
-     : s(s), t(t), n(n) { }
+    Frame(const Vector3f &s, const Vector3f &t, const Normal3f &n);
 
     /// Construct a frame from the given orthonormal vectors
-    Frame(const Vector3f &x, const Vector3f &y, const Vector3f &z)
-     : s(x), t(y), n(z) { }
+    Frame(const Vector3f &x, const Vector3f &y, const Vector3f &z);
 
     /// Construct a new coordinate frame from a single vector
-    Frame(const Vector3f &n) : n(n) {
-        coordinateSystem(n, s, t);
-    }
+    Frame(const Vector3f &n);
 
     /// Convert from world coordinates to local coordinates
-    Vector3f toLocal(const Vector3f &v) const {
-        return Vector3f(
-            v.dot(s), v.dot(t), v.dot(n)
-        );
-    }
+    Vector3f toLocal(const Vector3f &v) const;
 
     /// Convert from local coordinates to world coordinates
-    Vector3f toWorld(const Vector3f &v) const {
-        return s * v.x() + t * v.y() + n * v.z();
-    }
+    Vector3f toWorld(const Vector3f &v) const;
 
     /** \brief Assuming that the given direction is in the local coordinate 
      * system, return the cosine of the angle between the normal and v */
-    static float cosTheta(const Vector3f &v) {
-        return v.z();
-    }
+    static float cosTheta(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate
      * system, return the sine of the angle between the normal and v */
-    static float sinTheta(const Vector3f &v) {
-        float temp = sinTheta2(v);
-        if (temp <= 0.0f)
-            return 0.0f;
-        return std::sqrt(temp);
-    }
+    static float sinTheta(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate
      * system, return the tangent of the angle between the normal and v */
-    static float tanTheta(const Vector3f &v) {
-        float temp = 1 - v.z()*v.z();
-        if (temp <= 0.0f)
-            return 0.0f;
-        return std::sqrt(temp) / v.z();
-    }
+    static float tanTheta(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate
      * system, return the squared sine of the angle between the normal and v */
-    static float sinTheta2(const Vector3f &v) {
-        return 1.0f - v.z() * v.z();
-    }
+    static float sinTheta2(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate 
      * system, return the sine of the phi parameter in spherical coordinates */
-    static float sinPhi(const Vector3f &v) {
-        float sinTheta = Frame::sinTheta(v);
-        if (sinTheta == 0.0f)
-            return 1.0f;
-        return clamp(v.y() / sinTheta, -1.0f, 1.0f);
-    }
+    static float sinPhi(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate 
      * system, return the cosine of the phi parameter in spherical coordinates */
-    static float cosPhi(const Vector3f &v) {
-        float sinTheta = Frame::sinTheta(v);
-        if (sinTheta == 0.0f)
-            return 1.0f;
-        return clamp(v.x() / sinTheta, -1.0f, 1.0f);
-    }
+    static float cosPhi(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate
      * system, return the squared sine of the phi parameter in  spherical
      * coordinates */
-    static float sinPhi2(const Vector3f &v) {
-        return clamp(v.y() * v.y() / sinTheta2(v), 0.0f, 1.0f);
-    }
+    static float sinPhi2(const Vector3f &v);
 
     /** \brief Assuming that the given direction is in the local coordinate
      * system, return the squared cosine of the phi parameter in  spherical
      * coordinates */
-    static float cosPhi2(const Vector3f &v) {
-        return clamp(v.x() * v.x() / sinTheta2(v), 0.0f, 1.0f);
-    }
-
+    static float cosPhi2(const Vector3f &v);
     /// Equality test
-    bool operator==(const Frame &frame) const {
-        return frame.s == s && frame.t == t && frame.n == n;
-    }
-
+    bool operator==(const Frame &frame) const;
     /// Inequality test
-    bool operator!=(const Frame &frame) const {
-        return !operator==(frame);
-    }
+    bool operator!=(const Frame &frame) const;
 
     /// Return a human-readable string summary of this frame
-    std::string toString() const {
-        return tfm::format(
-                "Frame[\n"
-                "  s = %s,\n"
-                "  t = %s,\n"
-                "  n = %s\n"
-                "]", s.toString(), t.toString(), n.toString());
-    }
+    std::string toString() const;
 };
 
 NORI_NAMESPACE_END
