@@ -127,26 +127,4 @@ std::string Mesh::toString() const {
     );
 }
 
-std::string Intersection::toString() const {
-    if (!mesh)
-        return "Intersection[invalid]";
-
-    return tfm::format(
-        "Intersection[\n"
-        "  p = %s,\n"
-        "  t = %f,\n"
-        "  uv = %s,\n"
-        "  shFrame = %s,\n"
-        "  geoFrame = %s,\n"
-        "  mesh = %s\n"
-        "]",
-        p.toString(),
-        t,
-        uv.toString(),
-        indent(shFrame.toString()),
-        indent(geoFrame.toString()),
-        mesh ? mesh->toString() : std::string("null")
-    );
-}
-
 NORI_NAMESPACE_END
