@@ -146,8 +146,10 @@ static void render(Scene *scene, const std::string &filename) {
 }
 
 int main(int argc, char **argv) {
+    google::InitGoogleLogging("SuperNori");
+    google::SetStderrLogging(google::GLOG_INFO);
     if (argc < 2) {
-        cerr << "Syntax: " << argv[0] << " <scene.xml> [--no-gui] [--threads N]" <<  endl;
+        LOG(ERROR) << "Syntax: " << argv[0] << " <scene.xml> [--no-gui] [--threads N]" <<  endl;
         return -1;
     }
 
@@ -158,13 +160,13 @@ int main(int argc, char **argv) {
         std::string token(argv[i]);
         if (token == "-t" || token == "--threads") {
             if (i+1 >= argc) {
-                cerr << "\"--threads\" argument expects a positive integer following it." << endl;
+                LOG(ERROR) << "\"--threads\" argument expects a positive integer following it." << endl;
                 return -1;
             }
             threadCount = atoi(argv[i+1]);
             i++;
             if (threadCount <= 0) {
-                cerr << "\"--threads\" argument expects a positive integer following it." << endl;
+                LOG(ERROR) << "\"--threads\" argument expects a positive integer following it." << endl;
                 return -1;
             }
 
@@ -189,26 +191,26 @@ int main(int argc, char **argv) {
                 /* Alternatively, provide a basic OpenEXR image viewer */
                 exrName = argv[i];
             } else {
-                cerr << "Fatal error: unknown file \"" << argv[i]
+                LOG(ERROR) << "Fatal error: unknown file \"" << argv[i]
                      << "\", expected an extension of type .xml or .exr" << endl;
             }
         } catch (const std::exception &e) {
-            cerr << "Fatal error: " << e.what() << endl;
+            LOG(ERROR) << "Fatal error: " << e.what() << endl;
             return -1;
         }
     }
 
     if (exrName !="" && sceneName !="") {
-        cerr << "Both .xml and .exr files were provided. Please only provide one of them." << endl;
+        LOG(ERROR) << "Both .xml and .exr files were provided. Please only provide one of them." << endl;
         return -1;
     }
     else if (exrName == "" && sceneName == "") {
-        cerr << "Please provide the path to a .xml (or .exr) file." << endl;
+        LOG(ERROR) << "Please provide the path to a .xml (or .exr) file." << endl;
         return -1;
     }
     else if (exrName != "") {
         if (!gui) {
-            cerr << "Flag --no-gui was set. Please remove it to display the EXR file." << endl;
+            LOG(ERROR) << "Flag --no-gui was set. Please remove it to display the EXR file." << endl;
             return -1;
         }
         try {
@@ -235,7 +237,7 @@ int main(int argc, char **argv) {
             if (root->getClassType() == NoriObject::EScene)
                 render(static_cast<Scene *>(root.get()), sceneName);
         } catch (const std::exception &e) {
-            cerr << e.what() << endl;
+            LOG(ERROR) << e.what() << endl;
             return -1;
         }
     }
