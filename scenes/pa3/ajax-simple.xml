@@ -10,7 +10,7 @@
         <color name="energy" value="3.76e4, 3.76e4, 3.76e4"/>
     </integrator>
 
-	<acceleration type="bvh">
+	<acceleration type="hlbvh">
 	</acceleration>
 
 	<!-- Load the Ajax bust (a freely available scan from the Jotero forum) -->
