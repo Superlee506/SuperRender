@@ -25,7 +25,7 @@ Bitmap::Bitmap(const std::string &filename) {
     Imath::Box2i dw = file.header().dataWindow();
     resize(dw.max.y - dw.min.y + 1, dw.max.x - dw.min.x + 1);
 
-    cout << "Reading a " << cols() << "x" << rows() << " OpenEXR file from \""
+    LOG(INFO) << "Reading a " << cols() << "x" << rows() << " OpenEXR file from \""
          << filename << "\"" << endl;
 
     const char *ch_r = nullptr, *ch_g = nullptr, *ch_b = nullptr;
@@ -67,7 +67,7 @@ Bitmap::Bitmap(const std::string &filename) {
 }
 
 void Bitmap::saveEXR(const std::string &filename) {
-    cout << "Writing a " << cols() << "x" << rows()
+    LOG(INFO) << "Writing a " << cols() << "x" << rows()
          << " OpenEXR file to \"" << filename << "\"" << endl;
 
     std::string path = filename + ".exr";
@@ -96,7 +96,7 @@ void Bitmap::saveEXR(const std::string &filename) {
 }
 
 void Bitmap::savePNG(const std::string &filename) {
-    cout << "Writing a " << cols() << "x" << rows()
+    LOG(INFO) << "Writing a " << cols() << "x" << rows()
          << " PNG file to \"" << filename << "\"" << endl;
 
     std::string path = filename + ".png";
@@ -115,7 +115,7 @@ void Bitmap::savePNG(const std::string &filename) {
 
     int ret = stbi_write_png(path.c_str(), (int) cols(), (int) rows(), 3, rgb8, 3 * (int) cols());
     if (ret == 0) {
-        cout << "Bitmap::savePNG(): Could not save PNG file \"" << path << "%s\"" << endl;
+        LOG(ERROR) << "Bitmap::savePNG(): Could not save PNG file \"" << path << "%s\"" << endl;
     }
 
     delete[] rgb8;
