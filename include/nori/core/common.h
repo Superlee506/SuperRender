@@ -67,6 +67,9 @@
 #define XML_TYPE(Field)     Field##_XmlType
 #define XML_VALUE(Field)    Field##_XmlValue
 
+#define XML_INTEGRATOR_AO_ALPHA                  "alpha"
+#define XML_INTEGRATOR_AO_SAMPLE_COUNT           "sampleCount"
+
 #define XML_ACCELERATION_BRUTO_LOOP              "bruto"
 #define XML_ACCELERATION_BVH                     "bvh"
 #define XML_ACCELERATION_OCTREE                  "octree"
@@ -82,6 +85,9 @@
 #define DEFAULT_ACCELERATION_BVH_LEAF_SIZE         10
 #define DEFAULT_ACCELERATION_BVH_SPLIT_METHOD      XML_ACCELERATION_BVH_SPLIT_METHOD_SAH
 #define DEFAULT_ACCELERATION_HLBVH_LEAF_SIZE       10
+
+#define DEFAULT_INTEGRATOR_AO_ALPHA                1e6f
+#define DEFAULT_INTEGRATOR_AO_SAMPLE_COUNT         16
 
 /* Forward declarations */
 namespace filesystem {
@@ -312,7 +318,5 @@ extern float fresnel(float cosThetaI, float extIOR, float intIOR);
  * texture files) referenced by a scene being loaded
  */
 extern filesystem::resolver *getFileResolver();
-
-const float MAX_NORMAL_BIAS = 0.001f;
 
 NORI_NAMESPACE_END

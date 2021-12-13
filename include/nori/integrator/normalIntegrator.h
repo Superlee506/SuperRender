@@ -11,7 +11,7 @@ public:
     NormalIntegrator(const PropertyList &props);
 
     /// Compute the radiance value for a given ray. Just return green here
-    Color3f Li(const Scene *scene, Sampler *sampler, const Ray3f &ray) const override;
+    Color3f Li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const override;
 
     /// Return a human-readable description for debugging purposes
     std::string toString() const override;
@@ -21,4 +21,3 @@ protected:
 };
 
 NORI_NAMESPACE_END
-

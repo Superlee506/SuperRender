@@ -4,6 +4,7 @@
 //
 #include <nori/integrator/simpleIntegrator.h>
 #include <nori/core/intersection.h>
+#include <nori/core/scene.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -14,16 +15,16 @@ SimpleIntegrator::SimpleIntegrator(const PropertyList &props)
 }
 
 /// Compute the radiance value for a given ray. Just return green here
-Color3f SimpleIntegrator::Li(const Scene *scene, Sampler *sampler, const Ray3f &ray) const
+Color3f SimpleIntegrator::Li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const
 {
     /* Find the surface that is visible in the requested direction */
     Intersection its;
-    if (!scene->rayIntersect(ray, its))
+    if (!pScene->rayIntersect(ray, its))
         return Color3f(0.0f);
     Ray3f shadowRay = its.generateShadowRay(m_lightPosition);
     // avoid self intersection
-    shadowRay.applyPositionBias(its.geoFrame.n, MAX_NORMAL_BIAS);
-    if (scene->rayIntersect(shadowRay))
+    shadowRay.applyPositionBias(its.geoFrame.n, Epsilon);
+    if (pScene->rayIntersect(shadowRay))
     {
         return Color3f(0.0f);
     }
