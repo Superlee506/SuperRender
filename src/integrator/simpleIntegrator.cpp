@@ -36,7 +36,7 @@ Color3f SimpleIntegrator::Li(const Scene *scene, Sampler *sampler, const Ray3f &
 std::string SimpleIntegrator::toString() const
 {
     return tfm::format(
-            "NormalIntegrator[\n"
+            "SimpleIntegrator[\n"
             "  Position = \"%s\"\n"
             "  Energe = \"%s\"\n"
             "]",
