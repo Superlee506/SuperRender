@@ -20,23 +20,16 @@ Color3f SimpleIntegrator::Li(const Scene *scene, Sampler *sampler, const Ray3f &
     Intersection its;
     if (!scene->rayIntersect(ray, its))
         return Color3f(0.0f);
-    const auto& frame = its.shFrame;
-    const Point3f& x = its.p;
-    const Point3f& p =  m_lightPosition;
-    auto shadowDir = p - x;
-    float maxRayLength = shadowDir.norm();
-    Ray3f shadowRay(x, shadowDir.normalized(), 0.001, maxRayLength);
+    Ray3f shadowRay = its.generateShadowRay(m_lightPosition);
     // avoid self intersection
     shadowRay.applyPositionBias(its.geoFrame.n, MAX_NORMAL_BIAS);
-    float visiblity = 1.0f;
-    if (scene->rayIntersect(shadowRay)) {
-        visiblity = 0.0f;
+    if (scene->rayIntersect(shadowRay))
+    {
+        return Color3f(0.0f);
     }
 
-    auto cosTheta = frame.cosTheta(frame.toLocal(shadowRay.d));//frame的cosTheta函数是切线空间下计算
-    auto squareDistance = std::pow((x - p).norm(), 2.0f);
-    auto li = (m_lightEnerge / (4 * M_PI * M_PI)) * ((std::max(0.0f, cosTheta)) / squareDistance) * visiblity;
-    return li;
+    auto cosTheta = its.shFrame.cosTheta(its.shFrame.toLocal(shadowRay.d.normalized()));
+    return  m_lightEnerge / ((4 * M_PI * M_PI) * shadowRay.d.squaredNorm()) * std::max(0.0f, cosTheta);
 }
 
 /// Return a human-readable description for debugging purposes
