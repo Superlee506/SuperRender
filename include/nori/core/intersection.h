@@ -68,6 +68,14 @@ struct Intersection {
     /// Transform a direction vector from local to world coordinates
     Vector3f toWorld(const Vector3f &d) const;
 
+    /** \brief Spawn a shadow ray from the intersection to the given point
+	* Note : mint = 0.0 maxt : 1.0 and d = destPoint - its.p in the returned ray
+	*/
+    Ray3f generateShadowRay(const Point3f & destPoint) const;
+
+    /// Computes texture coordinate partials
+    void computeScreenSpacePartial(const Ray3f & Ray);
+
     /// Return a human-readable summary of the intersection record
     std::string toString() const;
 };

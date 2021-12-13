@@ -70,9 +70,18 @@
 #define XML_ACCELERATION_BRUTO_LOOP              "bruto"
 #define XML_ACCELERATION_BVH                     "bvh"
 #define XML_ACCELERATION_OCTREE                  "octree"
+#define XML_ACCELERATION_BVH_LEAF_SIZE           "leafSize"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD        "splitMethod"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD_CENTER "center"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD_SAH    "sah"
+#define XML_ACCELERATION_HLBVH                   "hlbvh"
+#define XML_ACCELERATION_HLBVH_LEAF_SIZE         "leafSize"
 
 /* Default setting */
 #define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
+#define DEFAULT_ACCELERATION_BVH_LEAF_SIZE         10
+#define DEFAULT_ACCELERATION_BVH_SPLIT_METHOD      XML_ACCELERATION_BVH_SPLIT_METHOD_SAH
+#define DEFAULT_ACCELERATION_HLBVH_LEAF_SIZE       10
 
 /* Forward declarations */
 namespace filesystem {
@@ -255,6 +264,25 @@ inline float lerp(float t, float v1, float v2) {
 inline int mod(int a, int b) {
     int r = a % b;
     return (r < 0) ? r+b : r;
+}
+
+inline bool solveLinearSystem2x2(const float A[2][2], const float B[2], float X[2])
+{
+    float Det = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+
+    constexpr float InvOverflow = 1.0f / std::numeric_limits<float>::max();
+
+    if (std::abs(Det) <= InvOverflow)
+    {
+        return false;
+    }
+
+    float InvDet = 1.0f / Det;
+
+    X[0] = (A[1][1] * B[0] - A[0][1] * B[1]) * InvDet;
+    X[1] = (A[0][0] * B[1] - A[1][0] * B[0]) * InvDet;
+
+    return true;
 }
 
 /// Compute a direction for the given coordinates in spherical coordinates

@@ -6,6 +6,7 @@
 #include <nori/core/accel.h>
 #include <nori/core/intersection.h>
 #include <nori/core/mesh.h>
+#include <nori/core/triangle.h>
 
 
 NORI_NAMESPACE_BEGIN
@@ -85,6 +86,18 @@ void Accel::addMesh(Mesh *mesh) {
     m_meshes.push_back(mesh);
     m_meshOffset.push_back(m_meshOffset.back() + mesh->getTriangleCount());
     m_bbox.expandBy(mesh->getBoundingBox());
+
+    m_pShapes.reserve(m_pShapes.size() + mesh->getTriangleCount());
+    MatrixXu indices = mesh->getIndices(); // triangle indices
+    uint32_t * pData = indices.data();
+    Triangle * pTri = m_memoryArena.alloc<Triangle>(indices.cols());
+    for (size_t i = 0; i < indices.cols(); i++)
+    {
+        pTri[i].m_pMesh = mesh;
+        pTri[i].m_pFacet = pData + i * 3;
+        pTri[i].m_iFacet = uint32_t(i);
+        m_pShapes.push_back((PrimitiveShape *)(&pTri[i]));
+    }
 }
 
 void Accel::build() {
@@ -93,40 +106,43 @@ void Accel::build() {
 
 const BoundingBox3f &Accel::getBoundingBox() const { return m_bbox; }
 
-bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool shadowRay) const {
-    bool foundIntersection = false;  // Was an intersection found so far?
-    uint32_t f = (uint32_t) -1;      // Triangle index of the closest intersection
+size_t Accel::getUsedMemoryForPrimitive() const
+{
+    return m_memoryArena.totalAllocated();
+}
 
+
+bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool bShadowRay) const {
+    bool bFoundIntersection = false;  // Was an intersection found so far?
+    PrimitiveShape* pHitPrimitive = nullptr;
     Ray3f ray(ray_); /// Make a copy of the ray (we will need to update its '.maxt' value)
-
-    /* Brute force search through all triangles */
-    for(auto& pMehs: m_meshes)
+    for(size_t i = 0; i < m_pShapes.size(); i++)
     {
-        if(pMehs == nullptr)
+        float u, v, t;
+        if (m_pShapes[i]->rayIntersect(ray_, u, v, t))
         {
-            continue;
-        }
-        for (uint32_t idx = 0; idx < pMehs->getTriangleCount(); ++idx) {
-            float u, v, t;
-            if (pMehs->rayIntersect(idx, ray, u, v, t)) {
-                /* An intersection was found! Can terminate
-                   immediately if this is a shadow ray query */
-                if (shadowRay)
-                    return true;
-                ray.maxt = its.t = t;
-                its.uv = Point2f(u, v);
-                its.mesh = pMehs;
-                f = idx;
-                foundIntersection = true;
+            /* An intersection was found! Can terminate
+			immediately if this is a shadow ray query */
+            if (bShadowRay)
+            {
+                return true;
             }
+
+            ray.maxt = its.t = t;
+            its.uv = Point2f(u, v);
+            its.pShape = m_pShapes[i];
+
+            pHitPrimitive = m_pShapes[i];
+            bFoundIntersection = true;
         }
     }
 
-    if (foundIntersection) {
-        BaseInternals::getHitAttributes(f, its);
+    if (bFoundIntersection)
+    {
+        pHitPrimitive->postIntersect(its);
+        its.computeScreenSpacePartial(ray);
     }
-
-    return foundIntersection;
+    return bFoundIntersection;
 }
 
 NORI_REGISTER_CLASS(Accel, XML_ACCELERATION_BRUTO_LOOP);

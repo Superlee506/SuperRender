@@ -7,6 +7,7 @@
 #include <nori/core/common.h>
 #include <nori/core/object.h>
 #include <nori/core/bbox.h>
+#include <nori/core/memoryHelper.h>
 
 NORI_NAMESPACE_BEGIN
 
@@ -33,6 +34,9 @@ public:
 
     /// Return an axis-aligned box that bounds the scene
     virtual const BoundingBox3f &getBoundingBox() const;
+
+    /// Return the size used for store the Shape (eg. triangles of the mesh)
+    virtual size_t getUsedMemoryForPrimitive() const;
 
     /**
      * \brief Intersect a ray against all triangles stored in the scene and
@@ -84,8 +88,16 @@ protected:
     static Point3f getCentroid(Accel const &accel, uint32_t index);
 
     };
-    std::vector<uint32_t> m_meshOffset; ///< Index of the first triangle for each shape
-    std::vector<Mesh *> m_meshes; ///< List of meshes
+
+protected:
+    std::vector<PrimitiveShape*> m_pShapes; /// Vector of all the primitives' pointer e.g. triangles
+    MemoryArena m_memoryArena;
+    std::vector<uint32_t> m_meshOffset; ///< Index of the first triangle for each mesh
+    /**
+     ** List of meshes, Indeed m_pShapes are enough for build the acceleration,
+     * the m_meshes is still needed for mesh parallel building
+     * **/
+    std::vector<Mesh *> m_meshes;
     BoundingBox3f m_bbox;           ///< Bounding box of the entire scene
 };
 

@@ -22,8 +22,6 @@
 
 NORI_NAMESPACE_BEGIN
 
-
-
 /**
  * \brief Acceleration data structure for ray intersection queries
  *
@@ -32,7 +30,7 @@ NORI_NAMESPACE_BEGIN
 class BvhAccel: public Accel{
 public:
     BvhAccel(const PropertyList& list);
-	virtual ~BvhAccel();
+    virtual ~BvhAccel();
 
     /// Build the acceleration data structure (currently a no-op)
     virtual void build() override;

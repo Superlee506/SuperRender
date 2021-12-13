@@ -86,6 +86,7 @@ void Scene::activate() {
     if (m_accel == nullptr)
     {
         /* Create a default acceleration */
+        LOG(WARNING) << "No acceleration was specified, create a default acceleration.";
         m_accel = (Accel*)(NoriObjectFactory::createInstance(DEFAULT_SCENE_ACCELERATION, PropertyList()));
     }
 
@@ -95,6 +96,7 @@ void Scene::activate() {
     }
 
     m_accel->build();
+    LOG(INFO) << "Memory used for Shape : " << memString(m_accel->getUsedMemoryForPrimitive());
 
     if (!m_integrator)
         throw NoriException("No integrator was specified!");
@@ -103,13 +105,14 @@ void Scene::activate() {
     
     if (!m_sampler) {
         /* Create a default (independent) sampler */
+        LOG(WARNING) << "No sampler was specified, create a default sampler.";
         m_sampler = static_cast<Sampler*>(
             NoriObjectFactory::createInstance("independent", PropertyList()));
     }
 
-    cout << endl;
-    cout << "Configuration: " << toString() << endl;
-    cout << endl;
+    LOG(INFO) << endl;
+    LOG(INFO) << "Configuration: " << toString() << endl;
+    LOG(INFO) << endl;
 }
 
 void Scene::addChild(NoriObject *obj) {
