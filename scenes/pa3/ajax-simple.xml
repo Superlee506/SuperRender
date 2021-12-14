@@ -11,6 +11,7 @@
     </integrator>
 
 	<acceleration type="hlbvh">
+		<integer name="leafSize" value="10"/>
 	</acceleration>
 
 	<!-- Load the Ajax bust (a freely available scan from the Jotero forum) -->

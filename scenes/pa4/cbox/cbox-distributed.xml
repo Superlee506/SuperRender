@@ -3,6 +3,10 @@
 <scene>
 	<integrator type="whitted"/>
 
+	<acceleration type="hlbvh">
+		<integer name="leafSize" value="10"/>
+	</acceleration>
+
 	<camera type="perspective">
 		<float name="fov" value="27.7856"/>
 		<transform name="toWorld">

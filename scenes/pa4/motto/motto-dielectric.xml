@@ -7,6 +7,10 @@
         <integer name="sampleCount" value="512"/>
     </sampler>
 
+    <acceleration type="hlbvh">
+        <integer name="leafSize" value="10"/>
+    </acceleration>
+
     <camera type="perspective">
         <!-- Camera-to-world coordinate system transformation -->
         <transform name="toWorld">
