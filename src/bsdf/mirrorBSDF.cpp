@@ -6,6 +6,7 @@
 
 #include <nori/bsdf/mirrorBSDF.h>
 #include <nori/core/frame.h>
+#include <nori/core/bsdfQueryRecord.h>
 
 NORI_NAMESPACE_BEGIN
 

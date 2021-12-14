@@ -10,6 +10,7 @@
 #include <nori/core/object.h>
 #include <nori/core/warp.h>
 #include <nori/core/bsdf.h>
+#include <nori/core/bsdfQueryRecord.h>
 
 #include <nanogui/screen.h>
 #include <nanogui/label.h>

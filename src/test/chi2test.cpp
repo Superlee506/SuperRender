@@ -6,6 +6,7 @@
 
 #include <nori/test/chi2test.h>
 #include <nori/core/bsdf.h>
+#include <nori/core/bsdfQueryRecord.h>
 #include <pcg32.h>
 #include <hypothesis.h>
 #include <fstream>

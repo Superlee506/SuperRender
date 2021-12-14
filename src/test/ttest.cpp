@@ -10,6 +10,7 @@
 #include <nori/core/camera.h>
 #include <nori/core/integrator.h>
 #include <nori/core/sampler.h>
+#include <nori/core/bsdfQueryRecord.h>
 #include <hypothesis.h>
 #include <pcg32.h>
 

@@ -73,43 +73,55 @@ public:
     bool rayIntersect(uint32_t index, const Ray3f &ray, float &u, float &v, float &t) const;
 
     /// Return a pointer to the vertex positions
-    const MatrixXf &getVertexPositions() const { return m_V; }
+    const MatrixXf &getVertexPositions() const;
 
     /// Return a pointer to the vertex normals (or \c nullptr if there are none)
-    const MatrixXf &getVertexNormals() const { return m_N; }
+    const MatrixXf &getVertexNormals() const;
 
     /// Return a pointer to the texture coordinates (or \c nullptr if there are none)
-    const MatrixXf &getVertexTexCoords() const { return m_UV; }
+    const MatrixXf &getVertexTexCoords() const;
 
     /// Return a pointer to the triangle vertex index list
-    const MatrixXu &getIndices() const { return m_F; }
+    const MatrixXu &getIndices() const;
 
     /// Is this mesh an area emitter?
-    bool isEmitter() const { return m_emitter != nullptr; }
+    bool isEmitter() const;
 
     /// Return a pointer to an attached area emitter instance
-    Emitter *getEmitter() { return m_emitter; }
+    Emitter *getEmitter();
 
     /// Return a pointer to an attached area emitter instance (const version)
-    const Emitter *getEmitter() const { return m_emitter; }
+    const Emitter *getEmitter() const;
 
     /// Return a pointer to the BSDF associated with this mesh
-    const BSDF *getBSDF() const { return m_bsdf; }
+    const BSDF *getBSDF() const;
 
     /// Register a child object (e.g. a BSDF) with the mesh
     virtual void addChild(NoriObject *child);
 
     /// Return the name of this mesh
-    const std::string &getName() const { return m_name; }
+    const std::string &getName() const;
 
     /// Return a human-readable summary of this instance
-    std::string toString() const;
+    virtual std::string toString() const override;
 
     /**
      * \brief Return the type of object (i.e. Mesh/BSDF/etc.)
      * provided by this instance
      * */
-    EClassType getClassType() const { return EMesh; }
+    virtual EClassType getClassType() const override;
+
+    /**
+	* \brief Uniformly sample a position on the mesh with
+	* respect to surface area. Returns both position and normal
+     * *
+	* \param Sample1D  Another optional sample that might be used in some scenarios.
+     * \param Sample2D  A uniformly distributed sample on \f$[0,1]^2\f$
+	*/
+    void samplePosition(float sample1D, const Point2f & sample2D, Point3f & samplePoint, Normal3f & sampleNormal) const;
+
+    ///  Compute the probability of sampling point on the mesh
+    float pdf() const;
 
 protected:
     /// Create an empty mesh
@@ -124,6 +136,9 @@ protected:
     BSDF         *m_bsdf = nullptr;      ///< BSDF of the surface
     Emitter    *m_emitter = nullptr;     ///< Associated emitter, if any
     BoundingBox3f m_bbox;                ///< Bounding box of the mesh
+    std::unique_ptr<DiscretePDF1D> m_pPDF; /// < Used for sampling triangle of the mesh weighted by its area
+    float m_meshArea = 0.0f;               ///< Total surface area of the mesh
+    float m_invMeshArea = 0.0f;            ///< Probability of a sampling point on the mesh
 };
 
 NORI_NAMESPACE_END

@@ -80,6 +80,32 @@
 #define XML_ACCELERATION_HLBVH                   "hlbvh"
 #define XML_ACCELERATION_HLBVH_LEAF_SIZE         "leafSize"
 
+#define XML_SCENE                                "scene"
+#define XML_SCENE_BACKGROUND                     "background"
+#define XML_SCENE_FORCE_BACKGROUND               "forceBackground"
+
+#define XML_INTEGRATOR_WHITTED                   "whitted"
+#define XML_INTEGRATOR_WHITTED_DEPTH             "depth"
+
+#define XML_EMITTER                              "emitter"
+#define XML_EMITTER_AREA_LIGHT                   "area"
+#define XML_EMITTER_AREA_LIGHT_RADIANCE          "radiance"
+#define XML_EMITTER_POINT_LIGHT                  "point"
+#define XML_EMITTER_POINT_LIGHT_POSITION         "position"
+#define XML_EMITTER_POINT_LIGHT_POWER            "power"
+#define XML_EMITTER_ENVIRONMENT_LIGHT            "env"
+#define XML_EMITTER_ENVIRONMENT_LIGHT_FILENAME   "filename"
+#define XML_EMITTER_ENVIRONMENT_LIGHT_SCALE      "scale"
+#define XML_EMITTER_ENVIRONMENT_LIGHT_TO_WORLD   "toWorld"
+#define XML_EMITTER_DIRECTIONAL_LIGHT            "directional"
+#define XML_EMITTER_DIRECTIONAL_LIGHT_IRRADIANCE "irradiance"
+#define XML_EMITTER_DIRECTIONAL_LIGHT_DIRECTION  "direction"
+#define XML_EMITTER_CONSTANT_LIGHT               "constant"
+#define XML_EMITTER_CONSTANT_LIGHT_RADIANCE      "radiance"
+
+///BSDF
+#define XML_BSDF_DIFFUSE                         "diffuse"
+
 /* Default setting */
 #define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
 #define DEFAULT_ACCELERATION_BVH_LEAF_SIZE         10
@@ -88,6 +114,14 @@
 
 #define DEFAULT_INTEGRATOR_AO_ALPHA                1e6f
 #define DEFAULT_INTEGRATOR_AO_SAMPLE_COUNT         16
+
+#define DEFAULT_INTEGRATOR_WHITTED_DEPTH           -1
+
+#define DEFAULT_SCENE_BACKGROUND                   Color3f(0.0f)
+#define DEFAULT_SCENE_FORCE_BACKGROUND             false
+
+///BSDF
+#define DEFAULT_MESH_BSDF                          XML_BSDF_DIFFUSE
 
 /* Forward declarations */
 namespace filesystem {
@@ -169,6 +203,8 @@ class Sampler;
 class Scene;
 class Timer;
 struct BSDFQueryRecord;
+class DiscretePDF1D;
+class DiscretePDF2D;
 
 /// Import cout, cerr, endl for debugging purposes
 using std::cout;
@@ -227,6 +263,24 @@ enum EMeasure {
     EUnknownMeasure = 0,
     ESolidAngle,
     EDiscrete
+};
+
+/// Type of the emitter
+enum class EEmitterType
+{
+    EUnknown = 0,
+    EPoint = 1,
+    EArea = 2,
+    EEnvironment = 3,
+    EDirectional = 4
+};
+
+/// Type of the light transport. Currently not used, so set it to ERadiance now.
+enum class ETransportMode
+{
+    EUnknown = 0,
+    ERadiance = 1,
+    EImportance = 2
 };
 
 //// Convert radians to degrees

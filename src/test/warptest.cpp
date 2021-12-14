@@ -8,6 +8,7 @@
 #include <nori/core/warp.h>
 #include <nori/core/bsdf.h>
 #include <nori/core/vector.h>
+#include <nori/core/bsdfQueryRecord.h>
 
 /* =======================================================================
  *   WARNING    WARNING    WARNING    WARNING    WARNING    WARNING

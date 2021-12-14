@@ -11,33 +11,6 @@
 NORI_NAMESPACE_BEGIN
 
 /**
- * \brief Convenience data structure used to pass multiple
- * parameters to the evaluation and sampling routines in \ref BSDF
- */
-struct BSDFQueryRecord {
-    /// Incident direction (in the local frame)
-    Vector3f wi;
-
-    /// Outgoing direction (in the local frame)
-    Vector3f wo;
-
-    /// Relative refractive index in the sampled direction
-    float eta;
-
-    /// Measure associated with the sample
-    EMeasure measure;
-
-    /// Create a new record for sampling the BSDF
-    BSDFQueryRecord(const Vector3f &wi)
-        : wi(wi), eta(1.f), measure(EUnknownMeasure) { }
-
-    /// Create a new record for querying the BSDF
-    BSDFQueryRecord(const Vector3f &wi,
-            const Vector3f &wo, EMeasure measure)
-        : wi(wi), wo(wo), eta(1.f), measure(measure) { }
-};
-
-/**
  * \brief Superclass of all bidirectional scattering distribution functions
  */
 class BSDF : public NoriObject {
@@ -90,14 +63,14 @@ public:
      * \brief Return the type of object (i.e. Mesh/BSDF/etc.)
      * provided by this instance
      * */
-    EClassType getClassType() const { return EBSDF; }
+    EClassType getClassType() const;
 
     /**
      * \brief Return whether or not this BRDF is diffuse. This
      * is primarily used by photon mapping to decide whether
      * or not to store photons on a surface
      */
-    virtual bool isDiffuse() const { return false; }
+    virtual bool isDiffuse() const;
 };
 
 NORI_NAMESPACE_END

@@ -1,6 +1,7 @@
 //
 // Created by superqqli on 2021/12/12.
 //
+#pragma once
 #include <nori/core/common.h>
 #include <nori/core/vector.h>
 #include <nori/core/frame.h>

@@ -311,6 +311,12 @@ template <typename _PointType> struct TBoundingBox {
         return result;
     }
 
+    /// Return half the length of diagonal line of the bounding box
+    float getRadius() const
+    {
+        return (max - min).norm() * 0.5f;
+    }
+
     /// Return a string representation of the bounding box
     std::string toString() const {
         if (!isValid())

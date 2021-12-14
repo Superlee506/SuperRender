@@ -8,6 +8,8 @@
 
 #include <nori/core/object.h>
 #include <nori/core/common.h>
+#include <nori/core/bbox.h>
+
 NORI_NAMESPACE_BEGIN
 
 /**
@@ -46,6 +48,24 @@ public:
     /// Return a reference to an array containing all meshes
     const std::vector<Mesh *> &getMeshes() const;
 
+    /// Return a reference to an array containing all emitters  (const version)
+    const std::vector<Emitter*> & getEmitters() const;
+
+    /// Return a pointer to the scene's environment emitter  (const version)
+    const Emitter * getEnvironmentEmitter() const;
+
+    /// Return a pointer to the scene's environment emitter
+    Emitter * getEnvironmentEmitter();
+
+    /// Return a axis-aligned box that bounds the scene
+    const BoundingBox3f& getBoundingBox() const;
+
+    /// Return the color of the background;
+    Color3f getBackground() const;
+
+    /// Return whether the specified background color is forced to used
+    bool getForceBackground() const;
+
     /**
      * \brief Intersect a ray against all triangles stored in the scene
      * and return detailed intersection information
@@ -79,9 +99,6 @@ public:
      */
     bool rayIntersect(const Ray3f &ray) const;
 
-    /// \brief Return an axis-aligned box that bounds the scene
-    const BoundingBox3f &getBoundingBox() const;
-
     /**
      * \brief Inherited from \ref NoriObject::activate()
      *
@@ -99,11 +116,17 @@ public:
     EClassType getClassType() const;
 
 private:
-    std::vector<Mesh *> m_meshes;
-    Integrator *m_integrator = nullptr;
-    Sampler *m_sampler = nullptr;
-    Camera *m_camera = nullptr;
-    Accel *m_accel = nullptr;
+    Color3f m_background;
+    bool m_bForceBackground;
+
+    std::vector<Mesh *> m_pMeshes;
+    Integrator *m_pIntegrator = nullptr;
+    Sampler *m_pSampler = nullptr;
+    Camera *m_pCamera = nullptr;
+    Accel *m_pAccel = nullptr;
+    std::vector<Emitter*> m_pEmitters;
+    Emitter * m_pEnvironmentEmitter = nullptr;
+    BoundingBox3f m_bBox;
 };
 
 NORI_NAMESPACE_END
