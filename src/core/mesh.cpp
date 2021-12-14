@@ -15,7 +15,6 @@ Mesh::Mesh() { }
 
 Mesh::~Mesh() {
     delete m_bsdf;
-    delete m_emitter;
 }
 
 void Mesh::activate() {

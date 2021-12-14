@@ -33,6 +33,7 @@ Scene::~Scene() {
     {
         delete pMesh;
     }
+
     m_pMeshes.clear();
     m_pMeshes.shrink_to_fit();
 
@@ -166,7 +167,11 @@ void Scene::addChild(NoriObject *obj) {
             break;
         case EMesh: {
                 Mesh *mesh = static_cast<Mesh *>(obj);
-                m_pMeshes.push_back(mesh);
+            m_pMeshes.push_back(mesh);
+            if (((Mesh*)(obj))->isEmitter())
+            {
+                m_pEmitters.push_back(((Mesh*)(obj))->getEmitter());
+            }
             }
             break;
         
