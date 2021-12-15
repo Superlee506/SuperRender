@@ -1,10 +1,15 @@
 
 <scene>
-    <integrator type="whitted"/>
+   <!-- <integrator type="whitted"/>-->
+
+    <integrator type="ao">
+        <float name="alpha" value="9999999.0"/>
+        <integer name="sampleCount" value="5"/>
+    </integrator>
 
     <sampler type="independent">
         <!-- You might want to reduce this number during development -->
-        <integer name="sampleCount" value="512"/>
+        <integer name="sampleCount" value="10"/>
     </sampler>
 
     <acceleration type="hlbvh">

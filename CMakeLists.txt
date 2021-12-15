@@ -27,19 +27,12 @@ include_directories(
   ${GLOG_INCLUDE_DIR}
   # Helper functions for statistical hypothesis tests
   ${HYPOTHESIS_INCLUDE_DIR}
-  # GLFW library for OpenGL context creation
-  SYSTEM ${GLFW_INCLUDE_DIR}
-  # GLEW library for accessing OpenGL functions
-  SYSTEM ${GLEW_INCLUDE_DIR}
-  # NanoVG drawing library
-  SYSTEM ${NANOVG_INCLUDE_DIR}
-  # NanoGUI user interface library
-  SYSTEM ${NANOGUI_INCLUDE_DIR}
-  SYSTEM ${NANOGUI_EXTRA_INCS}
   # Portable filesystem API
   SYSTEM ${FILESYSTEM_INCLUDE_DIR}
   # STB Image Write
-  SYSTEM ${STB_IMAGE_WRITE_INCLUDE_DIR}
+  SYSTEM ${STB_IMAGE_INCLUDE_DIR}
+  # glfw
+  SYSTEM ${GLFW_INCLUDE_DIR}
   # Nori include files
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -61,18 +54,20 @@ add_executable(nori
         src/main.cpp
   )
 
-add_definitions(${NANOGUI_EXTRA_DEFS})
 # The following lines build the warping test application
 add_executable(warptest
         ${TEST_SRC})
 
+# The following lines build the warping test application
+add_executable(superTest src/superTest.cpp)
+
 if (WIN32)
-  target_link_libraries(nori core tbb_static pugixml glog IlmImf nanogui ${NANOGUI_EXTRA_LIBS} zlibstatic)
+  target_link_libraries(nori core tbb_static pugixml glog IlmImf zlibstatic)
 else()
-  target_link_libraries(nori core tbb_static pugixml glog IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
+  target_link_libraries(nori core tbb_static pugixml glog IlmImf)
 endif()
 
-target_link_libraries(warptest core tbb_static nanogui glog ${NANOGUI_EXTRA_LIBS})
+target_link_libraries(warptest core tbb_static glog)
 # Force colored output for the ninja generator
 if (CMAKE_GENERATOR STREQUAL "Ninja")
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")

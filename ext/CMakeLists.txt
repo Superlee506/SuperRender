@@ -143,12 +143,12 @@ endif()
 
 # Build NanoGUI
 # Use OpenGL backend for UI. In the future, this can be removed to use Metal on MacOS
-set(NANOGUI_BACKEND "OpenGL" CACHE BOOL " " FORCE)
+#[[set(NANOGUI_BACKEND "OpenGL" CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_SHARED  OFF CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_PYTHON  OFF CACHE BOOL " " FORCE)
 add_subdirectory(nanogui)
-set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
+set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")]]
 
 # Build the pugixml parser
 add_library(pugixml STATIC pugixml/src/pugixml.cpp)
@@ -163,6 +163,17 @@ set(BUILD_SHARED_LIBS OFF  CACHE BOOL " " FORCE)
 add_subdirectory(glog)
 set_property(TARGET glog PROPERTY FOLDER "dependencies")
 
+# glfw
+set(GLFW_BUILD_EXAMPLES  OFF CACHE BOOL " " FORCE)
+set(GLFW_BUILD_TESTS     OFF CACHE BOOL " " FORCE)
+set(GLFW_BUILD_DOCS      OFF CACHE BOOL " " FORCE)
+set(GLFW_INSTALL         OFF CACHE BOOL " " FORCE)
+if (MSVC)
+  set(USE_MSVC_RUNTIME_LIBRARY_DLL OFF CACHE BOOL " " FORCE)
+endif ()
+add_subdirectory(glfw)
+set_property(TARGET glfw PROPERTY FOLDER "dependencies")
+
 set(OPENEXR_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Imath
   ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Iex
@@ -176,16 +187,7 @@ set(TFM_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/tinyformat)
 set(HYPOTHESIS_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/hypothesis)
-set(GLFW_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/glfw/include)
-set(GLEW_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/glew/include)
-set(NANOVG_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/nanovg/src)
-set(STB_IMAGE_WRITE_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/nanovg/example)
-set(NANOGUI_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/include)
+
 set(EIGEN_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/eigen)
 set(TBB_INCLUDE_DIR
@@ -197,8 +199,13 @@ set(PUGIXML_INCLUDE_DIR
 
 set(GLOG_INCLUDE_DIR
   ${CMAKE_CURRENT_SOURCE_DIR}/glog/src
-  ${PROJECT_BINARY_DIR}/ext_build/glog
-)
+  ${PROJECT_BINARY_DIR}/ext_build/glog)
+
+set(STB_IMAGE_INCLUDE_DIR
+   ${CMAKE_CURRENT_SOURCE_DIR}/stb)
+
+set(GLFW_INCLUDE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include)
 # Compile remainder of the codebase with compiler warnings turned on
 if(MSVC)
   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -226,9 +233,7 @@ set(CompilerFlags
       CMAKE_MACOSX_RPATH
       OPENEXR_INCLUDE_DIRS PCG32_INCLUDE_DIR TFM_INCLUDE_DIR
       HYPOTHESIS_INCLUDE_DIR GLFW_INCLUDE_DIR GLEW_INCLUDE_DIR
-      NANOVG_INCLUDE_DIR NANOGUI_EXTRA_INCS NANOGUI_EXTRA_DEFS
-      NANOGUI_EXTRA_LIBS NANOGUI_INCLUDE_DIR EIGEN_INCLUDE_DIR
-      GLOG_INCLUDE_DIR
+      EIGEN_INCLUDE_DIR GLOG_INCLUDE_DIR STB_IMAGE_INCLUDE_DIR
       STB_IMAGE_WRITE_INCLUDE_DIR TBB_INCLUDE_DIR
       FILESYSTEM_INCLUDE_DIR PUGIXML_INCLUDE_DIR
 )

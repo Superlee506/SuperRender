@@ -28,3 +28,9 @@
 [submodule "ext/glog"]
 	path = ext/glog
 	url = https://github.com/google/glog.git
+[submodule "ext/glfw"]
+	path = ext/glfw
+	url = https://github.com/glfw/glfw.git
+[submodule "ext/glew"]
+	path = ext/glew
+	url = https://github.com/nigels-com/glew.git

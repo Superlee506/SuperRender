@@ -12,7 +12,6 @@
 #include <nori/core/bitmap.h>
 #include <nori/core/sampler.h>
 #include <nori/core/integrator.h>
-#include <nori/core/gui.h>
 #include <tbb/parallel_for.h>
 #include <tbb/task_scheduler_init.h>
 #include <thread>
