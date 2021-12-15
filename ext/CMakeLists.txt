@@ -163,6 +163,9 @@ set(BUILD_SHARED_LIBS OFF  CACHE BOOL " " FORCE)
 add_subdirectory(glog)
 set_property(TARGET glog PROPERTY FOLDER "dependencies")
 
+file(GLOB STB_IMAGE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/stb/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/stb/*.cpp")
+
+
 # glfw
 set(GLFW_BUILD_EXAMPLES  OFF CACHE BOOL " " FORCE)
 set(GLFW_BUILD_TESTS     OFF CACHE BOOL " " FORCE)
@@ -173,6 +176,30 @@ if (MSVC)
 endif ()
 add_subdirectory(glfw)
 set_property(TARGET glfw PROPERTY FOLDER "dependencies")
+
+# glew
+set(glew-cmake_BUILD_SHARED OFF CACHE BOOL " " FORCE)
+set(glew-cmake_BUILD_STATIC ON  CACHE BOOL " " FORCE)
+
+add_subdirectory(glew/build/cmake)
+set_property(TARGET glew_s PROPERTY FOLDER "dependencies")
+
+#imgui
+set(INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
+include_directories(${INCLUDE_DIRS})
+
+file(GLOB IMGUI_SRC "${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp")
+add_library(
+        imgui_static STATIC
+        ${IMGUI_SRC}
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.h
+)
+target_link_libraries(imgui_static glew_s glfw)
+set_property(TARGET imgui_static PROPERTY FOLDER "dependencies")
 
 set(OPENEXR_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Imath
@@ -206,6 +233,13 @@ set(STB_IMAGE_INCLUDE_DIR
 
 set(GLFW_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include)
+
+set(GLEW_INCLUDE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
+
+set(IMGUI_INCLUDE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends)
 # Compile remainder of the codebase with compiler warnings turned on
 if(MSVC)
   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -230,7 +264,7 @@ set(CompilerFlags
       CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS
       CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL
       CMAKE_C_FLAGS_RELWITHDEBINFO COMPILE_DEFINITIONS U_CMAKE_BUILD_TYPE
-      CMAKE_MACOSX_RPATH
+      CMAKE_MACOSX_RPATH STB_IMAGE_SRC IMGUI_INCLUDE_DIR
       OPENEXR_INCLUDE_DIRS PCG32_INCLUDE_DIR TFM_INCLUDE_DIR
       HYPOTHESIS_INCLUDE_DIR GLFW_INCLUDE_DIR GLEW_INCLUDE_DIR
       EIGEN_INCLUDE_DIR GLOG_INCLUDE_DIR STB_IMAGE_INCLUDE_DIR

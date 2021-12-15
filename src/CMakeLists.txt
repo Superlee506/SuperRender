@@ -23,12 +23,14 @@ file(GLOB TEST_SRC "${ROOT_NORI_SRC}/test/*.hpp" "${ROOT_NORI_SRC}/test/*.cpp")
 
 file(GLOB TEXTURE_SRC "${ROOT_NORI_SRC}/texture/*.hpp" "${ROOT_NORI_SRC}/texture/*.cpp")
 
+file(GLOB GUI_SRC "${ROOT_NORI_SRC}/gui/*.hpp" "${ROOT_NORI_SRC}/gui/*.cpp")
+
 add_library(core STATIC ${CORE_SRC})
 
 set(CompilerFlags CORE_HEADERS CORE_SRC ACCEL_SRC
         BSDF_SRC CAMERA_SRC EMITTER_SRC FILTER_SRC
         INTEGRATION_SRC MESH_SRC SAMPLER_SRC TEST_SRC
-        TEXTURE_SRC)
+        TEXTURE_SRC GUI_SRC)
 foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} "${${CompilerFlag}}" PARENT_SCOPE)
 endforeach()
