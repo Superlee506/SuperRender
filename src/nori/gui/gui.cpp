@@ -5,10 +5,6 @@
 #include <nori/core/block.h>
 
 #include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
-
 NORI_NAMESPACE_BEGIN
 
 Gui::Gui(const ImageBlock & block) : m_block(block), m_scale(0.5f)
@@ -18,7 +14,7 @@ Gui::Gui(const ImageBlock & block) : m_block(block), m_scale(0.5f)
     m_width = Size.x();
     m_height = Size.y();
     m_borderSize = m_block.getBorderSize();
-    LOG(INFO) << m_width << ", " << m_height;
+    m_windowsName = "SuperRender";
     this->initGui();
 
     /*Init shader */

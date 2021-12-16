@@ -18,7 +18,6 @@ file(GLOB MESH_SRC "${ROOT_NORI_SRC}/mesh/*.hpp" "${ROOT_NORI_SRC}/mesh/*.cpp")
 
 file(GLOB SAMPLER_SRC "${ROOT_NORI_SRC}/sampler/*.hpp" "${ROOT_NORI_SRC}/sampler/*.cpp")
 
-
 file(GLOB TEXTURE_SRC "${ROOT_NORI_SRC}/texture/*.hpp" "${ROOT_NORI_SRC}/texture/*.cpp")
 
 file(GLOB GUI_SRC "${ROOT_NORI_SRC}/gui/*.hpp" "${ROOT_NORI_SRC}/gui/*.cpp")

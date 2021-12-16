@@ -36,5 +36,6 @@ protected:
     GLFWwindow * m_pWindow = nullptr;
     float m_progress = 0.0f;
     std::string m_renderedTimeStr = "";
+    std::string m_windowsName = "";
 };
 NORI_NAMESPACE_END

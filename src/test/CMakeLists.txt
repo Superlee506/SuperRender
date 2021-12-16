@@ -1,13 +1,15 @@
 # The following lines build the warping test application
-file(GLOB TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp" "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+
 # The following lines build the warping test application
 add_executable(superTest
         superGuiTest.cpp
-        ${FILTER_SRC}
-        ${GUI_SRC})
+        ${FILTER_SRC})
 
 add_executable(warptest
-        ${TEST_SRC})
+        warptest.cpp
+        chi2test.cpp
+        ttest.cpp
+        ${GUI_SRC})
 
 target_link_libraries(superTest core tbb_static glog IlmImf glew_s glfw imgui_static)
 target_link_libraries(warptest core tbb_static glog glew_s glfw imgui_static)

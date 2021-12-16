@@ -43,8 +43,8 @@ void GuiBase::initGui()
         return;
     }
 
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    m_pWindow = glfwCreateWindow(m_width, m_height, "SuperRender", nullptr, nullptr);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    m_pWindow = glfwCreateWindow(m_width, m_height, m_windowsName.c_str(), nullptr, nullptr);
     if (m_pWindow == nullptr)
     {
         glfwTerminate();
@@ -57,6 +57,11 @@ void GuiBase::initGui()
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.Fonts->AddFontDefault();
+    const std::string filename = getAssetPath() + "fonts/times.ttf";
+    ImFont* font = io.Fonts->AddFontFromFileTTF(filename.c_str(), 20.0f);
+    IM_ASSERT(font != NULL);
+    ImGui::GetIO().FontDefault = font;
 
     ImGui_ImplGlfw_InitForOpenGL(m_pWindow, true);
     ImGui_ImplOpenGL3_Init();

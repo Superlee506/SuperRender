@@ -11,25 +11,9 @@
 #include <nori/core/warp.h>
 #include <nori/core/bsdf.h>
 #include <nori/core/bsdfQueryRecord.h>
-
-#include <nanogui/screen.h>
-#include <nanogui/label.h>
-#include <nanogui/window.h>
-#include <nanogui/layout.h>
-#include <nanogui/icons.h>
-#include <nanogui/combobox.h>
-#include <nanogui/slider.h>
-#include <nanogui/textbox.h>
-#include <nanogui/checkbox.h>
-#include <nanogui/messagedialog.h>
-#include <nanogui/renderpass.h>
-#include <nanogui/shader.h>
-#include <nanogui/texture.h>
-#include <nanogui/screen.h>
-#include <nanogui/opengl.h>
-#include <nanogui/window.h>
-
-#include <nanovg_gl.h>
+#include <nori/core/guiBase.h>
+#include <nori/gui/shader.h>
+#include <nori/core/vector.h>
 
 #include <pcg32.h>
 #include <hypothesis.h>
@@ -48,7 +32,6 @@
 #  pragma warning (disable: 4305 4244)
 #endif
 
-using namespace nanogui;
 using namespace std;
 
 using nori::NoriException;
@@ -61,6 +44,10 @@ using nori::PropertyList;
 using nori::BSDF;
 using nori::BSDFQueryRecord;
 using nori::Color3f;
+using nori::GuiBase;
+using nori::Vector2i;
+using nori::Shader;
+
 
 
 enum PointType : int {
@@ -165,45 +152,43 @@ public:
 };
 
 
-class WarpTestScreen : public Screen {
+class WarpTestGui : public GuiBase {
 public:
 
-    WarpTestScreen();
+    WarpTestGui();
 
-    static float mapParameter(WarpType warpType, float parameterValue);
-
-    void refresh();
-
-    bool mouse_motion_event(const Vector2i &p, const Vector2i &rel,
-                                  int button, int modifiers);
-
-    bool mouse_button_event(const Vector2i &p, int button, bool down, int modifiers);
-
-    void draw_contents();
-
-    void drawHistogram(const nanogui::Vector2i &pos_, const nanogui::Vector2i &size_, Texture *texture);
-
+protected:
+    virtual void drawUI() override;
+    virtual void drawContent() override;
+    void  refresh();
     void runTest();
-
-    void initializeGUI();
+    static float mapParameter(WarpType warpType, float parameterValue);
+    void loadShaders();
 
 private:
-    nanogui::ref<Shader> m_pointShader, m_gridShader, m_histogramShader, m_arrowShader;
-    Window *m_window;
-    Slider *m_pointCountSlider, *m_parameterSlider, *m_parameter2Slider, *m_angleSlider;
-    TextBox *m_pointCountBox, *m_parameterBox, *m_parameter2Box, *m_angleBox;
-    nanogui::ref<nanogui::Texture> m_textures[2];
-    ComboBox *m_pointTypeBox;
-    ComboBox *m_warpTypeBox;
-    CheckBox *m_gridCheckBox;
-    CheckBox *m_brdfValueCheckBox;
+    std::unique_ptr<Shader> m_pPointShader, m_pGridShader,
+    m_pHistogramShader, m_pArrowShader;
+
     Arcball m_arcball;
-    int m_pointCount, m_lineCount;
     bool m_drawHistogram;
     std::unique_ptr<BSDF> m_brdf;
     BSDFQueryRecord m_bRec;
     std::pair<bool, std::string> m_testResult;
-    nanogui::ref<RenderPass> m_renderPass;
+
+    int m_lineCount;
+    int m_pointCount = 0;
+
+    std::string m_pointCountStr;
+    std::string m_bsdfAngleStr;
+    float m_pointCountSlider;
+    int m_pointTypeIndexCombo;
+    int m_warpMethodIndexCombo;
+    float m_warpParam1Slider;
+    float m_warpParam2Slider;
+    bool m_visualizeGridCheckBox;
+    float m_bsdfAngleSlider;
+    bool m_visualizeBSDFCheckBox;
+
 };
 
 

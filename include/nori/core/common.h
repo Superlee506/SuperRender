@@ -225,6 +225,11 @@ public:
 /// Return the number of cores (real and virtual)
 extern int getCoreCount();
 
+extern const std::string getAssetPath();
+
+/// utf8 encoder
+extern std::string utf8(uint32_t c);
+
 /// Indent a string by the specified number of spaces
 extern std::string indent(const std::string &string, int amount = 2);
 

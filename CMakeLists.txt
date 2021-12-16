@@ -54,7 +54,7 @@ if (CMAKE_GENERATOR STREQUAL "Ninja")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
   endif()
 endif()
-
+add_definitions(-DSUPER_RENDER_DATA=\"${CMAKE_CURRENT_SOURCE_DIR}/scenes/\")
 add_subdirectory(src/nori)
 add_subdirectory(src/main)
 add_subdirectory(src/test)
