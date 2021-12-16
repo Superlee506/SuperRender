@@ -66,7 +66,7 @@ static void render(Scene *scene, const std::string &filename) {
     ImageBlock result(outputSize, camera->getReconstructionFilter());
     result.clear();
     /* Create a window that visualizes the partially rendered result */
-    std::unique_ptr<Gui> pGui = nullptr;
+    std::unique_ptr<GuiBase> pGui = nullptr;
     if (gui)
     {
         pGui.reset(new Gui(result));
@@ -105,6 +105,7 @@ static void render(Scene *scene, const std::string &filename) {
                 if(gui)
                 {
                     pGui->setProgress(progress);
+                    pGui->setRenderedTime(timer.elapsedString());
                 }
                 /* The image block has been processed. Now add it to
                    the "big" block that represents the entire image */

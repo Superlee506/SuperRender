@@ -13,49 +13,15 @@ NORI_NAMESPACE_BEGIN
 
 Gui::Gui(const ImageBlock & block) : m_block(block), m_scale(0.5f)
 {
-    if (!glfwInit())
-    {
-        LOG(ERROR) << "Failed to initialize GLFW";
-        return;
-    }
 
     auto Size = m_block.getSize();
     m_width = Size.x();
     m_height = Size.y();
     m_borderSize = m_block.getBorderSize();
+    LOG(INFO) << m_width << ", " << m_height;
+    this->initGui();
 
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    m_pWindow = glfwCreateWindow(m_width, m_height, "SuperRender", nullptr, nullptr);
-
-    if (m_pWindow == nullptr)
-    {
-        glfwTerminate();
-        LOG(ERROR) << "Failed to create GLFW window!";
-        return;
-    }
-
-    glfwMakeContextCurrent(m_pWindow);
-    glfwSwapInterval(1); // Enable vsync
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-
-    ImGui_ImplGlfw_InitForOpenGL(m_pWindow, true);
-    ImGui_ImplOpenGL3_Init();
-    ImGui::StyleColorsDark();
-
-    if (glewInit() != GLEW_OK)
-    {
-        LOG(ERROR) << "Failed to initialize GLEW!";
-        return;
-    }
-    if (!glewIsSupported("GL_VERSION_2_0 GL_ARB_pixel_buffer_object"))
-    {
-        LOG(ERROR) << "Support for necessary OpenGL extensions missing.";
-        return;
-    }
-
+    /*Init shader */
     const GLchar * ScreenVertexShaderSource =
             "#version 330 core\n"
             "layout(location = 0) in vec3 position;\n"
@@ -109,104 +75,44 @@ Gui::Gui(const ImageBlock & block) : m_block(block), m_scale(0.5f)
             "}";
 
     m_blockShader.reset(new Shader(blockVertexShaderSource, blockFragmentShaderSource));
+}
 
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
-    glGenBuffers(1, &m_EBO);
 
-    glGenTextures(1, &m_texture);
+void Gui::drawContent()
+{
+    float scale = std::pow(2.0f, (m_scale - 0.5f) * 20.0f);
+    m_block.lock();
+
+    // 1st pass: draw the full screen with  texture data
+    bindScreenVertexBuffer();
+
+    glActiveTexture(GL_TEXTURE0);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, GLint(m_block.cols()));
+    glTexImage2D(
+            GL_TEXTURE_2D, 0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT,
+            (uint8_t*)(m_block.data()) + (m_borderSize * m_block.cols() + m_borderSize) * sizeof(Color4f)
+    );
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-    LOG(INFO) << "OpenGL initialized! Version: " << glGetString(GL_VERSION);
+    m_block.unlock();
+
+    m_screenShader->use();
+    m_screenShader->setFloat("scale", scale);
+    m_screenShader->setInt("source", 0);
+
+    glBindVertexArray(m_VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
+    glBindVertexArray(0);
+
+    // 2st pass: draw the small mark box
+    bindBlockVertexBuffer();
+    m_blockShader->use();
+    glBindVertexArray(m_VAO);
+    glDrawElements(GL_LINES, GLsizei(m_renderingBlocks.size() * 8), GL_UNSIGNED_INT, (void*)(0));
+    glBindVertexArray(0);
 }
 
-std::vector<const ImageBlock *> & Gui::getRenderingBlocks()
-{
-    return m_renderingBlocks;
-}
-
-float Gui::getProgress() const
-{
-    return m_progress;
-}
-
-void Gui::setProgress(const float& progress)
-{
-    m_progress = progress;
-}
-
-std::string & Gui::getRenderTimeString()
-{
-    return m_renderTimeString;
-}
-
-void Gui::draw()
-{
-    while (!glfwWindowShouldClose(m_pWindow))
-    {
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, m_width, m_height);
-
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        drawUI();
-
-        float scale = std::pow(2.0f, (m_scale - 0.5f) * 20.0f);
-
-        ImGui::Render();
-
-        m_block.lock();
-
-        // 1st pass: draw the full screen with  texture data
-        bindScreenVertexBuffer();
-
-        glActiveTexture(GL_TEXTURE0);
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, GLint(m_block.cols()));
-        glTexImage2D(
-                GL_TEXTURE_2D, 0, GL_RGBA32F, m_width, m_height, 0, GL_RGBA, GL_FLOAT,
-                (uint8_t*)(m_block.data()) + (m_borderSize * m_block.cols() + m_borderSize) * sizeof(Color4f)
-        );
-        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-        glBindTexture(GL_TEXTURE_2D, m_texture);
-
-        m_block.unlock();
-
-        m_screenShader->use();
-        m_screenShader->setFloat("scale", scale);
-        m_screenShader->setInt("source", 0);
-
-        glBindVertexArray(m_VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
-        glBindVertexArray(0);
-
-        // 2st pass: draw the small mark box
-        bindBlockVertexBuffer();
-        m_blockShader->use();
-        glBindVertexArray(m_VAO);
-        glDrawElements(GL_LINES, GLsizei(m_renderingBlocks.size() * 8), GL_UNSIGNED_INT, (void*)(0));
-        glBindVertexArray(0);
-
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(m_pWindow);
-        glfwPollEvents();
-    }
-
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glDeleteVertexArrays(1, &m_VAO);
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteBuffers(1, &m_EBO);
-
-    glfwDestroyWindow(m_pWindow);
-    glfwTerminate();
-}
 
 void Gui::drawUI()
 {
@@ -217,7 +123,7 @@ void Gui::drawUI()
         static char buffer[64];
         if (1.0f - m_progress > 1e-4f)
         {
-            sprintf(buffer, "%.0f%%(%s)", m_progress * 100 + 0.01f, m_renderTimeString.c_str());
+            sprintf(buffer, "%.0f%%(%s)", m_progress * 100 + 0.01f, m_renderedTimeStr.c_str());
         }
         else
         {
