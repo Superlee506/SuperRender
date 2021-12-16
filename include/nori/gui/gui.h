@@ -14,7 +14,8 @@ class Gui
 public:
     Gui(const ImageBlock & block);
     std::vector<const ImageBlock *> & getRenderingBlocks();
-    float & getProgress();
+    float  getProgress() const;
+    void setProgress(const float& progress);
     std::string & getRenderTimeString();
     void draw();
     void drawUI();

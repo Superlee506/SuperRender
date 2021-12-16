@@ -21,7 +21,6 @@
 #  pragma warning (disable: 4305 4244)
 #endif
 
-using namespace nanogui;
 using namespace std;
 
 using nori::NoriException;

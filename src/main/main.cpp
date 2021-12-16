@@ -12,6 +12,7 @@
 #include <nori/core/bitmap.h>
 #include <nori/core/sampler.h>
 #include <nori/core/integrator.h>
+#include <nori/gui/gui.h>
 #include <tbb/parallel_for.h>
 #include <tbb/task_scheduler_init.h>
 #include <thread>
@@ -59,16 +60,16 @@ static void render(Scene *scene, const std::string &filename) {
 
     /* Create a block generator (i.e. a work scheduler) */
     BlockGenerator blockGenerator(outputSize, NORI_BLOCK_SIZE);
-
+    const int totalBlock = blockGenerator.getBlockCount();
+    std::atomic<int> renderedBlock = 0;
     /* Allocate memory for the entire output image and clear it */
     ImageBlock result(outputSize, camera->getReconstructionFilter());
     result.clear();
-
     /* Create a window that visualizes the partially rendered result */
-    NoriScreen *screen = nullptr;
-    if (gui) {
-        nanogui::init();
-        screen = new NoriScreen(result);
+    std::unique_ptr<Gui> pGui = nullptr;
+    if (gui)
+    {
+        pGui.reset(new Gui(result));
     }
 
     /* Do the following in parallel and asynchronously */
@@ -79,7 +80,7 @@ static void render(Scene *scene, const std::string &filename) {
         Timer timer;
 
         tbb::blocked_range<int> range(0, blockGenerator.getBlockCount());
-
+        float progress = 0;
         auto map = [&](const tbb::blocked_range<int> &range) {
             /* Allocate memory for a small image block to be rendered
                by the current thread */
@@ -98,7 +99,13 @@ static void render(Scene *scene, const std::string &filename) {
 
                 /* Render all contained pixels */
                 renderBlock(scene, sampler.get(), block);
-
+                /* Update progress */
+                renderedBlock++;
+                progress = float(renderedBlock) / float(totalBlock);
+                if(gui)
+                {
+                    pGui->setProgress(progress);
+                }
                 /* The image block has been processed. Now add it to
                    the "big" block that represents the entire image */
                 result.put(block);
@@ -114,17 +121,13 @@ static void render(Scene *scene, const std::string &filename) {
         LOG(INFO) << "done. (took " << timer.elapsedString() << ")" << endl;
     });
 
-    /* Enter the application main loop */
     if (gui)
-        nanogui::mainloop(50.f);
+    {
+        pGui->draw();
+    }
 
     /* Shut down the user interface */
     render_thread.join();
-
-    if (gui) {
-        delete screen;
-        nanogui::shutdown();
-    }
 
     /* Now turn the rendered image block into
        a properly normalized bitmap */
@@ -215,11 +218,11 @@ int main(int argc, char **argv) {
             Bitmap bitmap(exrName);
             ImageBlock block(Vector2i((int) bitmap.cols(), (int) bitmap.rows()), nullptr);
             block.fromBitmap(bitmap);
-            nanogui::init();
+        /*    nanogui::init();
             NoriScreen *screen = new NoriScreen(block);
             nanogui::mainloop(50.f);
             delete screen;
-            nanogui::shutdown();
+            nanogui::shutdown();*/
         } catch (const std::exception &e) {
             cerr << e.what() << endl;
             return -1;

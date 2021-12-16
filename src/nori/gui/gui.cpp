@@ -127,9 +127,14 @@ std::vector<const ImageBlock *> & Gui::getRenderingBlocks()
     return m_renderingBlocks;
 }
 
-float & Gui::getProgress()
+float Gui::getProgress() const
 {
     return m_progress;
+}
+
+void Gui::setProgress(const float& progress)
+{
+    m_progress = progress;
 }
 
 std::string & Gui::getRenderTimeString()
