@@ -76,7 +76,8 @@ static void render(Scene *scene, const std::string &filename) {
     std::thread render_thread([&] {
         tbb::task_scheduler_init init(threadCount);
 
-        LOG(INFO) << "Rendering .. ";
+        cout << "Rendering .. ";
+        cout.flush();
         Timer timer;
 
         tbb::blocked_range<int> range(0, blockGenerator.getBlockCount());
@@ -112,7 +113,7 @@ static void render(Scene *scene, const std::string &filename) {
         /// (equivalent to the following single-threaded call)
         // map(range);
 
-        LOG(INFO) << "done. (took " << timer.elapsedString() << ")" << endl;
+        cout << "done. (took " << timer.elapsedString() << ")" << endl;
     });
 
     /* Enter the application main loop */
@@ -241,5 +242,5 @@ int main(int argc, char **argv) {
         }
     }
     google::ShutdownGoogleLogging();
-    return 1;
+    return 0;
 }

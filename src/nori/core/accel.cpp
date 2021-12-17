@@ -119,7 +119,7 @@ bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool bShadowRay) 
     for(size_t i = 0; i < m_pShapes.size(); i++)
     {
         float u, v, t;
-        if (m_pShapes[i]->rayIntersect(ray_, u, v, t))
+        if (m_pShapes[i]->rayIntersect(ray, u, v, t))
         {
             /* An intersection was found! Can terminate
 			immediately if this is a shadow ray query */
@@ -140,7 +140,7 @@ bool Accel::rayIntersect(const Ray3f &ray_, Intersection &its, bool bShadowRay) 
     if (bFoundIntersection)
     {
         pHitPrimitive->postIntersect(its);
-        its.computeScreenSpacePartial(ray);
+        its.computeScreenSpacePartial(ray_);
     }
     return bFoundIntersection;
 }
