@@ -34,3 +34,6 @@
 [submodule "ext/imgui"]
 	path = ext/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "ext/nanogui"]
+	path = ext/nanogui
+	url = https://github.com/mitsuba-renderer/nanogui.git
