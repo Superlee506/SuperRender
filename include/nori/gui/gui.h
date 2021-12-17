@@ -1,35 +1,26 @@
-//
-// Created by superqqli on 2021/12/15.
-//
+/*
+    This file is part of Nori, a simple educational ray tracer
+
+    Copyright (c) 2015 by Wenzel Jakob
+*/
+
 #pragma once
 
 #include <nori/core/common.h>
-#include <nori/core/guiBase.h>
-#include <nori/gui/shader.h>
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
+#include <nanogui/screen.h>
 
 NORI_NAMESPACE_BEGIN
-class Gui: public GuiBase
-{
+
+class NoriScreen : public nanogui::Screen {
 public:
-    Gui(const ImageBlock & block);
-
-protected:
-    virtual void drawUI() override;
-    virtual void drawContent() override;
-
+    NoriScreen(const ImageBlock &block);
+    void draw_contents() override;
 private:
-    void bindScreenVertexBuffer();
-    void bindBlockVertexBuffer();
-
-private:
-    const ImageBlock & m_block;
-    std::unique_ptr<Shader> m_screenShader = nullptr;
-    std::unique_ptr<Shader> m_blockShader = nullptr;
-    int m_borderSize;
-    float m_scale;
-    std::vector<const ImageBlock *> m_renderingBlocks;
-
+    const ImageBlock &m_block;
+    nanogui::ref<nanogui::Shader> m_shader;
+    nanogui::ref<nanogui::Texture> m_texture;
+    nanogui::ref<nanogui::RenderPass> m_renderPass;
+    float m_scale = 1.f;
 };
+
 NORI_NAMESPACE_END

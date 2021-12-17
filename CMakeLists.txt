@@ -30,16 +30,19 @@ include_directories(
         ${GLOG_INCLUDE_DIR}
         # Helper functions for statistical hypothesis tests
         ${HYPOTHESIS_INCLUDE_DIR}
+        # GLFW library for OpenGL context creation
+        SYSTEM ${GLFW_INCLUDE_DIR}
+        # GLEW library for accessing OpenGL functions
+        SYSTEM ${GLEW_INCLUDE_DIR}
+        # NanoVG drawing library
+        SYSTEM ${NANOVG_INCLUDE_DIR}
+        # NanoGUI user interface library
+        SYSTEM ${NANOGUI_INCLUDE_DIR}
+        SYSTEM ${NANOGUI_EXTRA_INCS}
         # Portable filesystem API
         SYSTEM ${FILESYSTEM_INCLUDE_DIR}
         # STB Image Write
-        ${STB_IMAGE_INCLUDE_DIR}
-        # glfw
-        SYSTEM ${GLFW_INCLUDE_DIR}
-        #glew
-        SYSTEM ${GLEW_INCLUDE_DIR}
-        #imgui
-        ${IMGUI_INCLUDE_DIR}
+        SYSTEM ${STB_IMAGE_WRITE_INCLUDE_DIR}
         # Nori include files
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
@@ -54,7 +57,9 @@ if (CMAKE_GENERATOR STREQUAL "Ninja")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
   endif()
 endif()
-add_definitions(-DSUPER_RENDER_DATA=\"${CMAKE_CURRENT_SOURCE_DIR}/scenes/\")
+
+add_definitions(${NANOGUI_EXTRA_DEFS})
+
 add_subdirectory(src/nori)
 add_subdirectory(src/main)
 add_subdirectory(src/test)

@@ -17,9 +17,9 @@ add_executable(nori
         )
 
 if (WIN32)
-  target_link_libraries(nori core tbb_static pugixml glog IlmImf zlibstatic glew_s glfw imgui_static)
+  target_link_libraries(nori core tbb_static pugixml glog IlmImf zlibstatic nanogui ${NANOGUI_EXTRA_LIBS})
 else()
-  target_link_libraries(nori core tbb_static pugixml glog IlmImf glew_s glfw imgui_static)
+  target_link_libraries(nori core tbb_static pugixml glog IlmImf nanogui ${NANOGUI_EXTRA_LIBS})
 endif()
 
 target_compile_features(nori PRIVATE cxx_std_17)

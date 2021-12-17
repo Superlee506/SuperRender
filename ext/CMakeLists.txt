@@ -143,12 +143,12 @@ endif()
 
 # Build NanoGUI
 # Use OpenGL backend for UI. In the future, this can be removed to use Metal on MacOS
-#[[set(NANOGUI_BACKEND "OpenGL" CACHE BOOL " " FORCE)
+set(NANOGUI_BACKEND "OpenGL" CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_SHARED  OFF CACHE BOOL " " FORCE)
 set(NANOGUI_BUILD_PYTHON  OFF CACHE BOOL " " FORCE)
 add_subdirectory(nanogui)
-set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")]]
+set_property(TARGET glfw glfw_objects nanogui PROPERTY FOLDER "dependencies")
 
 # Build the pugixml parser
 add_library(pugixml STATIC pugixml/src/pugixml.cpp)
@@ -163,83 +163,42 @@ set(BUILD_SHARED_LIBS OFF  CACHE BOOL " " FORCE)
 add_subdirectory(glog)
 set_property(TARGET glog PROPERTY FOLDER "dependencies")
 
-file(GLOB STB_IMAGE_SRC "${CMAKE_CURRENT_SOURCE_DIR}/stb/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/stb/*.cpp")
-
-
-# glfw
-set(GLFW_BUILD_EXAMPLES  OFF CACHE BOOL " " FORCE)
-set(GLFW_BUILD_TESTS     OFF CACHE BOOL " " FORCE)
-set(GLFW_BUILD_DOCS      OFF CACHE BOOL " " FORCE)
-set(GLFW_INSTALL         OFF CACHE BOOL " " FORCE)
-if (MSVC)
-  set(USE_MSVC_RUNTIME_LIBRARY_DLL OFF CACHE BOOL " " FORCE)
-endif ()
-add_subdirectory(glfw)
-set_property(TARGET glfw PROPERTY FOLDER "dependencies")
-
-# glew
-set(glew-cmake_BUILD_SHARED OFF CACHE BOOL " " FORCE)
-set(glew-cmake_BUILD_STATIC ON  CACHE BOOL " " FORCE)
-
-add_subdirectory(glew/build/cmake)
-set_property(TARGET glew_s PROPERTY FOLDER "dependencies")
-
-#imgui
-set(INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui)
-include_directories(${INCLUDE_DIRS})
-
-file(GLOB IMGUI_SRC "${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/imgui/*.cpp")
-add_library(
-        imgui_static STATIC
-        ${IMGUI_SRC}
-        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_glfw.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends/imgui_impl_opengl3.h
-)
-target_link_libraries(imgui_static glew_s glfw)
-set_property(TARGET imgui_static PROPERTY FOLDER "dependencies")
-
 set(OPENEXR_INCLUDE_DIRS
-  ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Imath
-  ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Iex
-  ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Half
-  ${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXR/IlmImf
-  ${CMAKE_CURRENT_BINARY_DIR}/openexr/OpenEXR/config
-  ${CMAKE_CURRENT_BINARY_DIR}/openexr/IlmBase/config)
+        ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Imath
+        ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Iex
+        ${CMAKE_CURRENT_SOURCE_DIR}/openexr/IlmBase/Half
+        ${CMAKE_CURRENT_SOURCE_DIR}/openexr/OpenEXR/IlmImf
+        ${CMAKE_CURRENT_BINARY_DIR}/openexr/OpenEXR/config
+        ${CMAKE_CURRENT_BINARY_DIR}/openexr/IlmBase/config)
 set(PCG32_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/pcg32)
+        ${CMAKE_CURRENT_SOURCE_DIR}/pcg32)
 set(TFM_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/tinyformat)
+        ${CMAKE_CURRENT_SOURCE_DIR}/tinyformat)
 set(HYPOTHESIS_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/hypothesis)
-
+        ${CMAKE_CURRENT_SOURCE_DIR}/hypothesis)
+set(GLFW_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/glfw/include)
+set(GLEW_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/glew/include)
+set(NANOVG_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/nanovg/src)
+set(STB_IMAGE_WRITE_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/ext/nanovg/example)
+set(NANOGUI_INCLUDE_DIR
+        ${CMAKE_CURRENT_SOURCE_DIR}/nanogui/include)
 set(EIGEN_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/eigen)
+        ${CMAKE_CURRENT_SOURCE_DIR}/eigen)
 set(TBB_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/tbb/include)
+        ${CMAKE_CURRENT_SOURCE_DIR}/tbb/include)
 set(FILESYSTEM_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/filesystem)
+        ${CMAKE_CURRENT_SOURCE_DIR}/filesystem)
 set(PUGIXML_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/pugixml/src)
+        ${CMAKE_CURRENT_SOURCE_DIR}/pugixml/src)
 
 set(GLOG_INCLUDE_DIR
-  ${CMAKE_CURRENT_SOURCE_DIR}/glog/src
-  ${PROJECT_BINARY_DIR}/ext_build/glog)
-
-set(STB_IMAGE_INCLUDE_DIR
-   ${CMAKE_CURRENT_SOURCE_DIR}/stb)
-
-set(GLFW_INCLUDE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/glfw/include)
-
-set(GLEW_INCLUDE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/glew/include)
-
-set(IMGUI_INCLUDE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui
-    ${CMAKE_CURRENT_SOURCE_DIR}/imgui/backends)
+        ${CMAKE_CURRENT_SOURCE_DIR}/glog/src
+        ${PROJECT_BINARY_DIR}/ext_build/glog
+        )
 # Compile remainder of the codebase with compiler warnings turned on
 if(MSVC)
   if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
@@ -260,17 +219,19 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "
 endif()
 
 set(CompilerFlags
-      CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-      CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS
-      CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL
-      CMAKE_C_FLAGS_RELWITHDEBINFO COMPILE_DEFINITIONS U_CMAKE_BUILD_TYPE
-      CMAKE_MACOSX_RPATH STB_IMAGE_SRC IMGUI_INCLUDE_DIR
-      OPENEXR_INCLUDE_DIRS PCG32_INCLUDE_DIR TFM_INCLUDE_DIR
-      HYPOTHESIS_INCLUDE_DIR GLFW_INCLUDE_DIR GLEW_INCLUDE_DIR
-      EIGEN_INCLUDE_DIR GLOG_INCLUDE_DIR STB_IMAGE_INCLUDE_DIR
-      STB_IMAGE_WRITE_INCLUDE_DIR TBB_INCLUDE_DIR
-      FILESYSTEM_INCLUDE_DIR PUGIXML_INCLUDE_DIR
-)
+        CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
+        CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS
+        CMAKE_C_FLAGS_DEBUG CMAKE_C_FLAGS_RELEASE CMAKE_C_FLAGS_MINSIZEREL
+        CMAKE_C_FLAGS_RELWITHDEBINFO COMPILE_DEFINITIONS U_CMAKE_BUILD_TYPE
+        CMAKE_MACOSX_RPATH
+        OPENEXR_INCLUDE_DIRS PCG32_INCLUDE_DIR TFM_INCLUDE_DIR
+        HYPOTHESIS_INCLUDE_DIR GLFW_INCLUDE_DIR GLEW_INCLUDE_DIR
+        NANOVG_INCLUDE_DIR NANOGUI_EXTRA_INCS NANOGUI_EXTRA_DEFS
+        NANOGUI_EXTRA_LIBS NANOGUI_INCLUDE_DIR EIGEN_INCLUDE_DIR
+        GLOG_INCLUDE_DIR
+        STB_IMAGE_WRITE_INCLUDE_DIR TBB_INCLUDE_DIR
+        FILESYSTEM_INCLUDE_DIR PUGIXML_INCLUDE_DIR
+        )
 foreach(CompilerFlag ${CompilerFlags})
   set(${CompilerFlag} "${${CompilerFlag}}" PARENT_SCOPE)
 endforeach()
