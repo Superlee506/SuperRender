@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.2)
-project(nori)
+project(SuperRender)
 
 # static link glog library
 add_definitions(-DGOOGLE_GLOG_DLL_DECL=)

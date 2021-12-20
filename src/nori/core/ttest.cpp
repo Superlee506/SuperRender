@@ -4,7 +4,7 @@
     Copyright (c) 2015 by Wenzel Jakob
 */
 
-#include <nori/test/ttest.h>
+#include <nori/core/ttest.h>
 #include <nori/core/scene.h>
 #include <nori/core/bsdf.h>
 #include <nori/core/camera.h>
