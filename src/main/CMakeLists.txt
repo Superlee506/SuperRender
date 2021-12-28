@@ -13,6 +13,8 @@ add_executable(nori
         ${TEXTURE_SRC}
         ${STB_IMAGE_SRC}
         ${GUI_SRC}
+        # add ttest for fixing construction miss
+        ${ROOT_NORI_SRC}/core/ttest.cpp
         main.cpp
         )
 
