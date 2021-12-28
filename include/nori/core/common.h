@@ -263,6 +263,9 @@ extern std::string timeString(double time, bool precise = false);
 /// Convert a memory amount in bytes into a human-readable string
 extern std::string memString(size_t size, bool precise = false);
 
+/// gamma correction of the value
+extern float gammaCorrect(float value, float invGamma);
+
 /// Measures associated with probability distributions
 enum EMeasure {
     EUnknownMeasure = 0,

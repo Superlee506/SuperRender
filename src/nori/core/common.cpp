@@ -193,6 +193,11 @@ std::string memString(size_t size, bool precise) {
     return os.str();
 }
 
+float gammaCorrect(float value, float invGamma)
+{
+    return invGamma == 1.0f ? value : std::pow(value, invGamma);
+}
+
 filesystem::resolver *getFileResolver() {
     static filesystem::resolver *resolver = new filesystem::resolver();
     return resolver;
