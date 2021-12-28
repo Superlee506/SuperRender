@@ -103,13 +103,13 @@ NoriScreen::NoriScreen(const ImageBlock &block)
     m_shader->set_uniform("borderSize", m_block.getBorderSize());
 
     // Allocate texture memory for the rendered image
-    m_texture = new Texture(
-            Texture::PixelFormat::RGBA,
-            Texture::ComponentFormat::Float32,
+    m_texture = new nanogui::Texture(
+            nanogui::Texture::PixelFormat::RGBA,
+            nanogui::Texture::ComponentFormat::Float32,
             nanogui::Vector2i(size.x() + 2 * m_block.getBorderSize(),
                               size.y() + 2 * m_block.getBorderSize()),
-            Texture::InterpolationMode::Nearest,
-            Texture::InterpolationMode::Nearest);
+            nanogui::Texture::InterpolationMode::Nearest,
+            nanogui::Texture::InterpolationMode::Nearest);
 
     draw_all();
     set_visible(true);

@@ -151,7 +151,7 @@ public:
     }
 };
 
-/// Complete the set {a} to an orthonormal base
-extern void coordinateSystem(const Vector3f &a, Vector3f &b, Vector3f &c);
+/// Complete the set {va} to an orthonormal base
+extern void coordinateSystem(const Vector3f &va, Vector3f &vb, Vector3f &vc);
 
 NORI_NAMESPACE_END

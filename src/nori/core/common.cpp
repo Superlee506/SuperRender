@@ -198,6 +198,140 @@ float gammaCorrect(float value, float invGamma)
     return invGamma == 1.0f ? value : std::pow(value, invGamma);
 }
 
+float fresnelDielectric(float cosThetaI, float eta, float invEta, float & cosThetaT)
+{
+    if (eta == 1.0f)
+    {
+        cosThetaT = -cosThetaI;
+        return 0.0f;
+    }
+
+    /* Using Snell's law, calculate the squared sine of the
+    angle between the normal and the transmitted ray */
+    float scale = (cosThetaI > 0.0f) ? invEta : eta;
+    float cosThetaTSqr = 1.0f - (1.0f - cosThetaI * cosThetaI) * (scale * scale);
+
+    /* Check for total internal reflection */
+    if (cosThetaTSqr <= 0.0f)
+    {
+        cosThetaT = 0.0f;
+        return 1.0f;
+    }
+
+    /* Find the absolute cosines of the incident/transmitted rays */
+    float cosThetaIi = std::abs(cosThetaI);
+    float cosThetaTt = std::sqrt(cosThetaTSqr);
+
+    float rs = (cosThetaIi - eta * cosThetaTt)
+               / (cosThetaIi + eta * cosThetaTt);
+    float rp = (eta * cosThetaIi - cosThetaTt)
+               / (eta * cosThetaIi + cosThetaTt);
+
+    cosThetaT = (cosThetaI > 0.0f) ? -cosThetaTt : cosThetaTt;
+
+    /* No polarization -- return the unpolarized reflectance */
+    return 0.5f * (rs * rs + rp * rp);
+}
+
+Color3f fresnelConductor(float cosThetaI, const Color3f & eta, const Color3f & etaK)
+{
+    float cosThetaI2 = cosThetaI * cosThetaI;
+    float sinThetaI2 = 1.0f - cosThetaI2;
+    Color3f eta2 = eta * eta;
+    Color3f etaK2 = etaK * etaK;
+
+    Color3f t0 = eta2 - etaK2 - Color3f(sinThetaI2);
+    Color3f a2PlusB2 = (t0 * t0 + 4.0f * eta2 * etaK2).cwiseSqrt();
+    Color3f t1 = a2PlusB2 + Color3f(cosThetaI2);
+    Color3f A = (0.5f * (a2PlusB2 + t0)).cwiseSqrt();
+    Color3f t2 = 2.0f * cosThetaI * A;
+    Color3f rs = (t1 - t2).cwiseQuotient(t1 + t2);
+
+    Color3f t3 = cosThetaI2 * a2PlusB2 + Color3f(sinThetaI2 * sinThetaI2);
+    Color3f t4 = t2 * sinThetaI2;
+    Color3f rp = rs * (t3 - t4).cwiseQuotient(t3 + t4);
+
+    return 0.5f * (rp + rs);
+}
+
+float approxFresnelDiffuseReflectance(float eta)
+{
+    /**
+    * An evalution of the accuracy led
+    * to the following scheme, which cherry-picks
+    * fits from two papers where they are best.
+    */
+    if (eta < 1.0f)
+    {
+        /* Fit by Egan and Hilgeman (1973). Works
+        reasonably well for "normal" IOR values (<2).
+        Max rel. error in 1.0 - 1.5 : 0.1%
+        Max rel. error in 1.5 - 2   : 0.6%
+        Max rel. error in 2.0 - 5   : 9.5%
+        */
+        return -1.4399f * (eta * eta) + 0.7099f * eta + 0.6681f + 0.0636f / eta;
+    }
+    else
+    {
+        /* Fit by d'Eon and Irving (2011)
+        *
+        * Maintains a good accuracy even for
+        * unrealistic IOR values.
+        *
+        * Max rel. error in 1.0 - 2.0   : 0.1%
+        * Max rel. error in 2.0 - 10.0  : 0.2%
+        */
+        float invEta = 1.0f / eta,
+                invEta2 = invEta * invEta,
+                invEta3 = invEta2 * invEta,
+                invEta4 = invEta3 * invEta,
+                invEta5 = invEta4 * invEta;
+
+        return 0.919317f - 3.4793f * invEta
+               + 6.75335f * invEta2
+               - 7.80989f * invEta3
+               + 4.98554f * invEta4
+               - 1.36881f * invEta5;
+    }
+}
+
+void coordinateSystem(const Vector3f & va, Vector3f & vb, Vector3f & vc)
+{
+    if (std::abs(va.x()) > std::abs(va.y()))
+    {
+        float invLen = 1.0f / std::sqrt(va.x() * va.x() + va.z() * va.z());
+        vc = Vector3f(va.z() * invLen, 0.0f, -va.x() * invLen);
+    }
+    else
+    {
+        float invLen = 1.0f / std::sqrt(va.y() * va.y() + va.z() * va.z());
+        vc = Vector3f(0.0f, va.z() * invLen, -va.y() * invLen);
+    }
+    vb = vc.cross(va);
+}
+
+Vector3f reflect(const Vector3f & wi)
+{
+    return Vector3f(-wi.x(), -wi.y(), wi.z());
+}
+
+Vector3f refract(const Vector3f & wi, float cosThetaT, float eta, float invEta)
+{
+    float scale = -(cosThetaT < 0.0f ? invEta : eta);
+    return Vector3f(scale * wi.x(), scale * wi.y(), cosThetaT);
+}
+
+Vector3f reflect(const Vector3f & wi, const Vector3f & m)
+{
+    return 2.0f * wi.dot(m) * m - wi;
+}
+
+Vector3f refract(const Vector3f & wi, const Vector3f & m, float cosThetaT, float eta, float invEta)
+{
+    eta = (cosThetaT < 0.0f ? invEta : eta);
+    return m * (wi.dot(m) * eta + cosThetaT) - wi * eta;
+}
+
 filesystem::resolver *getFileResolver() {
     static filesystem::resolver *resolver = new filesystem::resolver();
     return resolver;
@@ -283,17 +417,6 @@ Point2f sphericalCoordinates(const Vector3f &v) {
     if (result.y() < 0)
         result.y() += 2*M_PI;
     return result;
-}
-
-void coordinateSystem(const Vector3f &a, Vector3f &b, Vector3f &c) {
-    if (std::abs(a.x()) > std::abs(a.y())) {
-        float invLen = 1.0f / std::sqrt(a.x() * a.x() + a.z() * a.z());
-        c = Vector3f(a.z() * invLen, 0.0f, -a.x() * invLen);
-    } else {
-        float invLen = 1.0f / std::sqrt(a.y() * a.y() + a.z() * a.z());
-        c = Vector3f(0.0f, a.z() * invLen, -a.y() * invLen);
-    }
-    b = c.cross(a);
 }
 
 float fresnel(float cosThetaI, float extIOR, float intIOR) {

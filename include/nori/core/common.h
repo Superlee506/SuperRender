@@ -53,6 +53,9 @@
 /* "Ray epsilon": relative error threshold for ray intersection computations */
 #define Epsilon 1e-4f
 
+/* Used for BSDF::eval() or BSDF::pdf() for the delta distribution. */
+#define DeltaEpsilon 1e-3
+
 /* A few useful constants */
 #undef M_PI
 
@@ -105,6 +108,11 @@
 
 ///BSDF
 #define XML_BSDF_DIFFUSE                         "diffuse"
+#define XML_BSDF_DIELECTRIC                      "dielectric"
+#define XML_BSDF_DIELECTRIC_INT_IOR              "intIOR"
+#define XML_BSDF_DIELECTRIC_EXT_IOR              "extIOR"
+#define XML_BSDF_DIELECTRIC_KS_REFLECT           "ksReflect"
+#define XML_BSDF_DIELECTRIC_KS_REFRACT           "ksRefract"
 
 /* Default setting */
 #define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
@@ -122,6 +130,11 @@
 
 ///BSDF
 #define DEFAULT_MESH_BSDF                          XML_BSDF_DIFFUSE
+
+#define DEFAULT_BSDF_DIELECTRIC_INT_IOR            1.5046f
+#define DEFAULT_BSDF_DIELECTRIC_EXT_IOR            1.000277f /* Air */
+#define DEFAULT_BSDF_DIELECTRIC_KS_REFLECT         Color3f(1.0f)
+#define DEFAULT_BSDF_DIELECTRIC_KS_REFRACT         Color3f(1.0f)
 
 /* Forward declarations */
 namespace filesystem {
@@ -205,6 +218,9 @@ class Timer;
 struct BSDFQueryRecord;
 class DiscretePDF1D;
 class DiscretePDF2D;
+class Texture;
+struct Color3f;
+struct Color4f;
 
 /// Import cout, cerr, endl for debugging purposes
 using std::cout;
@@ -265,6 +281,33 @@ extern std::string memString(size_t size, bool precise = false);
 
 /// gamma correction of the value
 extern float gammaCorrect(float value, float invGamma);
+
+/// Fresnel coefficient for dielectric material. eta = intIOR / extIOR
+extern float fresnelDielectric(float cosThetaI, float eta, float invEta, float & cosThetaT);
+
+/// Fresnel coefficient for conductor material. eta = intIOR / extIOR, etaK = K / extIOR
+extern Color3f fresnelConductor(float cosThetaI, const Color3f & eta, const Color3f & etaK);
+
+/**
+* Approximating the diffuse Frensel reflectance
+* for the eta < 1.0 and eta > 1.0 cases.
+*/
+extern float approxFresnelDiffuseReflectance(float eta);
+
+/// Complete the set {a} to an orthonormal base
+extern void coordinateSystem(const Vector3f & va, Vector3f & vb, Vector3f & vc);
+
+/// Reflection in local coordinates
+extern Vector3f reflect(const Vector3f & wi);
+
+/// Refraction in local coordinates
+extern Vector3f refract(const Vector3f & wi, float cosThetaT, float eta, float invEta);
+
+/// Reflection in global coordinates
+extern Vector3f reflect(const Vector3f & wi, const Vector3f & m);
+
+/// Refraction in global coordinates
+extern Vector3f refract(const Vector3f & wi, const Vector3f & m, float cosThetaT, float eta, float invEta);
 
 /// Measures associated with probability distributions
 enum EMeasure {

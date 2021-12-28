@@ -3,10 +3,8 @@
 //
 #include <nori/core/texture.h>
 #include <nori/core/timer.h>
-#include <nori/core/vector.h>
 #include <nori/core/intersection.h>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 NORI_NAMESPACE_BEGIN
 

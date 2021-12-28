@@ -14,10 +14,11 @@ NORI_NAMESPACE_BEGIN
 class DielectricBSDF : public BSDF {
 public:
     DielectricBSDF(const PropertyList &propList);
+    virtual ~DielectricBSDF();
 
-    virtual Color3f eval(const BSDFQueryRecord &) const override;
+    virtual Color3f eval(const BSDFQueryRecord & bRec) const override;
 
-    virtual float pdf(const BSDFQueryRecord &) const override;
+    virtual float pdf(const BSDFQueryRecord &bRec) const override;
 
     virtual Color3f sample(BSDFQueryRecord &bRec, const Point2f &sample) const override;
 
@@ -25,6 +26,9 @@ public:
 
 private:
     float m_intIOR, m_extIOR;
+    std::unique_ptr<Texture> m_pKsReflect;
+    std::unique_ptr<Texture> m_pKsRefract;
+    float m_eta, m_invEta;
 };
 
 NORI_NAMESPACE_END
