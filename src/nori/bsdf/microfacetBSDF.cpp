@@ -137,15 +137,15 @@ Color3f MicrofacetBSDF::sample(BSDFQueryRecord &bRec, const Point2f &_sample) co
     if (_sample.x() < ks)
     {
         // Specular reflection
-        float ReuseSampleX = _sample.x() / ks;
-        Normal3f Wh = Warp::squareToBeckmann(Point2f(ReuseSampleX, _sample.y()), alpha);
-        bRec.wo = 2.0f * Wh.dot(bRec.wi) * Wh - bRec.wi;
+        float reuseSampleX = _sample.x() / ks;
+        Normal3f wh = Warp::squareToBeckmann(Point2f(reuseSampleX, _sample.y()), alpha);
+        bRec.wo = 2.0f * wh.dot(bRec.wi) * wh - bRec.wi;
     }
     else
     {
         // Diffuse
-        float ReuseSampleX = (_sample.x() - ks) / (1.0f - ks);
-        bRec.wo = Warp::squareToCosineHemisphere(Point2f(ReuseSampleX, _sample.y()));
+        float reuseSampleX = (_sample.x() - ks) / (1.0f - ks);
+        bRec.wo = Warp::squareToCosineHemisphere(Point2f(reuseSampleX, _sample.y()));
     }
 
     bRec.eta = 1.0f;
