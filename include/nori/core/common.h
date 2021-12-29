@@ -97,7 +97,7 @@
 #define XML_INTEGRATOR_WHITTED_DEPTH             "depth"
 #define XML_INTEGRATOR_PATH_EMS                  "pathEMS"
 #define XML_INTEGRATOR_PATH_EMS_DEPTH            "depth"
-#define XML_INTEGRATOR_PATH_MATS                 "pathMATS"
+#define XML_INTEGRATOR_PATH_MATS                 "path_mats"
 #define XML_INTEGRATOR_PATH_MATS_DEPTH           "depth"
 #define XML_INTEGRATOR_PATH_MIS                  "pathMIS"
 #define XML_INTEGRATOR_PATH_MIS_DEPTH            "depth"
@@ -400,6 +400,8 @@
 #define DEFAULT_BSDF_ROUGH_COATING_KS              Color3f(1.0f)
 #define DEFAULT_BSDF_ROUGH_COATING_ALPHA           0.1f
 #define DEFAULT_BSDF_ROUGH_COATING_TYPE            XML_BSDF_BECKMANN
+
+#define DEFAULT_PATH_TRACING_DEPTH                5
 
 #define DEFAULT_FILTER_GAUSSIAN_RADIUS             2.0f
 #define DEFAULT_FILTER_GAUSSIAN_STDDEV             0.5f

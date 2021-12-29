@@ -76,7 +76,7 @@ public:
 
 protected:
     Mesh * m_pMesh = nullptr;
-    EEmitterType m_Type = EEmitterType::EUnknown;
+    EEmitterType m_type = EEmitterType::EUnknown;
 };
 
 NORI_NAMESPACE_END

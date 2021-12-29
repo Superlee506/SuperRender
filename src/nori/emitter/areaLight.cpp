@@ -10,7 +10,7 @@ NORI_NAMESPACE_BEGIN
 AreaLight::AreaLight(const PropertyList & propList)
 {
     m_radiance = propList.getColor(XML_EMITTER_AREA_LIGHT_RADIANCE);
-    m_Type = EEmitterType::EArea;
+    m_type = EEmitterType::EArea;
 }
 
 Color3f AreaLight::sample(EmitterQueryRecord & record, const Point2f & sample2D, float sample1D) const

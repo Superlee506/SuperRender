@@ -25,6 +25,10 @@
 		<integer name="height" value="600"/>
 	</camera>
 
+	<acceleration type="hlbvh">
+		<integer name="leafSize" value="10"/>
+	</acceleration>
+
 	<!-- Two light sources  -->
 	<mesh type="obj">
 		<string name="filename" value="meshes/mesh_1.obj"/>

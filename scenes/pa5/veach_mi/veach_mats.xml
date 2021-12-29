@@ -18,6 +18,10 @@
 		<integer name="height" value="512"/>
 	</camera>
 
+	<acceleration type="hlbvh">
+		<integer name="leafSize" value="10"/>
+	</acceleration>
+
 	<mesh type="obj">
 		<string name="filename" value="meshes/sphere.obj"/>
 		<transform name="toWorld">

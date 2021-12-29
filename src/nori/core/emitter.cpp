@@ -18,12 +18,12 @@ void Emitter::setMesh(Mesh * pMesh)
 
 EEmitterType Emitter::getEmitterType() const
 {
-    return m_Type;
+    return m_type;
 }
 
 bool Emitter::isDelta() const
 {
-    return m_Type == EEmitterType::EPoint;
+    return m_type == EEmitterType::EPoint;
 }
 
 NORI_NAMESPACE_END
