@@ -53,7 +53,7 @@ StudentsTTest::~StudentsTTest()
         delete scene;
 }
 
-void StudentsTTest::addChild(NoriObject *obj)
+void StudentsTTest::addChild(NoriObject *obj, const std::string & name)
 {
     switch (obj->getClassType()) {
         case EBSDF:
@@ -65,8 +65,8 @@ void StudentsTTest::addChild(NoriObject *obj)
             break;
 
         default:
-            throw NoriException("StudentsTTest::addChild(<%s>) is not supported!",
-                                classTypeName(obj->getClassType()));
+            throw NoriException("StudentsTTest::addChild(<%s>, <%s>) is not supported!",
+                                classTypeName(obj->getClassType()), name);
     }
 }
 

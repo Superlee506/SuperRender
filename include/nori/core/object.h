@@ -51,7 +51,7 @@ public:
      * The default implementation does not support children and
      * simply throws an exception
      */
-    virtual void addChild(NoriObject *child);
+    virtual void addChild(NoriObject *child, const std::string & name);
 
     /**
      * \brief Set the parent object
@@ -60,7 +60,7 @@ public:
      * notified when they are added to a parent object. The
      * default implementation does nothing.
      */
-    virtual void setParent(NoriObject *parent);
+    virtual void setParent(NoriObject *parent, const std::string &);
 
     /**
      * \brief Perform some action associated with the object

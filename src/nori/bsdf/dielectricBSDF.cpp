@@ -130,5 +130,58 @@ std::string DielectricBSDF::toString() const
             m_pKsRefract->isConstant() ? m_pKsRefract->getAverage().toString() : indent(m_pKsRefract->toString())
     );
 }
+
+void DielectricBSDF::addChild(NoriObject* pChildObj, const std::string & name)
+{
+    if (pChildObj->getClassType() == EClassType::ETexture && name == XML_BSDF_DIELECTRIC_KS_REFLECT)
+    {
+        if (m_pKsReflect->isConstant())
+        {
+            m_pKsReflect.release() ;
+            m_pKsReflect.reset((Texture *)(pChildObj));
+            if (m_pKsReflect->isMonochromatic())
+            {
+                LOG(WARNING) << "KsReflect texture is monochromatic! Make sure that it is done intentionally.";
+            }
+        }
+        else
+        {
+            throw NoriException("DielectricBSDF: tried to specify multiple KsReflect texture");
+        }
+    }
+    else if (pChildObj->getClassType() == EClassType::ETexture && name == XML_BSDF_DIELECTRIC_KS_REFRACT)
+    {
+        if (m_pKsRefract->isConstant())
+        {
+            m_pKsRefract.release();
+            m_pKsRefract.reset((Texture *)(pChildObj));
+            if (m_pKsRefract->isMonochromatic())
+            {
+                LOG(WARNING) << "KsRefract texture is monochromatic! Make sure that it is done intentionally.";
+            }
+        }
+        else
+        {
+            throw NoriException("DielectricBSDF: tried to specify multiple KsRefract texture");
+        }
+    }
+    else
+    {
+        throw NoriException("DielectricBSDF::AddChild(<%s>, <%s>) is not supported!",
+                              classTypeName(pChildObj->getClassType()), name
+        );
+    }
+}
+
+void DielectricBSDF::activate()
+{
+    addBsdfType(EBSDFType::EDeltaReflection);
+    addBsdfType(EBSDFType::EDeltaTransmission);
+    if (!m_pKsRefract->isConstant() || !m_pKsReflect->isConstant())
+    {
+        addBsdfType(EBSDFType::EUVDependent);
+    }
+}
+
 NORI_REGISTER_CLASS(DielectricBSDF, XML_BSDF_DIELECTRIC);
 NORI_NAMESPACE_END

@@ -156,7 +156,7 @@ void Scene::activate() {
     LOG(INFO) << endl;
 }
 
-void Scene::addChild(NoriObject *obj) {
+void Scene::addChild(NoriObject *obj, const std::string & name) {
     switch (obj->getClassType()) {
         case EAcceleration:
             if (m_pAccel != nullptr)
@@ -221,8 +221,8 @@ void Scene::addChild(NoriObject *obj) {
             break;
 
         default:
-            throw NoriException("Scene::addChild(<%s>) is not supported!",
-                classTypeName(obj->getClassType()));
+            throw NoriException("Scene::AddChild(<%s>, <%s>) is not supported!",
+                classTypeName(obj->getClassType()), name);
     }
 }
 

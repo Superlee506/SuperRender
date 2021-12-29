@@ -8,12 +8,13 @@
 #include <nori/core/frame.h>
 #include <nori/core/warp.h>
 #include <nori/core/bsdfQueryRecord.h>
+#include <nori/core/texture.h>
 
 NORI_NAMESPACE_BEGIN
 
 DiffuseBSDF::DiffuseBSDF(const PropertyList &propList)
 {
-    m_albedo = propList.getColor("albedo", Color3f(0.5f));
+    m_pAlbedo.reset(new ConstantColor3fTexture(propList.getColor(XML_BSDF_DIFFUSE_ALBEDO, DEFAULT_BSDF_DIFFUSE_ALBEDO)));
 }
 
 /// Evaluate the BRDF model
@@ -27,7 +28,7 @@ Color3f DiffuseBSDF::eval(const BSDFQueryRecord &bRec) const
         return Color3f(0.0f);
 
     /* The BRDF is simply the albedo / pi */
-    return m_albedo * INV_PI;
+    return m_pAlbedo->eval(bRec.its) * INV_PI;
 }
 
 /// Compute the density of \ref sample() wrt. solid angles
@@ -67,7 +68,7 @@ Color3f DiffuseBSDF::sample(BSDFQueryRecord &bRec, const Point2f &sample) const
 
     /* eval() / pdf() * cos(theta) = albedo. There
        is no need to call these functions. */
-    return m_albedo;
+    return m_pAlbedo->eval(bRec.its);
 }
 
 bool DiffuseBSDF::isDiffuse() const
@@ -81,10 +82,45 @@ std::string DiffuseBSDF::toString() const
     return tfm::format(
             "Diffuse[\n"
             "  albedo = %s\n"
-            "]", m_albedo.toString());
+            "]", m_pAlbedo->isConstant() ? m_pAlbedo->getAverage().toString() : indent(m_pAlbedo->toString())
+    );
 }
 
-NoriObject::EClassType DiffuseBSDF::getClassType() const { return EBSDF; }
+
+void DiffuseBSDF::addChild(NoriObject* pChildObj, const std::string & name)
+{
+    if (pChildObj->getClassType() == EClassType::ETexture && name == XML_BSDF_DIFFUSE_ALBEDO)
+    {
+        if (m_pAlbedo->isConstant())
+        {
+            m_pAlbedo.release() ;
+            m_pAlbedo.reset((Texture *)(pChildObj));
+            if (m_pAlbedo->isMonochromatic())
+            {
+                LOG(WARNING) << "Albedo texture is monochromatic! Make sure that it is done intentionally.";
+            }
+        }
+        else
+        {
+            throw NoriException("DiffuseBSDF: tried to specify multiple albedo texture");
+        }
+    }
+    else
+    {
+        throw NoriException("DiffuseBSDF::AddChild(<%s>, <%s>) is not supported!",
+                              classTypeName(pChildObj->getClassType()), name
+        );
+    }
+}
+
+void DiffuseBSDF::activate()
+{
+    addBsdfType(EBSDFType::EDiffuseReflection);
+    if (!m_pAlbedo->isConstant())
+    {
+        addBsdfType(EBSDFType::EUVDependent);
+    }
+}
 
 NORI_REGISTER_CLASS(DiffuseBSDF, "diffuse");
 NORI_NAMESPACE_END

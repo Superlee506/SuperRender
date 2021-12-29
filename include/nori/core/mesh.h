@@ -96,8 +96,8 @@ public:
     /// Return a pointer to the BSDF associated with this mesh
     const BSDF *getBSDF() const;
 
-    /// Register a child object (e.g. a BSDF) with the mesh
-    virtual void addChild(NoriObject *child);
+    /// Register a pChildObj object (e.g. a BSDF) with the mesh
+    virtual void addChild(NoriObject *pChildObj, const std::string & name);
 
     /// Return the name of this mesh
     const std::string &getName() const;

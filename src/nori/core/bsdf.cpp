@@ -9,5 +9,25 @@ NoriObject::EClassType BSDF::getClassType() const { return EBSDF; }
 
 bool BSDF::isDiffuse() const { return false; }
 
+bool BSDF::isAnisotropic() const
+{
+    return false;
+}
+
+void BSDF::addBsdfType(uint32_t Type)
+{
+    m_combinedType |= Type;
+}
+
+bool BSDF::hasBsdfType(EBSDFType Type) const
+{
+    return (uint32_t(Type) & m_combinedType) != 0;
+}
+
+uint32_t BSDF::getBsdfTypes() const
+{
+    return m_combinedType;
+}
+
 
 NORI_NAMESPACE_END

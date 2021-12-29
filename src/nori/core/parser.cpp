@@ -165,10 +165,15 @@ NoriObject *loadFromXML(const std::string &filename) {
 
         PropertyList propList;
         std::vector<NoriObject *> children;
+        std::vector<std::string> childNames;
         for (pugi::xml_node &ch: node.children()) {
             NoriObject *child = parseTag(ch, propList, tag);
             if (child)
+            {
                 children.push_back(child);
+                childNames.push_back(ch.attribute("name").value());
+            }
+
         }
 
         NoriObject *result = nullptr;
@@ -192,9 +197,11 @@ NoriObject *loadFromXML(const std::string &filename) {
                 }
 
                 /* Add all children */
-                for (auto ch: children) {
-                    result->addChild(ch);
-                    ch->setParent(result);
+                //for (auto ch: children)
+                for (size_t i = 0; i < children.size(); i++)
+                {
+                    result->addChild(children[i], childNames[i]);
+                    children[i]->setParent(result, node.attribute("name").value());
                 }
 
                 /* Activate / configure the object */

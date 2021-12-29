@@ -46,14 +46,14 @@ public:
 
     virtual ~StudentsTTest();
 
-    void addChild(NoriObject *obj);
+    virtual void addChild(NoriObject *obj, const std::string & name) override;
 
     /// Invoke a series of t-tests on the provided input
-    void activate();
+    virtual void activate() override;
 
-    std::string toString() const;
+    virtual std::string toString() const override;
 
-    EClassType getClassType() const;
+    virtual EClassType getClassType() const override;
 
 private:
     std::vector<BSDF *> m_bsdfs;

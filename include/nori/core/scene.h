@@ -105,15 +105,15 @@ public:
      * Initializes the internal data structures (kd-tree,
      * emitter sampling data structures, etc.)
      */
-    void activate();
+    virtual void activate() override;
 
     /// Add a child object to the scene (meshes, integrators etc.)
-    void addChild(NoriObject *obj);
+    virtual void addChild(NoriObject *obj, const std::string & name) override;
 
     /// Return a string summary of the scene (for debugging purposes)
-    std::string toString() const;
+    virtual std::string toString() const override;
 
-    EClassType getClassType() const;
+    virtual EClassType getClassType() const override;
 
 private:
     Color3f m_background;

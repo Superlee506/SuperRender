@@ -66,7 +66,7 @@ ChiSquareTest::~ChiSquareTest()
         delete bsdf;
 }
 
-void ChiSquareTest::addChild(NoriObject *obj)
+void ChiSquareTest::addChild(NoriObject *obj, const std::string & name)
 {
     switch (obj->getClassType()) {
         case EBSDF:
@@ -74,8 +74,8 @@ void ChiSquareTest::addChild(NoriObject *obj)
             break;
 
         default:
-            throw NoriException("ChiSquareTest::addChild(<%s>) is not supported!",
-                                classTypeName(obj->getClassType()));
+            throw NoriException("ChiSquareTest::addChild(<%s>, <%s>) is not supported!",
+                                classTypeName(obj->getClassType()), name);
     }
 }
 

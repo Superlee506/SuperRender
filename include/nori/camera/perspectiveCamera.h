@@ -19,16 +19,16 @@ NORI_NAMESPACE_BEGIN
 class PerspectiveCamera : public Camera {
 public:
     PerspectiveCamera(const PropertyList &propList);
-    void activate();
+    virtual void activate() override;
 
-    Color3f sampleRay(Ray3f &ray,
+    virtual Color3f sampleRay(Ray3f &ray,
                       const Point2f &samplePosition,
-                      const Point2f &apertureSample) const;
+                      const Point2f &apertureSample) const override;
 
-    void addChild(NoriObject *obj);
+    virtual void addChild(NoriObject *obj, const std::string & name) override;
 
     /// Return a human-readable summary
-    std::string toString() const;
+    virtual std::string toString() const override;
 private:
     Vector2f m_invOutputSize;
     Transform m_sampleToCamera;

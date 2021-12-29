@@ -141,18 +141,18 @@ Point3f Mesh::getCentroid(uint32_t index) const {
          m_V.col(m_F(2, index)));
 }
 
-void Mesh::addChild(NoriObject *obj) {
-    switch (obj->getClassType()) {
+void Mesh::addChild(NoriObject *pChildObj, const std::string & name) {
+    switch (pChildObj->getClassType()) {
         case EBSDF:
             if (m_bsdf)
                 throw NoriException(
                     "Mesh: tried to register multiple BSDF instances!");
-            m_bsdf = static_cast<BSDF *>(obj);
+            m_bsdf = static_cast<BSDF *>(pChildObj);
             break;
 
         case EEmitter:
             {
-                Emitter *emitter = static_cast<Emitter *>(obj);
+                Emitter *emitter = static_cast<Emitter *>(pChildObj);
                 if (m_emitter)
                     throw NoriException(
                         "Mesh: tried to register multiple Emitter instances!");
@@ -165,8 +165,8 @@ void Mesh::addChild(NoriObject *obj) {
             break;
 
         default:
-            throw NoriException("Mesh::addChild(<%s>) is not supported!",
-                                classTypeName(obj->getClassType()));
+            throw NoriException("Mesh::AddChild(<%s>, <%s>) is not supported!",
+                                classTypeName(pChildObj->getClassType()), name);
     }
 }
 

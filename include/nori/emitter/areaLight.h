@@ -17,7 +17,7 @@ public:
 
     virtual Color3f eval(const EmitterQueryRecord & record) const override;
 
-    virtual void setParent(NoriObject * pParentObj) override;
+    virtual void setParent(NoriObject * pParentObj, const std::string &name) override;
 
     virtual std::string toString() const override;
 

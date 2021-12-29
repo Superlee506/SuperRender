@@ -75,7 +75,7 @@ Color3f AreaLight::eval(const EmitterQueryRecord & record) const
     return Color3f(0.0f);
 }
 
-void AreaLight::setParent(NoriObject * pParentObj)
+void AreaLight::setParent(NoriObject * pParentObj, const std::string &name)
 {
     EClassType clzType = pParentObj->getClassType();
     if (clzType == EClassType::EMesh)
@@ -85,8 +85,8 @@ void AreaLight::setParent(NoriObject * pParentObj)
     }
     else
     {
-        throw NoriException("AreaLight::SetParent(<%s>) is not supported!",
-                              classTypeName(pParentObj->getClassType())
+        throw NoriException("AreaLight::SetParent(<%s>, <%s>) is not supported!",
+                              classTypeName(pParentObj->getClassType()), name
         );
     }
 }

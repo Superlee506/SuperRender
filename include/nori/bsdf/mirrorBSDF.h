@@ -15,13 +15,15 @@ class MirrorBSDF : public BSDF {
 public:
     MirrorBSDF(const PropertyList &);
 
-    virtual Color3f eval(const BSDFQueryRecord &) const override;
+    virtual Color3f eval(const BSDFQueryRecord &bRec) const override;
 
-    virtual float pdf(const BSDFQueryRecord &) const override;
+    virtual float pdf(const BSDFQueryRecord &bRec) const override;
 
     virtual Color3f sample(BSDFQueryRecord &bRec, const Point2f &) const override;
 
     virtual std::string toString() const override;
+
+    virtual void activate() override;
 };
 
 NORI_NAMESPACE_END

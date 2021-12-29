@@ -56,6 +56,10 @@
 /* Used for BSDF::eval() or BSDF::pdf() for the delta distribution. */
 #define DeltaEpsilon 1e-3
 
+/* To avoid the numerical error in computation */
+#define MIN_ALPHA 5e-4
+#define MAX_ALPHA 1.0
+
 /* A few useful constants */
 #undef M_PI
 
@@ -70,25 +74,33 @@
 #define XML_TYPE(Field)     Field##_XmlType
 #define XML_VALUE(Field)    Field##_XmlValue
 
+#define XML_TRANSFORM_TRANSLATE                  "translate"
+#define XML_TRANSFORM_MATRIX                     "matrix"
+#define XML_TRANSFORM_ROTATE                     "rotate"
+#define XML_TRANSFORM_ANGLE                      "angle"
+#define XML_TRANSFORM_AXIS                       "axis"
+#define XML_TRANSFORM_SCALE                      "scale"
+#define XML_TRANSFORM_LOOKAT                     "lookat"
+#define XML_TRANSFORM_ORIGIN                     "origin"
+#define XML_TRANSFORM_TARGET                     "target"
+#define XML_TRANSFORM_UP                         "up"
+
+#define XML_INTEGRATOR                           "integrator"
+#define XML_INTEGRATOR_NORMAL                    "normals"
+#define XML_INTEGRATOR_SIMPLE                    "simple"
+#define XML_INTEGRATOR_SIMPLE_POSITION           "position"
+#define XML_INTEGRATOR_SIMPLE_POWER              "power"
+#define XML_INTEGRATOR_AO                        "ao"
 #define XML_INTEGRATOR_AO_ALPHA                  "alpha"
 #define XML_INTEGRATOR_AO_SAMPLE_COUNT           "sampleCount"
-
-#define XML_ACCELERATION_BRUTO_LOOP              "bruto"
-#define XML_ACCELERATION_BVH                     "bvh"
-#define XML_ACCELERATION_OCTREE                  "octree"
-#define XML_ACCELERATION_BVH_LEAF_SIZE           "leafSize"
-#define XML_ACCELERATION_BVH_SPLIT_METHOD        "splitMethod"
-#define XML_ACCELERATION_BVH_SPLIT_METHOD_CENTER "center"
-#define XML_ACCELERATION_BVH_SPLIT_METHOD_SAH    "sah"
-#define XML_ACCELERATION_HLBVH                   "hlbvh"
-#define XML_ACCELERATION_HLBVH_LEAF_SIZE         "leafSize"
-
-#define XML_SCENE                                "scene"
-#define XML_SCENE_BACKGROUND                     "background"
-#define XML_SCENE_FORCE_BACKGROUND               "forceBackground"
-
 #define XML_INTEGRATOR_WHITTED                   "whitted"
 #define XML_INTEGRATOR_WHITTED_DEPTH             "depth"
+#define XML_INTEGRATOR_PATH_EMS                  "pathEMS"
+#define XML_INTEGRATOR_PATH_EMS_DEPTH            "depth"
+#define XML_INTEGRATOR_PATH_MATS                 "pathMATS"
+#define XML_INTEGRATOR_PATH_MATS_DEPTH           "depth"
+#define XML_INTEGRATOR_PATH_MIS                  "pathMIS"
+#define XML_INTEGRATOR_PATH_MIS_DEPTH            "depth"
 
 #define XML_EMITTER                              "emitter"
 #define XML_EMITTER_AREA_LIGHT                   "area"
@@ -106,35 +118,363 @@
 #define XML_EMITTER_CONSTANT_LIGHT               "constant"
 #define XML_EMITTER_CONSTANT_LIGHT_RADIANCE      "radiance"
 
-///BSDF
-#define XML_BSDF_DIFFUSE                         "diffuse"
+#define XML_TEXTURE                              "texture"
+#define XML_TEXTURE_BITMAP                       "bitmap"
+#define XML_TEXTURE_BITMAP_FILENAME              "filename"
+#define XML_TEXTURE_BITMAP_GAMMA                 "gamma"
+#define XML_TEXTURE_BITMAP_WRAP_MODE             "wrapMode"
+#define XML_TEXTURE_BITMAP_WRAP_MODE_U           "uWrapMode"
+#define XML_TEXTURE_BITMAP_WRAP_MODE_V           "vWrapMode"
+#define XML_TEXTURE_BITMAP_WRAP_MODE_REPEAT      "repeat"
+#define XML_TEXTURE_BITMAP_WRAP_MODE_CLAMP       "clamp"
+#define XML_TEXTURE_BITMAP_WRAP_MODE_BLACK       "black"
+#define XML_TEXTURE_BITMAP_FILTER_TYPE           "filterType"
+#define XML_TEXTURE_BITMAP_FILTER_TYPE_NEAREST   "nearest"
+#define XML_TEXTURE_BITMAP_FILTER_TYPE_BILINEAR  "bilinear"
+#define XML_TEXTURE_BITMAP_FILTER_TYPE_TRILINEAR "trilinear"
+#define XML_TEXTURE_BITMAP_FILTER_TYPE_EWA       "ewa"
+#define XML_TEXTURE_BITMAP_MAX_ANISOTROPY        "maxAnisotropy"
+#define XML_TEXTURE_BITMAP_OFFSE_U               "uOffset"
+#define XML_TEXTURE_BITMAP_OFFSE_V               "vOffset"
+#define XML_TEXTURE_BITMAP_SCALE_U               "uScale"
+#define XML_TEXTURE_BITMAP_SCALE_V               "vScale"
+#define XML_TEXTURE_BITMAP_CHANNEL               "channel"
+#define XML_TEXTURE_BITMAP_CHANNEL_R             "r"
+#define XML_TEXTURE_BITMAP_CHANNEL_RGB           "rgb"
+#define XML_TEXTURE_CHECKERBOARD                 "checkerboard"
+#define XML_TEXTURE_CHECKERBOARD_BLOCKS          "blocks"
+#define XML_TEXTURE_CHECKERBOARD_COLOR_A         "colorA"
+#define XML_TEXTURE_CHECKERBOARD_COLOR_B         "colorB"
+#define XML_TEXTURE_CHECKERBOARD_OFFSE_U         "uOffset"
+#define XML_TEXTURE_CHECKERBOARD_OFFSE_V         "vOffset"
+#define XML_TEXTURE_CHECKERBOARD_SCALE_U         "uScale"
+#define XML_TEXTURE_CHECKERBOARD_SCALE_V         "vScale"
+#define XML_TEXTURE_WIREFRAME                    "wireframe"
+#define XML_TEXTURE_WIREFRAME_INTERIOR_COLOR     "interiorColor"
+#define XML_TEXTURE_WIREFRAME_EDGE_COLOR         "edgeColor"
+#define XML_TEXTURE_WIREFRAME_EDGE_WIDTH         "edgeWidth"
+#define XML_TEXTURE_WIREFRAME_TRANSITION_WIDTH   "transitionWidth"
+#define XML_TEXTURE_WIREFRAME_OFFSE_U            "uOffset"
+#define XML_TEXTURE_WIREFRAME_OFFSE_V            "vOffset"
+#define XML_TEXTURE_WIREFRAME_SCALE_U            "uScale"
+#define XML_TEXTURE_WIREFRAME_SCALE_V            "vScale"
+#define XML_TEXTURE_GRID                         "grid"
+#define XML_TEXTURE_GRID_COLOR_BACKGROUND        "backgroundColor"
+#define XML_TEXTURE_GRID_COLOR_LINE              "lineColor"
+#define XML_TEXTURE_GRID_LINE_WIDTH              "lineWidth"
+#define XML_TEXTURE_GRID_LINES                   "lines"
+#define XML_TEXTURE_GRID_OFFSE_U                 "uOffset"
+#define XML_TEXTURE_GRID_OFFSE_V                 "vOffset"
+#define XML_TEXTURE_GRID_SCALE_U                 "uScale"
+#define XML_TEXTURE_GRID_SCALE_V                 "vScale"
+#define XML_TEXTURE_CURVATURE                    "curvature"
+#define XML_TEXTURE_CURVATURE_POSITIVE_COLOR     "positiveColor"
+#define XML_TEXTURE_CURVATURE_NEGATIVE_COLOR     "negativeColor"
+#define XML_TEXTURE_CURVATURE_SCALE              "scale"
+#define XML_TEXTURE_CURVATURE_TYPE               "curvatureType"
+#define XML_TEXTURE_CURVATURE_OFFSE_U            "uOffset"
+#define XML_TEXTURE_CURVATURE_OFFSE_V            "vOffset"
+#define XML_TEXTURE_CURVATURE_SCALE_U            "uScale"
+#define XML_TEXTURE_CURVATURE_SCALE_V            "vScale"
+#define XML_TEXTURE_SCALE                        "scale"
+#define XML_TEXTURE_SCALE_SCALE                  "scale"
+
+#define XML_ACCELERATION                         "acceleration"
+#define XML_ACCELERATION_BRUTO_LOOP              "bruto"
+#define XML_ACCELERATION_BVH                     "bvh"
+#define XML_ACCELERATION_BVH_LEAF_SIZE           "leafSize"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD        "splitMethod"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD_CENTER "center"
+#define XML_ACCELERATION_BVH_SPLIT_METHOD_SAH    "sah"
+#define XML_ACCELERATION_HLBVH                   "hlbvh"
+#define XML_ACCELERATION_HLBVH_LEAF_SIZE         "leafSize"
+
+#define XML_SCENE                                "scene"
+#define XML_SCENE_BACKGROUND                     "background"
+#define XML_SCENE_FORCE_BACKGROUND               "forceBackground"
+
+#define XML_MESH                                 "mesh"
+#define XML_MESH_WAVEFRONG_OBJ                   "obj"
+#define XML_MESH_WAVEFRONG_OBJ_FILENAME          "filename"
+#define XML_MESH_WAVEFRONG_OBJ_TO_WORLD          "toWorld"
+
+#define XML_BSDF                                 "bsdf"
+#define XML_BSDF_GGX                             "ggx"
+#define XML_BSDF_BECKMANN                        "beckmann"
 #define XML_BSDF_DIELECTRIC                      "dielectric"
 #define XML_BSDF_DIELECTRIC_INT_IOR              "intIOR"
 #define XML_BSDF_DIELECTRIC_EXT_IOR              "extIOR"
 #define XML_BSDF_DIELECTRIC_KS_REFLECT           "ksReflect"
 #define XML_BSDF_DIELECTRIC_KS_REFRACT           "ksRefract"
+#define XML_BSDF_DIFFUSE                         "diffuse"
+#define XML_BSDF_DIFFUSE_ALBEDO                  "albedo"
+#define XML_BSDF_MIRROR                          "mirror"
+#define XML_BSDF_MICROFACET                      "microfacet"
+#define XML_BSDF_MICROFACET_ALPHA                "alpha"
+#define XML_BSDF_MICROFACET_INT_IOR              "intIOR"
+#define XML_BSDF_MICROFACET_EXT_IOR              "extIOR"
+#define XML_BSDF_MICROFACET_KD                   "kd"
+#define XML_BSDF_CONDUCTOR                       "conductor"
+#define XML_BSDF_CONDUCTOR_INT_IOR               "intIOR"
+#define XML_BSDF_CONDUCTOR_EXT_IOR               "extIOR"
+#define XML_BSDF_CONDUCTOR_K                     "k"
+#define XML_BSDF_CONDUCTOR_KS                    "ks"
+#define XML_BSDF_PLASTIC                         "plastic"
+#define XML_BSDF_PLASTIC_INT_IOR                 "intIOR"
+#define XML_BSDF_PLASTIC_EXT_IOR                 "extIOR"
+#define XML_BSDF_PLASTIC_KS                      "ks"
+#define XML_BSDF_PLASTIC_KD                      "kd"
+#define XML_BSDF_PLASTIC_NONLINEAR               "nonlinear"
+#define XML_BSDF_ROUGH_CONDUCTOR                 "roughConductor"
+#define XML_BSDF_ROUGH_CONDUCTOR_INT_IOR         "intIOR"
+#define XML_BSDF_ROUGH_CONDUCTOR_EXT_IOR         "extIOR"
+#define XML_BSDF_ROUGH_CONDUCTOR_K               "k"
+#define XML_BSDF_ROUGH_CONDUCTOR_KS              "ks"
+#define XML_BSDF_ROUGH_CONDUCTOR_ALPHA           "alpha"
+#define XML_BSDF_ROUGH_CONDUCTOR_ALPHA_U         "alphaU"
+#define XML_BSDF_ROUGH_CONDUCTOR_ALPHA_V         "alphaV"
+#define XML_BSDF_ROUGH_CONDUCTOR_TYPE            "type"
+#define XML_BSDF_ROUGH_CONDUCTOR_AS              "as"
+#define XML_BSDF_ROUGH_DIELECTRIC                "roughDielectric"
+#define XML_BSDF_ROUGH_DIELECTRIC_INT_IOR        "intIOR"
+#define XML_BSDF_ROUGH_DIELECTRIC_EXT_IOR        "extIOR"
+#define XML_BSDF_ROUGH_DIELECTRIC_KS_REFLECT     "ksReflect"
+#define XML_BSDF_ROUGH_DIELECTRIC_KS_REFRACT     "ksRefract"
+#define XML_BSDF_ROUGH_DIELECTRIC_ALPHA          "alpha"
+#define XML_BSDF_ROUGH_DIELECTRIC_ALPHA_U        "alphaU"
+#define XML_BSDF_ROUGH_DIELECTRIC_ALPHA_V        "alphaV"
+#define XML_BSDF_ROUGH_DIELECTRIC_TYPE           "type"
+#define XML_BSDF_ROUGH_DIELECTRIC_AS             "as"
+#define XML_BSDF_ROUGH_DIFFUSE                   "roughDiffuse"
+#define XML_BSDF_ROUGH_DIFFUSE_ALBEDO            "albedo"
+#define XML_BSDF_ROUGH_DIFFUSE_ALPHA             "alpha"
+#define XML_BSDF_ROUGH_DIFFUSE_FAST_APPROX       "fastApprox"
+#define XML_BSDF_ROUGH_PLASTIC                   "roughPlastic"
+#define XML_BSDF_ROUGH_PLASTIC_INT_IOR           "intIOR"
+#define XML_BSDF_ROUGH_PLASTIC_EXT_IOR           "extIOR"
+#define XML_BSDF_ROUGH_PLASTIC_KS                "ks"
+#define XML_BSDF_ROUGH_PLASTIC_KD                "kd"
+#define XML_BSDF_ROUGH_PLASTIC_NONLINEAR         "nonlinear"
+#define XML_BSDF_ROUGH_PLASTIC_TYPE              "type"
+#define XML_BSDF_ROUGH_PLASTIC_ALPHA             "alpha"
+#define XML_BSDF_ROUGH_PLASTIC_BECKMANN_RFT_DATA "data\\BeckmannRFTData.bin"
+#define XML_BSDF_ROUGH_PLASTIC_GGX_RFT_DATA      "data\\GGXRFTData.bin"
+#define XML_BSDF_COATING                         "coating"
+#define XML_BSDF_COATING_INT_IOR                 "intIOR"
+#define XML_BSDF_COATING_EXT_IOR                 "extIOR"
+#define XML_BSDF_COATING_THICKNESS               "thickness"
+#define XML_BSDF_COATING_SIGMA_A                 "sigmaA"
+#define XML_BSDF_COATING_KS                      "ks"
+#define XML_BSDF_ROUGH_COATING                   "roughCoating"
+#define XML_BSDF_ROUGH_COATING_INT_IOR           "intIOR"
+#define XML_BSDF_ROUGH_COATING_EXT_IOR           "extIOR"
+#define XML_BSDF_ROUGH_COATING_THICKNESS         "thickness"
+#define XML_BSDF_ROUGH_COATING_SIGMA_A           "sigmaA"
+#define XML_BSDF_ROUGH_COATING_KS                "ks"
+#define XML_BSDF_ROUGH_COATING_ALPHA             "alpha"
+#define XML_BSDF_ROUGH_COATING_TYPE              "type"
+#define XML_BSDF_ROUGH_COATING_BECKMANN_RFT_DATA "data\\BeckmannRFTData.bin"
+#define XML_BSDF_ROUGH_COATING_GGX_RFT_DATA      "data\\GGXRFTData.bin"
+#define XML_BSDF_TWO_SIDED                       "twoSided"
+#define XML_BSDF_BUMP_MAP                        "bumpMap"
+#define XML_BSDF_NORMAL_MAP                      "normalMap"
+
+#define XML_MEDIUM                               "medium"
+
+#define XML_PHASE                                "phase"
+
+#define XML_CAMERA                               "camera"
+#define XML_CAMERA_PERSPECTIVE                   "perspective"
+#define XML_CAMERA_PERSPECTIVE_WIDTH             "width"
+#define XML_CAMERA_PERSPECTIVE_HEIGHT            "height"
+#define XML_CAMERA_PERSPECTIVE_TO_WORLD          "toWorld"
+#define XML_CAMERA_PERSPECTIVE_FOV               "fov"
+#define XML_CAMERA_PERSPECTIVE_NEAR_CLIP         "nearClip"
+#define XML_CAMERA_PERSPECTIVE_FAR_CLIP          "farClip"
+
+#define XML_TEST                                 "test"
+#define XML_TEST_STUDENT_T                       "ttest"
+#define XML_TEST_STUDENT_T_SIGNIFICANCE_LEVEL    "significanceLevel"
+#define XML_TEST_STUDENT_T_ANGLES                "angles"
+#define XML_TEST_STUDENT_T_REFERENCES            "references"
+#define XML_TEST_STUDENT_T_SAMPLE_COUNT          "sampleCount"
+#define XML_TEST_CHI2                            "chi2test"
+#define XML_TEST_CHI2_SIGNIFICANCE_LEVEL         "significanceLevel"
+#define XML_TEST_CHI2_RESOLUTION                 "resolution"
+#define XML_TEST_CHI2_MIN_EXP_FREQUENCY          "minExpFrequency"
+#define XML_TEST_CHI2_SAMPLE_COUNT               "sampleCount"
+#define XML_TEST_CHI2_TEST_COUNT                 "testCount"
+
+#define XML_FILTER                               "rfilter"
+#define XML_FILTER_BOX                           "box"
+#define XML_FILTER_GAUSSION                      "gaussian"
+#define XML_FILTER_GAUSSION_RADIUS               "radius"
+#define XML_FILTER_GAUSSION_STDDEV               "stddev"
+#define XML_FILTER_MITCHELL_NETRAVALI            "mitchell"
+#define XML_FILTER_MITCHELL_NETRAVALI_RADIUS     "radius"
+#define XML_FILTER_MITCHELL_NETRAVALI_B          "B"
+#define XML_FILTER_MITCHELL_NETRAVALI_C          "C"
+#define XML_FILTER_TENT                          "tent"
+
+#define XML_SAMPLER                              "sampler"
+#define XML_SAMPLER_INDEPENDENT                  "independent"
+#define XML_SAMPLER_INDEPENDENT_SAMPLE_COUNT     "sampleCount"
+
+#define XML_SHAPE                                "shape"
+
 
 /* Default setting */
-#define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
 #define DEFAULT_ACCELERATION_BVH_LEAF_SIZE         10
 #define DEFAULT_ACCELERATION_BVH_SPLIT_METHOD      XML_ACCELERATION_BVH_SPLIT_METHOD_SAH
+
 #define DEFAULT_ACCELERATION_HLBVH_LEAF_SIZE       10
 
-#define DEFAULT_INTEGRATOR_AO_ALPHA                1e6f
-#define DEFAULT_INTEGRATOR_AO_SAMPLE_COUNT         16
+#define DEFAULT_SCENE_ACCELERATION                 XML_ACCELERATION_BRUTO_LOOP
 
-#define DEFAULT_INTEGRATOR_WHITTED_DEPTH           -1
+#define DEFAULT_SCENE_SAMPLER                      XML_SAMPLER_INDEPENDENT
 
-#define DEFAULT_SCENE_BACKGROUND                   Color3f(0.0f)
-#define DEFAULT_SCENE_FORCE_BACKGROUND             false
-
-///BSDF
-#define DEFAULT_MESH_BSDF                          XML_BSDF_DIFFUSE
+#define DEFAULT_CAMERA_OUTPUTSIZE_X                1280
+#define DEFAULT_CAMERA_OUTPUTSIZE_Y                720
+#define DEFAULT_CAMERA_CAMERA_TO_WORLD             Transform()
+#define DEFAULT_CAMERA_FOV                         30.0f
+#define DEFAULT_CAMERA_NEAR_CLIP                   1e-4f
+#define DEFAULT_CAMERA_FAR_CLIP                    1e4f
+#define DEFAULT_CAMERA_FAR_CLIP                    1e4f
+#define DEFAULT_CAMERA_RFILTER                     XML_FILTER_GAUSSION
 
 #define DEFAULT_BSDF_DIELECTRIC_INT_IOR            1.5046f
 #define DEFAULT_BSDF_DIELECTRIC_EXT_IOR            1.000277f /* Air */
 #define DEFAULT_BSDF_DIELECTRIC_KS_REFLECT         Color3f(1.0f)
 #define DEFAULT_BSDF_DIELECTRIC_KS_REFRACT         Color3f(1.0f)
+#define DEFAULT_BSDF_DIFFUSE_ALBEDO                Color3f(0.5f)
+#define DEFAULT_BSDF_MICROFACET_ALPHA              0.1f
+#define DEFAULT_BSDF_MICROFACET_INT_IOR            1.5046f
+#define DEFAULT_BSDF_MICROFACET_EXT_IOR            1.000277f /* Air */
+#define DEFAULT_BSDF_MICROFACET_ALBEDO             Color3f(0.5f)
+#define DEFAULT_BSDF_CONDUCTOR_INT_IOR             1.5046f
+#define DEFAULT_BSDF_CONDUCTOR_EXT_IOR             1.000277f /* Air */
+#define DEFAULT_BSDF_CONDUCTOR_K                   Color3f(1.0f)
+#define DEFAULT_BSDF_CONDUCTOR_KS                  Color3f(1.0f)
+#define DEFAULT_BSDF_PLASTIC_INT_IOR               1.5046f
+#define DEFAULT_BSDF_PLASTIC_EXT_IOR               1.000277f /* Air */
+#define DEFAULT_BSDF_PLASTIC_KS                    Color3f(1.0f)
+#define DEFAULT_BSDF_PLASTIC_KD                    Color3f(0.5f)
+#define DEFAULT_BSDF_PLASTIC_NONLINEAR             false
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_INT_IOR       1.5046f
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_EXT_IOR       1.000277f /* Air */
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_K             Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_KS            Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_ALPHA         0.1f
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_ALPHA_U       0.1f
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_ALPHA_V       0.1f
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_TYPE          XML_BSDF_BECKMANN
+#define DEFAULT_BSDF_ROUGH_CONDUCTOR_AS            false
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_INT_IOR      1.5046f
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_EXT_IOR      1.000277f /* Air */
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_KS_REFLECT   Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_KS_REFRACT   Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_ALPHA        0.1f
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_ALPHA_U      0.1f
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_ALPHA_V      0.1f
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_TYPE         XML_BSDF_BECKMANN
+#define DEFAULT_BSDF_ROUGH_DIELECTRIC_AS           false
+#define DEFAULT_BSDF_ROUGH_DIFFUSE_ALBEDO          Color3f(0.5f)
+#define DEFAULT_BSDF_ROUGH_DIFFUSE_ALPHA           0.2f
+#define DEFAULT_BSDF_ROUGH_DIFFUSE_FAST_APPROX     false
+#define DEFAULT_BSDF_ROUGH_PLASTIC_INT_IOR         1.49f
+#define DEFAULT_BSDF_ROUGH_PLASTIC_EXT_IOR         1.000277f /* Air */
+#define DEFAULT_BSDF_ROUGH_PLASTIC_KS              Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_PLASTIC_KD              Color3f(0.5f)
+#define DEFAULT_BSDF_ROUGH_PLASTIC_NONLINEAR       false
+#define DEFAULT_BSDF_ROUGH_PLASTIC_TYPE            XML_BSDF_BECKMANN
+#define DEFAULT_BSDF_ROUGH_PLASTIC_ALPHA           0.1f
+#define DEFAULT_BSDF_COATING_INT_IOR               1.49f
+#define DEFAULT_BSDF_COATING_EXT_IOR               1.000277f /* Air */
+#define DEFAULT_BSDF_COATING_THICKNESS             1.0f
+#define DEFAULT_BSDF_COATING_SIGMA_A               Color3f(0.0f)
+#define DEFAULT_BSDF_COATING_KS                    Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_COATING_INT_IOR         1.49f
+#define DEFAULT_BSDF_ROUGH_COATING_EXT_IOR         1.000277f /* Air */
+#define DEFAULT_BSDF_ROUGH_COATING_THICKNESS       1.0f
+#define DEFAULT_BSDF_ROUGH_COATING_SIGMA_A         Color3f(0.0f)
+#define DEFAULT_BSDF_ROUGH_COATING_KS              Color3f(1.0f)
+#define DEFAULT_BSDF_ROUGH_COATING_ALPHA           0.1f
+#define DEFAULT_BSDF_ROUGH_COATING_TYPE            XML_BSDF_BECKMANN
+
+#define DEFAULT_FILTER_GAUSSIAN_RADIUS             2.0f
+#define DEFAULT_FILTER_GAUSSIAN_STDDEV             0.5f
+#define DEFAULT_FILTER_MITCHELL_RADIUS             2.0f
+#define DEFAULT_FILTER_MITCHELL_B                  (1.0f / 3.0f)
+#define DEFAULT_FILTER_MITCHELL_C                  (1.0f / 3.0f)
+
+#define DEFAULT_MESH_TO_WORLD                      Transform()
+
+#define DEFAULT_INTEGRATOR_AO_ALPHA                1e6f
+#define DEFAULT_INTEGRATOR_AO_SAMPLE_COUNT         16
+#define DEFAULT_INTEGRATOR_WHITTED_DEPTH           -1
+
+#define DEFAULT_SAMPLER_INDEPENDENT_SAMPLE_COUNT   1
+
+#define DEFAULT_MESH_BSDF                          XML_BSDF_DIFFUSE
+
+#define DEFAULT_EMITTER_ENVIRONMENT_SCALE          1.0f
+#define DEFAULT_EMITTER_ENVIRONMENT_TO_WORLD       Transform()
+
+#define DEFAULT_TEST_STUDENT_T_SIGNIFICANCE_LEVEL  0.01f
+#define DEFAULT_TEST_STUDENT_T_ANGLES              ""
+#define DEFAULT_TEST_STUDENT_T_REFERENCES          ""
+#define DEFAULT_TEST_STUDENT_T_SAMPLE_COUNT        100000
+
+#define DEFAULT_TEST_CHI2_SIGNIFICANCE_LEVEL       0.01f
+#define DEFAULT_TEST_CHI2_RESOLUTION               10
+#define DEFAULT_TEST_CHI2_MIN_EXP_FREQUENCY        5
+#define DEFAULT_TEST_CHI2_SAMPLE_COUNT             -1
+#define DEFAULT_TEST_CHI2_TEST_COUNT               5
+
+#define DEFAULT_SCENE_BACKGROUND                   Color3f(0.0f)
+#define DEFAULT_SCENE_FORCE_BACKGROUND             false
+
+#define DEFAULT_TEXTURE_BITMAP_GAMMA               1.0f
+#define DEFAULT_TEXTURE_BITMAP_WRAP_MODE           XML_TEXTURE_BITMAP_WRAP_MODE_REPEAT
+#define DEFAULT_TEXTURE_BITMAP_WRAP_MODE_U         XML_TEXTURE_BITMAP_WRAP_MODE_REPEAT
+#define DEFAULT_TEXTURE_BITMAP_WRAP_MODE_V         XML_TEXTURE_BITMAP_WRAP_MODE_REPEAT
+#define DEFAULT_TEXTURE_BITMAP_FILTER_TYPE         XML_TEXTURE_BITMAP_FILTER_TYPE_EWA
+#define DEFAULT_TEXTURE_BITMAP_MAX_ANISOTROPY      20.0f
+#define DEFAULT_TEXTURE_BITMAP_OFFSET_U            0.0f
+#define DEFAULT_TEXTURE_BITMAP_OFFSET_V            0.0f
+#define DEFAULT_TEXTURE_BITMAP_SCALE_U             1.0f
+#define DEFAULT_TEXTURE_BITMAP_SCALE_V             1.0f
+#define DEFAULT_TEXTURE_BITMAP_CHANNEL             XML_TEXTURE_BITMAP_CHANNEL_RGB
+#define DEFAULT_TEXTURE_CHECKERBOARD_BLOCKS        10
+#define DEFAULT_TEXTURE_CHECKERBOARD_COLOR_A       Color3f(0.4f)
+#define DEFAULT_TEXTURE_CHECKERBOARD_COLOR_B       Color3f(0.2f)
+#define DEFAULT_TEXTURE_CHECKERBOARD_OFFSET_U      0.0f
+#define DEFAULT_TEXTURE_CHECKERBOARD_OFFSET_V      0.0f
+#define DEFAULT_TEXTURE_CHECKERBOARD_SCALE_U       1.0f
+#define DEFAULT_TEXTURE_CHECKERBOARD_SCALE_V       1.0f
+#define DEFAULT_TEXTURE_WIREFRAME_INTERIOR_COLOR   Color3f(0.5f)
+#define DEFAULT_TEXTURE_WIREFRAME_EDGE_COLOR       Color3f(0.1f)
+#define DEFAULT_TEXTURE_WIREFRAME_EDGE_WIDTH       0.0f
+#define DEFAULT_TEXTURE_WIREFRAME_TRANSITION_WIDTH 0.5f
+#define DEFAULT_TEXTURE_WIREFRAME_OFFSET_U         0.0f
+#define DEFAULT_TEXTURE_WIREFRAME_OFFSET_V         0.0f
+#define DEFAULT_TEXTURE_WIREFRAME_SCALE_U          1.0f
+#define DEFAULT_TEXTURE_WIREFRAME_SCALE_V          1.0f
+#define DEFAULT_TEXTURE_GRID_COLOR_BACKGROUND      Color3f(0.2f)
+#define DEFAULT_TEXTURE_GRID_COLOR_LINE            Color3f(0.4f)
+#define DEFAULT_TEXTURE_GRID_LINE_WIDTH            0.01f
+#define DEFAULT_TEXTURE_GRID_LINES                 10
+#define DEFAULT_TEXTURE_GRID_OFFSET_U              0.0f
+#define DEFAULT_TEXTURE_GRID_OFFSET_V              0.0f
+#define DEFAULT_TEXTURE_GRID_SCALE_U               1.0f
+#define DEFAULT_TEXTURE_GRID_SCALE_V               1.0f
+#define DEFAULT_TEXTURE_CURVATURE_SCALE            1.0f
+#define DEFAULT_TEXTURE_CURVATURE_POSITIVE_COLOR   Color3f(1.0f, 0.0f, 0.0f)
+#define DEFAULT_TEXTURE_CURVATURE_NEGATIVE_COLOR   Color3f(0.0f, 0.0f, 1.0f)
+#define DEFAULT_TEXTURE_CURVATURE_OFFSET_U         0.0f
+#define DEFAULT_TEXTURE_CURVATURE_OFFSET_V         0.0f
+#define DEFAULT_TEXTURE_CURVATURE_SCALE_U          1.0f
+#define DEFAULT_TEXTURE_CURVATURE_SCALE_V          1.0f
 
 /* Forward declarations */
 namespace filesystem {
@@ -332,6 +672,21 @@ enum class ETransportMode
     EUnknown = 0,
     ERadiance = 1,
     EImportance = 2
+};
+
+/// Lobe type of the BSDF
+enum EBSDFType
+{
+    ENull                = 0x001,
+    EDiffuseReflection   = 0x002,
+    EDiffuseTransmission = 0x004,
+    EGlossyReflection    = 0x008,
+    EGlossyTransmission  = 0x010,
+    EDeltaReflection     = 0x020,
+    EDeltaTransmission   = 0x040,
+
+    EExtraSampling       = 0x080,
+    EUVDependent         = 0x100,
 };
 
 //// Convert radians to degrees

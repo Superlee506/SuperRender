@@ -30,14 +30,14 @@ public:
 
     virtual ~ChiSquareTest();
 
-    void addChild(NoriObject *obj);
+    virtual void addChild(NoriObject *obj, const std::string & name) override;
 
     /// Execute the chi-square test
-    void activate();
+    virtual void activate() override;
 
-    std::string toString() const;
+    virtual std::string toString() const override;
 
-    EClassType getClassType() const;
+    virtual EClassType getClassType() const override;
 
 private:
     int m_cosThetaResolution;

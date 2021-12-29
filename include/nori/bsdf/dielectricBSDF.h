@@ -24,6 +24,10 @@ public:
 
     virtual std::string toString() const override;
 
+    virtual void addChild(NoriObject * pChildObj, const std::string & name) override;
+
+    virtual void activate() override;
+
 private:
     float m_intIOR, m_extIOR;
     std::unique_ptr<Texture> m_pKsReflect;

@@ -89,7 +89,7 @@ Color3f PerspectiveCamera::sampleRay(Ray3f &ray,
     return Color3f(1.0f);
 }
 
-void PerspectiveCamera::addChild(NoriObject *obj)
+void PerspectiveCamera::addChild(NoriObject *obj, const std::string & name)
 {
     switch (obj->getClassType()) {
         case EReconstructionFilter:
@@ -99,8 +99,8 @@ void PerspectiveCamera::addChild(NoriObject *obj)
             break;
 
         default:
-            throw NoriException("Camera::addChild(<%s>) is not supported!",
-                                classTypeName(obj->getClassType()));
+            throw NoriException("Camera::addChild(<%s>, <%s>) is not supported!",
+                                classTypeName(obj->getClassType()), name);
     }
 }
 

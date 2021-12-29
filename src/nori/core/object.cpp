@@ -8,14 +8,15 @@
 
 NORI_NAMESPACE_BEGIN
 
-void NoriObject::addChild(NoriObject *) {
+void NoriObject::addChild(NoriObject *, const std::string & name) {
     throw NoriException(
         "NoriObject::addChild() is not implemented for objects of type '%s'!",
         classTypeName(getClassType()));
 }
 
 void NoriObject::activate() { /* Do nothing */ }
-void NoriObject::setParent(NoriObject *) { /* Do nothing */ }
+
+void NoriObject::setParent(NoriObject *, const std::string &) { /* Do nothing */ }
 
 std::string NoriObject::classTypeName(EClassType type) {
     switch (type)

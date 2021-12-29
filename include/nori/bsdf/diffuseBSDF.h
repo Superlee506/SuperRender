@@ -31,10 +31,12 @@ public:
     /// Return a human-readable summary
     virtual std::string toString() const override;
 
-    virtual EClassType getClassType() const override;
+    virtual void addChild(NoriObject * pChildObj, const std::string & name) override;
+
+    virtual void activate() override;
 
 private:
-    Color3f m_albedo;
+    std::unique_ptr<Texture> m_pAlbedo;
 };
 
 NORI_NAMESPACE_END

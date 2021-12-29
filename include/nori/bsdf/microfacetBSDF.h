@@ -28,11 +28,19 @@ public:
 
     virtual std::string toString() const override;
 
+    virtual void addChild(NoriObject *pChildObj, const std::string &name) override;
+
+    virtual void activate() override;
+
 private:
-    float m_alpha;
+    static float beckmannD(const Normal3f & M, float alpha);
+    static float smithBeckmannG1(const Vector3f & V, const Normal3f & M, float alpha);
+
+private:
+    std::unique_ptr<Texture> m_pAlpha;
     float m_intIOR, m_extIOR;
-    float m_ks;
-    Color3f m_kd;
+    std::unique_ptr<Texture> m_pKd;
+    float m_eta, m_invEta;
 };
 
 

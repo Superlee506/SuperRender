@@ -71,6 +71,22 @@ public:
      * or not to store photons on a surface
      */
     virtual bool isDiffuse() const;
+    /**
+	* \brief Return whether or not this BRDF is anisotropic.
+	*/
+    virtual bool isAnisotropic() const;
+
+    /// Add a new component of the BSDFType (Could be a combined type or a single type)
+    void addBsdfType(uint32_t Type);
+
+    /// Whether the given BSDF type is contained in this BSDF
+    bool hasBsdfType(EBSDFType Type) const;
+
+    /// Get the combined bitwise BSDF type
+    uint32_t getBsdfTypes() const;
+
+private:
+    uint32_t m_combinedType = 0;
 };
 
 NORI_NAMESPACE_END

@@ -12,15 +12,31 @@ NORI_NAMESPACE_BEGIN
 
 MirrorBSDF::MirrorBSDF(const PropertyList &) { }
 
-Color3f MirrorBSDF::eval(const BSDFQueryRecord &) const
+Color3f MirrorBSDF::eval(const BSDFQueryRecord &bRec) const
 {
-    /* Discrete BRDFs always evaluate to zero in Nori */
+    float cosThetaI = Frame::cosTheta(bRec.wi);
+    float cosThetaO = Frame::cosTheta(bRec.wo);
+
+    if (cosThetaI > 0.0f && cosThetaO > 0.0f && bRec.measure == EMeasure::EDiscrete &&
+        std::abs(reflect(bRec.wi).dot(bRec.wo) - 1.0f) <= DeltaEpsilon)
+    {
+        return Color3f(1.0f);
+    }
+
     return Color3f(0.0f);
 }
 
-float MirrorBSDF::pdf(const BSDFQueryRecord &) const
+float MirrorBSDF::pdf(const BSDFQueryRecord & bRec) const
 {
-    /* Discrete BRDFs always evaluate to zero in Nori */
+    float cosThetaI = Frame::cosTheta(bRec.wi);
+    float cosThetaO = Frame::cosTheta(bRec.wo);
+
+    if (cosThetaI > 0.0f && cosThetaO > 0.0f && bRec.measure == EMeasure::EDiscrete &&
+        std::abs(reflect(bRec.wi).dot(bRec.wo) - 1.0f) <= DeltaEpsilon)
+    {
+        return 1.0f;
+    }
+
     return 0.0f;
 }
 
@@ -46,6 +62,11 @@ Color3f MirrorBSDF::sample(BSDFQueryRecord &bRec, const Point2f &) const
 std::string MirrorBSDF::toString() const
 {
     return "Mirror[]";
+}
+
+void MirrorBSDF::activate()
+{
+    addBsdfType(EBSDFType::EDeltaReflection);
 }
 
 NORI_REGISTER_CLASS(MirrorBSDF, "mirror");
