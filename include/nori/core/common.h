@@ -99,7 +99,7 @@
 #define XML_INTEGRATOR_PATH_EMS_DEPTH            "depth"
 #define XML_INTEGRATOR_PATH_MATS                 "path_mats"
 #define XML_INTEGRATOR_PATH_MATS_DEPTH           "depth"
-#define XML_INTEGRATOR_PATH_MIS                  "pathMIS"
+#define XML_INTEGRATOR_PATH_MIS                  "path_mis"
 #define XML_INTEGRATOR_PATH_MIS_DEPTH            "depth"
 
 #define XML_EMITTER                              "emitter"
