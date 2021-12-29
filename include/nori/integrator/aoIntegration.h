@@ -16,7 +16,7 @@ public:
     AoIntegrator(const PropertyList & propList);
 
     /// Compute the radiance value for a given ray. Just return green here
-    virtual Color3f Li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const override;
+    virtual Color3f li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const override;
 
     /// Return a human-readable description for debugging purposes
     virtual std::string toString() const override;

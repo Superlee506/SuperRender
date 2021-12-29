@@ -19,7 +19,7 @@ WhittedIntegrator::WhittedIntegrator(const PropertyList & propList)
     m_depth = uint32_t(propList.getInteger(XML_INTEGRATOR_WHITTED_DEPTH, DEFAULT_INTEGRATOR_WHITTED_DEPTH));
 }
 
-Color3f WhittedIntegrator::Li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
+Color3f WhittedIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
 {
     return liRecursive(pScene, pSampler, ray, 0);
 }

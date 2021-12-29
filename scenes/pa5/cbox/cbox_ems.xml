@@ -14,6 +14,10 @@
 		<integer name="width" value="800"/>
 	</camera>
 
+	<acceleration type="hlbvh">
+		<integer name="leafSize" value="10"/>
+	</acceleration>
+
 	<sampler type="independent">
 		<integer name="sampleCount" value="512"/>
 	</sampler>

@@ -144,7 +144,7 @@ void StudentsTTest::activate()
                 Color3f value = camera->sampleRay(ray, pixelSample, sampler->next2D());
 
                 /* Compute the incident radiance */
-                value *= integrator->Li(scene, sampler, ray);
+                value *= integrator->li(scene, sampler, ray);
 
                 /* Numerically robust online variance estimation using an
                    algorithm proposed by Donald Knuth (TAOCP vol.2, 3rd ed., p.232) */

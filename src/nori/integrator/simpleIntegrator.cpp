@@ -15,7 +15,7 @@ SimpleIntegrator::SimpleIntegrator(const PropertyList &props)
 }
 
 /// Compute the radiance value for a given ray. Just return green here
-Color3f SimpleIntegrator::Li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const
+Color3f SimpleIntegrator::li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const
 {
     /* Find the surface that is visible in the requested direction */
     Intersection its;

@@ -7,10 +7,13 @@
 
 NORI_NAMESPACE_BEGIN
 
-class WhittedIntegrator : public Integrator
+/**
+*\brief This integrator simulates a simple path tracing integrator.
+*/
+class PathBRDFIntegrator : public Integrator
 {
 public:
-    WhittedIntegrator(const PropertyList & propList);
+    PathBRDFIntegrator(const PropertyList & propList);
 
     /// Compute the radiance value for a given ray. Just return green here
     virtual Color3f li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const override;
@@ -19,8 +22,6 @@ public:
     virtual std::string toString() const override;
 
 protected:
-    Color3f liRecursive(const Scene * pScene, Sampler * pSampler, const Ray3f & ray, uint32_t depth) const;
-
     uint32_t m_depth;
 };
 

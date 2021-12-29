@@ -2,7 +2,7 @@
 // Created by superqqli on 2021/12/13.
 //
 
-#include <nori/integrator/pathtracingIntegration.h>
+#include <nori/integrator/pathBRDFIntegration.h>
 #include <nori/core/intersection.h>
 #include <nori/core/scene.h>
 #include <nori/core/warp.h>
@@ -15,13 +15,13 @@
 
 NORI_NAMESPACE_BEGIN
 
-PathTracingIntegrator::PathTracingIntegrator(const PropertyList & propList)
+PathBRDFIntegrator::PathBRDFIntegrator(const PropertyList & propList)
 {
     m_depth = propList.getInteger(XML_INTEGRATOR_PATH_MATS_DEPTH, DEFAULT_PATH_TRACING_DEPTH);
 
 }
 
-Color3f PathTracingIntegrator::Li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
+Color3f PathBRDFIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
 {
     Intersection its;
     Ray3f tracingRay(ray);
@@ -89,10 +89,10 @@ Color3f PathTracingIntegrator::Li(const Scene * pScene, Sampler * pSampler, cons
     return li;
 }
 
-std::string PathTracingIntegrator::toString() const
+std::string PathBRDFIntegrator::toString() const
 {
-    return tfm::format("PathMATSIntegrator[depth = %u]", m_depth);
+    return tfm::format("PathBRDFIntegrator[depth = %u]", m_depth);
 }
 
-NORI_REGISTER_CLASS(PathTracingIntegrator, XML_INTEGRATOR_PATH_MATS);
+NORI_REGISTER_CLASS(PathBRDFIntegrator, XML_INTEGRATOR_PATH_MATS);
 NORI_NAMESPACE_END

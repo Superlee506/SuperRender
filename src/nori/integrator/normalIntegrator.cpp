@@ -13,7 +13,7 @@ NormalIntegrator::NormalIntegrator(const PropertyList &props)
 }
 
 /// Compute the radiance value for a given ray. Just return green here
-Color3f NormalIntegrator::Li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const
+Color3f NormalIntegrator::li(const Scene *pScene, Sampler *pSampler, const Ray3f &ray) const
 {
     /* Find the surface that is visible in the requested direction */
     Intersection its;

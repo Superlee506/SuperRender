@@ -95,7 +95,7 @@
 #define XML_INTEGRATOR_AO_SAMPLE_COUNT           "sampleCount"
 #define XML_INTEGRATOR_WHITTED                   "whitted"
 #define XML_INTEGRATOR_WHITTED_DEPTH             "depth"
-#define XML_INTEGRATOR_PATH_EMS                  "pathEMS"
+#define XML_INTEGRATOR_PATH_EMS                  "path_ems"
 #define XML_INTEGRATOR_PATH_EMS_DEPTH            "depth"
 #define XML_INTEGRATOR_PATH_MATS                 "path_mats"
 #define XML_INTEGRATOR_PATH_MATS_DEPTH           "depth"

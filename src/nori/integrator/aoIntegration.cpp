@@ -17,7 +17,7 @@ AoIntegrator::AoIntegrator(const PropertyList & propList)
     m_invSampleCount = 1.0f / float(m_sampleCount);
 }
 
-Color3f AoIntegrator::Li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
+Color3f AoIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ray3f & ray) const
 {
     /* Find the surface that is visible in the requested direction */
     Intersection its;
