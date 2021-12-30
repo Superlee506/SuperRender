@@ -39,6 +39,7 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
     {
         if (depth == 0)
         {
+            // miss hit, calculate the environment contribute
             if (!pScene->rayIntersect(tracingRay, its))
             {
                 if (pEnvironmentEmitter != nullptr && !bForceBackground)
@@ -55,7 +56,7 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
                 }
             }
         }
-        else
+        else // Start from depth > 0
         {
             if (bFoundIntersectionNext)
             {
@@ -74,6 +75,7 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
             }
         }
 
+        /* Process the closest hit */
         float pdfLightEms = 0.0f, pdfBsdfEms = 0.0f;
         float pdfLightMats = 0.0f, pdfBsdfmats = 0.0f;
 
@@ -87,6 +89,7 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
             li += beta * weightMats * Le;
         }
 
+        // Sampling direct light
         for (Emitter * pEmitter : pScene->getEmitters())
         {
             EmitterQueryRecord emitterQueryRecord(its.p);
@@ -126,8 +129,9 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
             break;
         }
 
+        // Intersection test for nest bounce
         bFoundIntersectionNext = pScene->rayIntersect(tracingRay, itsNext);
-        if (bFoundIntersectionNext && itsNext.pEmitter != nullptr)
+        if (bFoundIntersectionNext && itsNext.pEmitter != nullptr) // update the mis weight of indirect light
         {
             EmitterQueryRecord EmitterRecord(itsNext.pEmitter, its.p, itsNext.p, itsNext.shFrame.n);
 
@@ -149,8 +153,8 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
         // Russian roulette
         if (pSampler->next1D() < 0.95f)
         {
-            constexpr float Inv = 1.0f / 0.95f;
-            beta *= Inv;
+            constexpr float inv = 1.0f / 0.95f;
+            beta *= inv;
         }
         else
         {

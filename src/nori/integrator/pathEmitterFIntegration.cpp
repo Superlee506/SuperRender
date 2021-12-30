@@ -82,22 +82,22 @@ Color3f PathEmitterIntegrator::li(const Scene * pScene, Sampler * pSampler, cons
                     continue;
                 }
 
-                EmitterQueryRecord EmitterRecord;
-                EmitterRecord.ref = its.p;
+                EmitterQueryRecord emitterQueryRecord;
+                emitterQueryRecord.ref = its.p;
 
                 if (pEmitter->getEmitterType() == EEmitterType::EEnvironment || pEmitter->getEmitterType() == EEmitterType::EDirectional)
                 {
-                    EmitterRecord.distance = pScene->getBoundingBox().getRadius();
+                    emitterQueryRecord.distance = pScene->getBoundingBox().getRadius();
                 }
 
-                Color3f Ldirect = pEmitter->sample(EmitterRecord, pSampler->next2D(), pSampler->next1D());
-                if (!Ldirect.isZero())
+                Color3f ldirect = pEmitter->sample(emitterQueryRecord, pSampler->next2D(), pSampler->next1D());
+                if (!ldirect.isZero())
                 {
-                    Ray3f ShadowRay = its.generateShadowRay(EmitterRecord.p);
-                    if (!pScene->rayIntersect(ShadowRay))
+                    Ray3f shadowRay = its.generateShadowRay(emitterQueryRecord.p);
+                    if (!pScene->rayIntersect(shadowRay))
                     {
-                        BSDFQueryRecord BSDFRecord(its.toLocal(-1.0 * tracingRay.d), its.toLocal(EmitterRecord.wi), EMeasure::ESolidAngle, ETransportMode::ERadiance, pSampler, its);
-                        li += beta * pBSDF->eval(BSDFRecord) * std::abs(Frame::cosTheta(BSDFRecord.wo)) * Ldirect;
+                        BSDFQueryRecord bsdfQueryRecord(its.toLocal(-1.0 * tracingRay.d), its.toLocal(emitterQueryRecord.wi), EMeasure::ESolidAngle, ETransportMode::ERadiance, pSampler, its);
+                        li += beta * pBSDF->eval(bsdfQueryRecord) * std::abs(Frame::cosTheta(bsdfQueryRecord.wo)) * ldirect;
                     }
                 }
             }
