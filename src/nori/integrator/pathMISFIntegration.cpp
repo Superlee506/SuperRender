@@ -107,6 +107,7 @@ Color3f PathMISIntegrator::li(const Scene * pScene, Sampler * pSampler, const Ra
                 Ray3f shadowRay = its.generateShadowRay(emitterQueryRecord.p);
                 if (!pScene->rayIntersect(shadowRay))
                 {
+                    // For some virtual light which are not in BVH, we can set BSDF to EMeasure::EDiscrete, so that the value of pdfBsdfEms will be 0
                     BSDFQueryRecord bsdfQueryRecord(its.toLocal(-1.0f * tracingRay.d), its.toLocal(emitterQueryRecord.wi), EMeasure::ESolidAngle, ETransportMode::ERadiance, pSampler, its);
                     pdfBsdfEms = pBSDF->pdf(bsdfQueryRecord);
                     if (pdfLightEms + pdfBsdfEms != 0.0f)
